@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STRIDE — Running Coach</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent: #c084fc;
+  --accent-dim: #a855f7;
+  --accent-glow: rgba(192,132,252,0.2);
+  --text: #f3e8ff;
+  --muted: rgba(220,180,255,0.45);
+  --dim: rgba(220,180,255,0.72);
+  --surface: rgba(255,255,255,0.06);
+  --surface2: rgba(255,255,255,0.035);
+  --border: rgba(180,120,255,0.15);
+  --blue: #818cf8;
+  --green: #86efac;
+  --orange: #fb923c;
+  --red: #f87171;
+  --sidebar-w: 220px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #08000f;
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: linear-gradient(180deg, #1e0650 0%, #0f0328 100%);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 10;
+}
+
+.sidebar-logo {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.logo-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: .14em;
+  color: var(--accent);
+  text-shadow: 0 0 20px var(--accent-glow);
+}
+.logo-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: .1em;
+  margin-top: 3px;
+}
+
+.sidebar-nav {
+  padding: 16px 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all .18s;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+.nav-item:hover { background: var(--surface); color: var(--dim); }
+.nav-item.active {
+  background: rgba(192,132,252,0.12);
+  color: var(--accent);
+  border: 1px solid rgba(192,132,252,0.2);
+}
+.nav-item svg { flex-shrink: 0; }
+
+.sidebar-bottom {
+  padding: 16px 12px 24px;
+  border-top: 1px solid var(--border);
+}
+.phase-info {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+}
+.pi-label { font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:4px; }
+.pi-name { font-size:12px;font-weight:700;color:var(--accent);margin-bottom:6px; }
+.pi-bar { height:3px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-bottom:5px; }
+.pi-fill { height:100%;background:linear-gradient(90deg,var(--accent-dim),var(--accent));border-radius:3px; }
+.pi-weeks { font-family:'DM Mono',monospace;font-size:9px;color:var(--muted); }
+
+/* ── MAIN ── */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a0540 0%, #0a0120 40%, #08000f 100%);
+}
+
+.topbar {
+  padding: 20px 32px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(10,1,25,0.6);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.topbar-left .tb-label { font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.1em;margin-bottom:2px; }
+.topbar-left .tb-date { font-family:'Syne',sans-serif;font-weight:700;font-size:20px; }
+.topbar-right { display:flex;gap:10px;align-items:center; }
+.tb-badge {
+  font-family:'DM Mono',monospace;font-size:9px;
+  background:rgba(192,132,252,.12);color:var(--accent);
+  border:1px solid rgba(192,132,252,.2);
+  padding:4px 12px;border-radius:20px;letter-spacing:.05em;
+}
+.time-badge {
+  font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);
+}
+
+/* ── PAGES ── */
+.page { display:none; padding:28px 32px 48px; }
+.page.active { display:block; }
+
+/* ── GRID ── */
+.grid-2 { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
+.grid-3 { display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px; }
+.col-span-2 { grid-column:span 2; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.card-head {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 18px 12px;border-bottom:1px solid var(--border);
+}
+.card-lbl { font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase; }
+.tag { font-family:'DM Mono',monospace;font-size:9px;padding:3px 10px;border-radius:20px; }
+.tag-p{background:rgba(192,132,252,.13);color:var(--accent);border:1px solid rgba(192,132,252,.22);}
+.tag-b{background:rgba(129,140,248,.13);color:var(--blue);border:1px solid rgba(129,140,248,.22);}
+.tag-g{background:rgba(134,239,172,.13);color:var(--green);border:1px solid rgba(134,239,172,.22);}
+.tag-o{background:rgba(251,146,60,.13);color:var(--orange);border:1px solid rgba(251,146,60,.22);}
+.tag-r{background:rgba(248,113,113,.13);color:var(--red);border:1px solid rgba(248,113,113,.22);}
+
+/* ── STAT CARDS ── */
+.stat-card {
+  background:var(--surface);border-radius:16px;border:1px solid var(--border);
+  padding:20px;position:relative;overflow:hidden;
+}
+.stat-card::before {
+  content:'';position:absolute;top:-20px;right:-20px;
+  width:80px;height:80px;
+  border-radius:50%;pointer-events:none;
+}
+.stat-card.purple::before { background:radial-gradient(circle,rgba(192,132,252,.15) 0%,transparent 70%); }
+.stat-card.blue::before { background:radial-gradient(circle,rgba(129,140,248,.15) 0%,transparent 70%); }
+.stat-card.green::before { background:radial-gradient(circle,rgba(134,239,172,.15) 0%,transparent 70%); }
+.stat-lbl { font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:8px; }
+.stat-num { font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1;letter-spacing:.03em; }
+.stat-num.purple { color:var(--accent);text-shadow:0 0 16px var(--accent-glow); }
+.stat-num.blue { color:var(--blue); }
+.stat-num.green { color:var(--green); }
+.stat-unit { font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-left:2px; }
+.stat-sub { font-size:11px;color:var(--muted);margin-top:4px; }
+
+/* ── SESSION ── */
+.session-title { padding:16px 18px 4px;font-family:'Syne',sans-serif;font-weight:700;font-size:20px; }
+.session-meta { padding:2px 18px 14px;display:flex;gap:14px;flex-wrap:wrap; }
+.meta { display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:10px;color:var(--dim); }
+.sec-lbl {
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;
+  color:var(--muted);text-transform:uppercase;
+  padding:10px 18px 6px;display:flex;align-items:center;gap:8px;
+}
+.sec-lbl::after { content:'';flex:1;height:1px;background:var(--border); }
+
+/* ── CHECKLIST ── */
+.checklist { padding:0 18px 16px;display:flex;flex-direction:column;gap:6px; }
+.ci {
+  display:flex;align-items:center;gap:10px;
+  padding:10px 13px;background:var(--surface2);
+  border-radius:10px;border:1px solid var(--border);
+  cursor:pointer;transition:all .16s;position:relative;overflow:hidden;
+  user-select:none;
+}
+.ci:hover { border-color:rgba(192,132,252,.25); }
+.ci.done { border-color:rgba(192,132,252,.28);background:rgba(192,132,252,.05); }
+.ci.done::before { content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);border-radius:2px 0 0 2px; }
+.cb { width:18px;height:18px;border-radius:5px;border:1.5px solid rgba(192,132,252,.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .16s; }
+.ci.done .cb { background:var(--accent);border-color:var(--accent); }
+.ci-body { flex:1; }
+.ci-lbl { font-size:12px;font-weight:500;transition:color .16s; }
+.ci.done .ci-lbl { color:var(--muted);text-decoration:line-through; }
+.ci-sub { font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-top:1px; }
+
+/* ── PROGRESS ── */
+.prog-wrap { padding:0 18px 16px; }
+.prog-row { display:flex;justify-content:space-between;margin-bottom:6px; }
+.prog-l { font-family:'DM Mono',monospace;font-size:9px;color:var(--muted); }
+.prog-v { font-family:'DM Mono',monospace;font-size:9px;color:var(--accent); }
+.prog-bar { height:4px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden; }
+.prog-fill { height:100%;background:linear-gradient(90deg,var(--accent-dim),var(--accent));border-radius:4px;transition:width .5s ease; }
+
+/* ── KM INPUT ── */
+.km-section { padding:16px 18px; }
+.km-display { font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--accent);line-height:1;letter-spacing:.03em;text-shadow:0 0 16px var(--accent-glow);margin-bottom:12px; }
+.km-display span { font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);font-weight:400;margin-left:2px; }
+.km-quick { display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap; }
+.km-btn {
+  padding:8px 14px;font-family:'DM Mono',monospace;font-size:11px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;cursor:pointer;color:var(--dim);transition:all .15s;
+}
+.km-btn:hover { background:rgba(192,132,252,.1);border-color:var(--accent);color:var(--accent); }
+.km-manual { display:flex;gap:8px;align-items:center; }
+.km-input {
+  flex:1;max-width:200px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:9px 13px;
+  color:var(--text);font-family:'DM Mono',monospace;font-size:13px;
+  outline:none;transition:border-color .15s;
+}
+.km-input:focus { border-color:var(--accent); }
+.km-input::placeholder { color:var(--muted); }
+.km-save { background:var(--accent-dim);border:none;border-radius:8px;padding:9px 18px;color:#fff;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer; }
+.km-reset { background:transparent;border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer; }
+.km-reset:hover { border-color:var(--muted); }
+
+/* ── BARS ── */
+.bars-section { padding:16px 18px; }
+.bars-head { display:flex;justify-content:space-between;align-items:center;margin-bottom:14px; }
+.bars-ttl { font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase; }
+.bars-num { font-family:'Syne',sans-serif;font-weight:700;font-size:16px; }
+.bars-num span { font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);font-weight:400;margin-left:2px; }
+.bars { display:flex;align-items:flex-end;gap:8px;height:90px; }
+.bw { flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;height:100%;justify-content:flex-end;cursor:pointer; }
+.bw:hover .b { opacity:.8; }
+.b { width:100%;border-radius:4px 4px 0 0;background:rgba(255,255,255,.07);transition:all .2s; }
+.b.done { background:rgba(192,132,252,.3); }
+.b.today { background:linear-gradient(180deg,#c084fc,#7c3aed);box-shadow:0 0 10px rgba(192,132,252,.4); }
+.b.rest { background:rgba(255,255,255,.04); }
+.bl { font-family:'DM Mono',monospace;font-size:9px;color:var(--muted); }
+.bl.tl { color:var(--accent); }
+
+/* ── PLAN TABLE ── */
+.plan-table { width:100%;border-collapse:collapse; }
+.plan-table th {
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;
+  color:var(--muted);text-transform:uppercase;text-align:left;
+  padding:10px 18px 8px;border-bottom:1px solid var(--border);
+}
+.plan-table td {
+  padding:11px 18px;border-bottom:1px solid rgba(180,120,255,.07);
+  font-size:12px;
+}
+.plan-table tr:last-child td { border-bottom:none; }
+.plan-table tr:hover td { background:rgba(255,255,255,.02); }
+.plan-day-cell { font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);width:40px; }
+.plan-detail-cell { font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:right; }
+.plan-phase-row td {
+  background:rgba(192,132,252,.05);
+  color:var(--accent);font-weight:700;font-size:12px;
+  border-bottom:1px solid rgba(192,132,252,.15);
+  padding:9px 18px;
+}
+
+/* ── STRENGTH ── */
+.ex-grid { display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 18px; }
+.ex-item { background:var(--surface2);border-radius:10px;border:1px solid var(--border);padding:14px; }
+.ex-name { font-size:13px;font-weight:700;margin-bottom:4px; }
+.ex-detail { font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);margin-bottom:6px; }
+.ex-point { font-size:11px;color:var(--dim);line-height:1.55; }
+
+/* ── NUTRITION ── */
+.nutr-grid { display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 18px 16px; }
+
+/* ── TIP ── */
+.tip { border-left:3px solid var(--accent);padding:10px 14px;background:rgba(192,132,252,.05);border-radius:0 10px 10px 0;font-size:11px;line-height:1.6;color:var(--dim);margin:0 18px 16px; }
+.tip-lbl { font-family:'DM Mono',monospace;font-size:8.5px;color:var(--accent);letter-spacing:.08em;margin-bottom:4px; }
+
+/* ── AI PAGE ── */
+.ai-layout { display:grid;grid-template-columns:1fr 360px;gap:16px;align-items:start; }
+.chat-area { background:var(--surface);border-radius:16px;border:1px solid var(--border);overflow:hidden; }
+.chat-messages { padding:20px;display:flex;flex-direction:column;gap:10px;min-height:400px;max-height:500px;overflow-y:auto; }
+.chat-messages::-webkit-scrollbar{display:none;}
+.chat-bubble { max-width:80%;padding:11px 14px;border-radius:14px;font-size:12px;line-height:1.6; }
+.chat-ai { background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.18);align-self:flex-start;border-bottom-left-radius:4px; }
+.chat-user { background:rgba(192,132,252,.14);border:1px solid rgba(192,132,252,.22);align-self:flex-end;border-bottom-right-radius:4px; }
+.chat-input-row { display:flex;gap:8px;padding:14px;border-top:1px solid var(--border); }
+.chat-input { flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:12px;outline:none;transition:border-color .15s; }
+.chat-input:focus { border-color:var(--accent); }
+.chat-input::placeholder { color:var(--muted); }
+.chat-send { background:var(--accent-dim);border:none;border-radius:10px;padding:10px 18px;color:#fff;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer; }
+
+/* ── EDIT MODAL ── */
+.modal-overlay {
+  position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;
+  z-index:100;opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.modal-overlay.open { opacity:1;pointer-events:all; }
+.modal {
+  background:linear-gradient(160deg,#2a0d5e,#12042e);
+  border:1px solid rgba(192,132,252,.25);border-radius:20px;
+  padding:28px;width:340px;
+  transform:scale(.95);transition:transform .2s;
+}
+.modal-overlay.open .modal { transform:scale(1); }
+.modal-title { font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:4px; }
+.modal-sub { font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:20px; }
+.modal-input-row { display:flex;gap:8px;margin-bottom:10px; }
+.modal-input { flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;transition:border-color .15s; }
+.modal-input:focus { border-color:var(--accent); }
+.modal-save { background:var(--accent-dim);border:none;border-radius:10px;padding:11px 18px;color:#fff;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer; }
+.modal-cancel { width:100%;background:transparent;border:1px solid var(--border);border-radius:10px;padding:10px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;cursor:pointer; }
+.modal-cancel:hover { border-color:var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-text">STRIDE</div>
+    <div class="logo-sub">KUMAMOTO MARATHON 2027</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-item active" onclick="switchPage('today')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+        <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+      </svg>
+      今日のメニュー
+    </div>
+    <div class="nav-item" onclick="switchPage('plan')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      トレーニング計画
+    </div>
+    <div class="nav-item" onclick="switchPage('strength')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M6 5h12M6 19h12M4 12h16M6 5v14M18 5v14"/>
+      </svg>
+      筋トレ・ストレッチ
+    </div>
+    <div class="nav-item" onclick="switchPage('nutrition')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/>
+        <path d="M12 6v6l4 2"/>
+      </svg>
+      栄養管理
+    </div>
+    <div class="nav-item" onclick="switchPage('ai')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+      </svg>
+      AIコンシェルジュ
+    </div>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="phase-info">
+      <div class="pi-label">CURRENT PHASE</div>
+      <div class="pi-name" id="sb-phase">Phase 1 — 再構築期</div>
+      <div class="pi-bar"><div class="pi-fill" id="sb-pbar" style="width:5%"></div></div>
+      <div class="pi-weeks" id="sb-weeks">Week 1 / 44</div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="tb-label">TODAY</div>
+      <div class="tb-date" id="tb-date">—</div>
+    </div>
+    <div class="topbar-right">
+      <span class="tb-badge" id="tb-badge">PHASE 1</span>
+      <span class="time-badge" id="tb-time">00:00</span>
+    </div>
+  </div>
+
+  <!-- ── TODAY PAGE ── -->
+  <div class="page active" id="page-today">
+    <!-- Stat row -->
+    <div class="grid-3" style="margin-bottom:16px;">
+      <div class="stat-card purple">
+        <div class="stat-lbl">TODAY'S DISTANCE</div>
+        <div><span class="stat-num purple" id="stat-km">0.0</span><span class="stat-unit">km</span></div>
+        <div class="stat-sub" id="stat-km-sub">まだ記録なし</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-lbl">DAYS TO RACE</div>
+        <div><span class="stat-num blue" id="stat-days">—</span></div>
+        <div class="stat-sub">熊本城マラソン 2027</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-lbl">WEEKLY TOTAL</div>
+        <div><span class="stat-num green" id="stat-weekly">0.0</span><span class="stat-unit">km</span></div>
+        <div class="stat-sub" id="stat-weekly-sub">今週の合計</div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:16px;">
+      <!-- Session -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-lbl">TODAY'S SESSION</span>
+          <span class="tag tag-p" id="session-tag">—</span>
+        </div>
+        <div id="session-content"></div>
+      </div>
+
+      <!-- RUN LOG -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-lbl">RUN LOG</span>
+          <span class="tag tag-p">走行距離を記録</span>
+        </div>
+        <div class="km-section">
+          <div class="km-display"><span id="km-display">0.0</span> <span>km</span></div>
+          <div class="km-quick">
+            <div class="km-btn" onclick="addKm(6)">+6km</div>
+            <div class="km-btn" onclick="addKm(8)">+8km</div>
+            <div class="km-btn" onclick="addKm(10)">+10km</div>
+            <div class="km-btn" onclick="addKm(14)">+14km</div>
+            <div class="km-btn" onclick="addKm(18)">+18km</div>
+          </div>
+          <div class="km-manual">
+            <input class="km-input" id="km-input" type="number" placeholder="距離を入力 (km)" step="0.1" min="0" max="50"/>
+            <button class="km-save" onclick="saveKm()">記録</button>
+            <button class="km-reset" onclick="resetKm()">リセット</button>
+          </div>
+        </div>
+
+        <!-- Weekly bars -->
+        <div style="border-top:1px solid var(--border);">
+          <div class="bars-section">
+            <div class="bars-head">
+              <span class="bars-ttl">WEEKLY DISTANCE</span>
+              <span class="bars-num" id="weekly-total">0 <span>km</span></span>
+            </div>
+            <div class="bars" id="bars-container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PLAN PAGE ── -->
+  <div class="page" id="page-plan">
+    <div class="grid-2">
+      <div class="card col-span-2">
+        <div class="card-head">
+          <span class="card-lbl">TRAINING PLAN — 44 WEEKS</span>
+          <span class="tag tag-p">熊本城マラソン 2027</span>
+        </div>
+        <table class="plan-table">
+          <tr><th>曜日</th><th>メニュー</th><th>内容</th><th>距離</th></tr>
+          <tr class="plan-phase-row"><td colspan="4">Phase 1 — 再構築期（4月〜6月）　週25〜30km　★現在</td></tr>
+          <tr><td class="plan-day-cell">火</td><td>イージーラン</td><td>会話できるペース厳守</td><td class="plan-detail-cell">6〜8km / 6'00〜6'30</td></tr>
+          <tr><td class="plan-day-cell">木</td><td>イージーラン</td><td>疲れたら短縮OK</td><td class="plan-detail-cell">6〜8km / 6'00〜6'30</td></tr>
+          <tr><td class="plan-day-cell">土</td><td>ロング走</td><td>脚づくり優先</td><td class="plan-detail-cell">10〜14km / 6'30</td></tr>
+          <tr><td class="plan-day-cell">日</td><td>休養</td><td>ウォーク or 完全休養</td><td class="plan-detail-cell">—</td></tr>
+          <tr class="plan-phase-row"><td colspan="4">Phase 2 — 基礎構築期（7月〜9月）　週35〜45km</td></tr>
+          <tr><td class="plan-day-cell">火</td><td>ペース走</td><td>安定ペースを維持</td><td class="plan-detail-cell">6km / 5'30〜5'45</td></tr>
+          <tr><td class="plan-day-cell">木</td><td>インターバル / イージー</td><td>月2回インターバル</td><td class="plan-detail-cell">1km×4〜5本 / 8km</td></tr>
+          <tr><td class="plan-day-cell">土</td><td>ロング走</td><td>早朝か夜間推奨（熱中症）</td><td class="plan-detail-cell">15〜18km / 6'00〜6'15</td></tr>
+          <tr><td class="plan-day-cell">日</td><td>リカバリーjog</td><td>超ゆっくり</td><td class="plan-detail-cell">5〜6km</td></tr>
+          <tr class="plan-phase-row"><td colspan="4">Phase 3 — 強化期（10月〜12月）　週50〜60km</td></tr>
+          <tr><td class="plan-day-cell">火</td><td>マラソンペース走</td><td>レースペース感覚を養う</td><td class="plan-detail-cell">10〜12km / 5'00〜5'10</td></tr>
+          <tr><td class="plan-day-cell">木</td><td>インターバル</td><td>スピード強化</td><td class="plan-detail-cell">1km×5〜6本 / 4'40</td></tr>
+          <tr><td class="plan-day-cell">土</td><td>ロング走</td><td>11月に30km試走1回</td><td class="plan-detail-cell">20〜25km / 5'45〜6'00</td></tr>
+          <tr><td class="plan-day-cell">日</td><td>リカバリーjog</td><td></td><td class="plan-detail-cell">6〜8km</td></tr>
+          <tr class="plan-phase-row"><td colspan="4">Phase 4 — テーパリング期（1月〜2月）</td></tr>
+          <tr><td class="plan-day-cell">1-2週</td><td>距離80%削減</td><td>ペース走・ロング走維持</td><td class="plan-detail-cell">—</td></tr>
+          <tr><td class="plan-day-cell">3-4週</td><td>距離60%削減</td><td>質の高いペース走のみ</td><td class="plan-detail-cell">—</td></tr>
+          <tr><td class="plan-day-cell">5週</td><td>ショートジョグのみ</td><td>3〜5km × 3回</td><td class="plan-detail-cell">—</td></tr>
+          <tr><td class="plan-day-cell">前日</td><td>15分jog + ストレッチ</td><td>早めに就寝！</td><td class="plan-detail-cell">—</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-lbl">MILESTONES</span><span class="tag tag-o">中間目標</span></div>
+        <table class="plan-table">
+          <tr><th>時期</th><th>目標</th><th>ポイント</th></tr>
+          <tr><td class="plan-day-cell">6月</td><td>10kmレース</td><td class="plan-detail-cell">50分切り</td></tr>
+          <tr><td class="plan-day-cell">10月</td><td>ハーフマラソン</td><td class="plan-detail-cell">1:45切り</td></tr>
+          <tr><td class="plan-day-cell">11月</td><td>30km試走</td><td class="plan-detail-cell">5'45〜6'00/km</td></tr>
+          <tr><td class="plan-day-cell" style="color:var(--accent);">2/14</td><td style="color:var(--accent);font-weight:700;">熊本城マラソン</td><td class="plan-detail-cell" style="color:var(--accent);">3:30:00</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-lbl">NOTES</span><span class="tag tag-b">注意事項</span></div>
+        <div style="padding:16px 18px;display:flex;flex-direction:column;gap:10px;">
+          <div class="tip"><div class="tip-lbl">故障予防</div>最初の2〜3ヶ月は絶対に飛ばさない。9年ブランク後の故障は長引く。</div>
+          <div class="tip"><div class="tip-lbl">仕事との両立</div>残業多い週は距離を削る。疲労管理が最重要。</div>
+          <div class="tip"><div class="tip-lbl">リカバリー</div>走力の半分は睡眠と栄養で決まる。7時間以上の睡眠を確保。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STRENGTH PAGE ── -->
+  <div class="page" id="page-strength">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><span class="card-lbl">AB ROLLER</span><span class="tag tag-p">アブローラー</span></div>
+        <div class="ex-grid">
+          <div class="ex-item">
+            <div class="ex-name">膝コロ（Phase 1〜2）</div>
+            <div class="ex-detail">10回 × 3セット / 休憩60秒</div>
+            <div class="ex-point">膝をついた状態からスタート。腰を反らせず腹筋に力を入れたまま前へ転がす。限界まで伸ばしたら腹筋で引き戻す。</div>
+          </div>
+          <div class="ex-item">
+            <div class="ex-name">立ちコロ（Phase 3〜）</div>
+            <div class="ex-detail">5〜8回 × 3セット</div>
+            <div class="ex-point">膝コロが楽になってから挑戦。最初は膝に戻れる範囲だけ。絶対に腰を反らさない。強化期から段階的に。</div>
+          </div>
+        </div>
+        <div class="tip" style="margin-top:0;">
+          <div class="tip-lbl">POINT</div>
+          腸腰筋・腹横筋を鍛えることでランニング後半のフォーム崩れを防止。週3〜4回で十分。
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-lbl">RESISTANCE TUBE</span><span class="tag tag-b">VRTXチューブ 0番</span></div>
+        <div class="ex-grid">
+          <div class="ex-item">
+            <div class="ex-name">フェイスプル</div>
+            <div class="ex-detail">15回 × 3セット / 肩甲骨</div>
+            <div class="ex-point">チューブを目の高さで固定。顔に向かって引く。肩甲骨を寄せることを意識。僧帽筋・菱形筋。</div>
+          </div>
+          <div class="ex-item">
+            <div class="ex-name">バンドロウ</div>
+            <div class="ex-detail">12回 × 3セット / 広背筋</div>
+            <div class="ex-point">足でループを踏み、上体を前傾。両手で引き上げる。広背筋と肩甲骨周り全体を鍛える。</div>
+          </div>
+          <div class="ex-item">
+            <div class="ex-name">ハムストリングスストレッチ</div>
+            <div class="ex-detail">左右 各45〜60秒 × 2セット</div>
+            <div class="ex-point">仰向けで足にループをかけ脚を上に引っ張る。膝を伸ばしたまま限界まで。裏もも硬い人に最適。</div>
+          </div>
+          <div class="ex-item">
+            <div class="ex-name">胸椎ストレッチ</div>
+            <div class="ex-detail">左右 各30秒 × 2セット</div>
+            <div class="ex-point">チューブを背中に当て両腕で持つ。ゆっくり左右にひねって胸椎の可動域を広げる。猫背改善。</div>
+          </div>
+        </div>
+        <div class="tip" style="margin-top:0;">
+          <div class="tip-lbl">順番のポイント</div>
+          マッサージガンでほぐしてから → チューブストレッチの順番が効果的。
+        </div>
+      </div>
+
+      <div class="card col-span-2">
+        <div class="card-head"><span class="card-lbl">WEEKLY SCHEDULE</span><span class="tag tag-o">週間スケジュール</span></div>
+        <table class="plan-table">
+          <tr><th>曜日</th><th>メニュー</th><th>内容</th><th>時間</th></tr>
+          <tr><td class="plan-day-cell">火</td><td>ラン後</td><td>チューブストレッチ（ハムストリングス・胸椎）</td><td class="plan-detail-cell">10分</td></tr>
+          <tr><td class="plan-day-cell">水</td><td>筋トレ日</td><td>アブローラー + フェイスプル + バンドロウ</td><td class="plan-detail-cell">20分</td></tr>
+          <tr><td class="plan-day-cell">木</td><td>ラン後</td><td>チューブストレッチ（ハムストリングス・胸椎）</td><td class="plan-detail-cell">10分</td></tr>
+          <tr><td class="plan-day-cell">金</td><td>筋トレ日</td><td>アブローラー + フェイスプル + バンドロウ</td><td class="plan-detail-cell">20分</td></tr>
+          <tr><td class="plan-day-cell">土</td><td>ラン後</td><td>チューブストレッチ（ロング走後は念入りに）</td><td class="plan-detail-cell">15分</td></tr>
+          <tr><td class="plan-day-cell">日</td><td>休養</td><td>軽いストレッチのみ or 完全オフ</td><td class="plan-detail-cell">—</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── NUTRITION PAGE ── -->
+  <div class="page" id="page-nutrition">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><span class="card-lbl">DAILY CHECKLIST</span><span class="tag tag-g">今日の栄養</span></div>
+        <div class="sec-lbl">プロテイン</div>
+        <div class="checklist">
+          <div class="ci" id="n1" onclick="toggleCheck('n1')"><div class="cb"><svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0a0014" stroke-width="2" stroke-linecap="round"><polyline points="1.5 5 4 7.5 8.5 2"/></svg></div><div class="ci-body"><div class="ci-lbl">朝のプロテイン（ホエイ）</div><div class="ci-sub">20〜25g / 朝食と一緒に</div></div></div>
+          <div class="ci" id="n2" onclick="toggleCheck('n2')"><div class="cb"><svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0a0014" stroke-width="2" stroke-linecap="round"><polyline points="1.5 5 4 7.5 8.5 2"/></svg></div><div class="ci-body"><div class="ci-lbl">練習後プロテイン（ホエイ）</div><div class="ci-sub">20〜25g / 30分以内に</div></div></div>
+        </div>
+        <div class="sec-lbl">食事チェック</div>
+        <div class="checklist">
+          <div class="ci" id="n3" onclick="toggleCheck('n3')"><div class="cb"><svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0a0014" stroke-width="2" stroke-linecap="round"><polyline points="1.5 5 4 7.5 8.5 2"/></svg></div><div class="ci-body"><div class="ci-lbl">タンパク質多めの食事</div><div class="ci-sub">鶏肉・卵・納豆・豆腐など</div></div></div>
+          <div class="ci" id="n4" onclick="toggleCheck('n4')"><div class="cb"><svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0a0014" stroke-width="2" stroke-linecap="round"><polyline points="1.5 5 4 7.5 8.5 2"/></svg></div><div class="ci-body"><div class="ci-lbl">炭水化物をしっかり摂った</div><div class="ci-sub">ごはん・バナナ・おにぎりなど</div></div></div>
+          <div class="ci" id="n5" onclick="toggleCheck('n5')"><div class="cb"><svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0a0014" stroke-width="2" stroke-linecap="round"><polyline points="1.5 5 4 7.5 8.5 2"/></svg></div><div class="ci-body"><div class="ci-lbl">水分補給（1.5L以上）</div><div class="ci-sub">運動日は特に意識</div></div></div>
+          <div class="ci" id="n6" onclick="toggleCheck('n6')"><div class="cb"><svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0a0014" stroke-width="2" stroke-linecap="round"><polyline points="1.5 5 4 7.5 8.5 2"/></svg></div><div class="ci-body"><div class="ci-lbl">23時就寝</div><div class="ci-sub">7時間睡眠を確保</div></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-lbl">NUTRITION GUIDE</span><span class="tag tag-b">栄養ガイド</span></div>
+        <table class="plan-table">
+          <tr><th>優先度</th><th>栄養素</th><th>目安 / 摂り方</th></tr>
+          <tr><td style="color:var(--accent);font-weight:700;">★★</td><td>タンパク質</td><td>体重×1.6〜2.0g / 日（約80〜100g）</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700;">★★</td><td>炭水化物</td><td>ランニング前後に意識して補給</td></tr>
+          <tr><td style="color:var(--accent);">★</td><td>鉄分</td><td>疲れが抜けない場合はサプリ検討</td></tr>
+          <tr><td style="color:var(--accent);">★</td><td>マグネシウム</td><td>こむら返り予防 / バナナ・ナッツ</td></tr>
+          <tr><td style="color:var(--muted);">△</td><td>BCAA</td><td>Phase3〜 / 20km超のロング走前後</td></tr>
+          <tr><td style="color:var(--muted);">△</td><td>ビタミンD</td><td>疲労骨折予防 / Phase3〜</td></tr>
+        </table>
+      </div>
+
+      <div class="card col-span-2">
+        <div class="card-head"><span class="card-lbl">DAILY TIMETABLE</span><span class="tag tag-o">平日タイムテーブル</span></div>
+        <table class="plan-table">
+          <tr><th>時間</th><th>行動</th><th>ポイント</th></tr>
+          <tr><td class="plan-day-cell">6:00</td><td>起床</td><td>まず水を1杯。日光を浴びて体内時計をリセット</td></tr>
+          <tr><td class="plan-day-cell">6:00〜</td><td>朝食</td><td>おにぎり・バナナ・ヨーグルト / タンパク質と炭水化物を意識</td></tr>
+          <tr><td class="plan-day-cell">19:00〜</td><td>ランニング</td><td>20:00までに終えること（就寝の質を守るため）</td></tr>
+          <tr><td class="plan-day-cell">20:00〜</td><td>入浴</td><td>38〜40℃のぬるめ / 10〜15分 / 就寝90分前が理想</td></tr>
+          <tr><td class="plan-day-cell">20:30〜</td><td>夕食</td><td>ラン後30分以内にプロテイン補給 / タンパク質＋野菜中心</td></tr>
+          <tr><td class="plan-day-cell">22:00</td><td>スマホオフ</td><td>ブルーライトはメラトニンを抑制</td></tr>
+          <tr><td class="plan-day-cell">23:00</td><td>就寝</td><td>7時間睡眠を毎日固定</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── AI PAGE ── -->
+  <div class="page" id="page-ai">
+    <div class="ai-layout">
+      <div class="chat-area">
+        <div class="card-head">
+          <span class="card-lbl">AI CONCIERGE</span>
+          <span class="tag tag-b">光橋さん専属</span>
+        </div>
+        <div class="chat-messages" id="ai-chat-area">
+          <div class="chat-bubble chat-ai">こんにちは！コンシェルジュです。調子が悪い・脚が痛い・メニューを変えたいなど、何でも気軽に相談してください。トレーニング・栄養・リカバリーもOKです。</div>
+        </div>
+        <div class="chat-input-row">
+          <input class="chat-input" id="ai-input" placeholder="今日の調子を教えてください..."/>
+          <button class="chat-send" onclick="sendAI()">送信</button>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card">
+          <div class="card-head"><span class="card-lbl">よく使う相談</span></div>
+          <div style="padding:12px 14px;display:flex;flex-direction:column;gap:6px;">
+            <div class="km-btn" style="text-align:left;cursor:pointer;" onclick="setPrompt('脚が重くてだるいです。今日のメニューはどうすれば？')">脚が重い / だるい</div>
+            <div class="km-btn" style="text-align:left;cursor:pointer;" onclick="setPrompt('膝が少し痛いです。走っても大丈夫ですか？')">膝が痛い</div>
+            <div class="km-btn" style="text-align:left;cursor:pointer;" onclick="setPrompt('今日の練習後のプロテインとストレッチのベストな順番を教えて')">練習後のケアを教えて</div>
+            <div class="km-btn" style="text-align:left;cursor:pointer;" onclick="setPrompt('アブローラーが上手くできません。コツを教えてください')">アブローラーのコツ</div>
+            <div class="km-btn" style="text-align:left;cursor:pointer;" onclick="setPrompt('仕事が忙しくて今週は練習できていません。どうすれば？')">忙しくて練習できない</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-lbl">今日のステータス</span></div>
+          <div style="padding:14px 16px;display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">走行距離</span><span id="ai-km-status" style="font-family:'DM Mono',monospace;">0.0 km</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">フェーズ</span><span id="ai-phase-status" style="font-family:'DM Mono',monospace;">Phase 1</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">レースまで</span><span id="ai-days-status" style="font-family:'DM Mono',monospace;">— 日</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="edit-modal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">走行距離を編集</div>
+    <div class="modal-sub" id="modal-sub">—</div>
+    <div class="modal-input-row">
+      <input class="modal-input" id="modal-input" type="number" placeholder="0.0" step="0.1" min="0" max="50"/>
+      <button class="modal-save" onclick="saveModalKm()">保存</button>
+    </div>
+    <button class="modal-cancel" onclick="closeModal()">キャンセル</button>
+  </div>
+</div>
+
+<script>
+const RACE_DATE = new Date('2027-02-14');
+const START_DATE = new Date('2026-04-01');
+const DAYS_JP = ['日','月','火','水','木','金','土'];
+
+function getPhase(d) {
+  const y=d.getFullYear(),m=d.getMonth()+1;
+  if(y===2026&&m>=4&&m<=6)return 1;
+  if(y===2026&&m>=7&&m<=9)return 2;
+  if(y===2026&&m>=10&&m<=12)return 3;
+  if(y===2027&&m<=2)return 4;
+  return 1;
+}
+function getWeek(d) { return Math.max(1,Math.floor((d-START_DATE)/(7*86400000))+1); }
+
+function todayKey(id) {
+  const n=new Date();
+  return `stride_${n.getFullYear()}_${n.getMonth()}_${n.getDate()}_${id}`;
+}
+function kmKey(d) { return `stride_km_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`; }
+
+function init() {
+  updateTime();
+  setInterval(updateTime, 30000);
+  renderHeader();
+  renderSession();
+  loadKm();
+  renderBars();
+  loadNutritionChecks();
+  updateAISidebar();
+}
+
+function updateTime() {
+  const n=new Date();
+  const t=`${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;
+  document.getElementById('tb-time').textContent=t;
+}
+
+function renderHeader() {
+  const n=new Date();
+  const phase=getPhase(n);
+  const week=getWeek(n);
+  const phaseNames=['','再構築期','基礎構築期','強化期','テーパリング期'];
+  const days=Math.ceil((RACE_DATE-n)/86400000);
+
+  const m=n.getMonth()+1,d=n.getDate();
+  document.getElementById('tb-date').textContent=`${DAYS_JP[n.getDay()]}曜日 — ${m}月${d}日`;
+  document.getElementById('tb-badge').textContent=`PHASE ${phase} / ${phaseNames[phase]}`;
+  document.getElementById('stat-days').textContent=Math.max(0,days);
+  document.getElementById('sb-phase').textContent=`Phase ${phase} — ${phaseNames[phase]}`;
+  document.getElementById('sb-weeks').textContent=`Week ${week} / 44`;
+  document.getElementById('sb-pbar').style.width=`${Math.min(100,week/44*100)}%`;
+  document.getElementById('ai-phase-status').textContent=`Phase ${phase}`;
+  document.getElementById('ai-days-status').textContent=`${Math.max(0,days)} 日`;
+}
+
+function getTodaySession(date) {
+  const dow=date.getDay(),phase=getPhase(date);
+  if(phase===1){
+    if(dow===2)return{type:'イージーラン',tag:'tag-g',title:'イージーラン',meta:[{i:'clock',t:'45〜60分'},{i:'pace',t:'6\'00〜6\'30/km'},{i:'dist',t:'6〜8km'}],items:[{id:'r1',l:'ウォームアップ（5分ウォーク）',s:''},{id:'r2',l:'イージーラン 6〜8km',s:'会話できるペース厳守'},{id:'r3',l:'クールダウン（5分ウォーク）',s:''},{id:'r4',l:'ハムストリングスストレッチ',s:'チューブ / 左右45秒'},{id:'r5',l:'アブローラー 膝コロ × 10回 × 3セット',s:''}],note:'最初の2〜3ヶ月は飛ばさないことが最重要。'};
+    if(dow===4)return{type:'イージーラン',tag:'tag-g',title:'イージーラン',meta:[{i:'clock',t:'45〜60分'},{i:'pace',t:'6\'00〜6\'30/km'},{i:'dist',t:'6〜8km'}],items:[{id:'r1',l:'ウォームアップ（5分ウォーク）',s:''},{id:'r2',l:'イージーラン 6〜8km',s:'疲れたら6kmに短縮OK'},{id:'r3',l:'クールダウン（5分ウォーク）',s:''},{id:'r4',l:'ハムストリングスストレッチ',s:'チューブ / 左右45秒'},{id:'r5',l:'アブローラー 膝コロ × 10回 × 3セット',s:''}],note:'疲れていたら無理せず短縮。'};
+    if(dow===6)return{type:'ロング走',tag:'tag-p',title:'ロング走',meta:[{i:'clock',t:'70〜90分'},{i:'pace',t:'6\'30/km'},{i:'dist',t:'10〜14km'}],items:[{id:'r1',l:'ウォームアップ（10分ジョグ）',s:''},{id:'r2',l:'ロング走 10〜14km',s:'キロ6\'30 / 脚づくり優先'},{id:'r3',l:'クールダウン（10分ウォーク）',s:''},{id:'r4',l:'ハムストリングスストレッチ',s:'チューブ / 左右60秒'},{id:'r5',l:'胸椎ストレッチ',s:'チューブ / 左右30秒 × 2'},{id:'r6',l:'アブローラー 膝コロ × 10回 × 3セット',s:''}],note:'ロング走後は30分以内にプロテイン+炭水化物。'};
+    return{type:'休養',tag:'tag-b',title:'休養日',meta:[],items:[{id:'r1',l:'ウォークまたは完全休養',s:''},{id:'r2',l:'ハムストリングスストレッチ',s:'チューブで軽く'},{id:'r3',l:'マッサージガンでケア',s:'ふくらはぎ・太もも・肩甲骨'}],note:'休養も練習のうち。睡眠7時間以上を確保。'};
+  }
+  if(phase===2){
+    if(dow===2)return{type:'ペース走',tag:'tag-p',title:'ペース走',meta:[{i:'clock',t:'40〜50分'},{i:'pace',t:'5\'30〜5\'45/km'},{i:'dist',t:'6km'}],items:[{id:'r1',l:'ウォームアップ（10分ジョグ）',s:''},{id:'r2',l:'ペース走 6km',s:'5\'30〜5\'45/km'},{id:'r3',l:'クールダウン（5分ジョグ）',s:''},{id:'r4',l:'ハムストリングスストレッチ',s:'チューブ / 左右60秒'},{id:'r5',l:'フェイスプル × 15回 × 3セット',s:'チューブ'},{id:'r6',l:'アブローラー 膝コロ × 10回 × 3セット',s:''}],note:'夏場は早朝か夜間推奨。熱中症に注意。'};
+    if(dow===4)return{type:'インターバル',tag:'tag-r',title:'インターバル走',meta:[{i:'clock',t:'60〜70分'},{i:'pace',t:'4\'45/km'},{i:'dist',t:'1km × 4〜5本'}],items:[{id:'r1',l:'ウォームアップ（15分ジョグ）',s:''},{id:'r2',l:'1km × 4〜5本',s:'4\'45/km / 間に400mjog'},{id:'r3',l:'クールダウン（10分ジョグ）',s:''},{id:'r4',l:'ハムストリングスストレッチ',s:'チューブ / 左右60秒'},{id:'r5',l:'バンドロウ × 12回 × 3セット',s:'チューブ'},{id:'r6',l:'アブローラー 膝コロ × 10回 × 3セット',s:''}],note:'インターバルは月2回。残りの木曜はイージー8km。'};
+    if(dow===6)return{type:'ロング走',tag:'tag-p',title:'ロング走',meta:[{i:'clock',t:'90〜110分'},{i:'pace',t:'6\'00〜6\'15/km'},{i:'dist',t:'15〜18km'}],items:[{id:'r1',l:'ウォームアップ（10分ジョグ）',s:''},{id:'r2',l:'ロング走 15〜18km',s:'6\'00〜6\'15/km'},{id:'r3',l:'クールダウン（10分ウォーク）',s:''},{id:'r4',l:'ハムストリングスストレッチ',s:'チューブ / 左右60秒'},{id:'r5',l:'胸椎ストレッチ',s:'チューブ / 左右30秒 × 2'},{id:'r6',l:'アブローラー 膝コロ × 10回 × 3セット',s:''}],note:''};
+    if(dow===0)return{type:'リカバリー',tag:'tag-b',title:'リカバリーjog',meta:[{i:'clock',t:'30〜40分'},{i:'pace',t:'超ゆっくり'},{i:'dist',t:'5〜6km'}],items:[{id:'r1',l:'リカバリーjog 5〜6km',s:'鼻歌できるペースで'},{id:'r2',l:'ハムストリングスストレッチ',s:'チューブ / 左右45秒'},{id:'r3',l:'マッサージガンでケア',s:'ふくらはぎ・太もも'}],note:''};
+    return{type:'休養',tag:'tag-b',title:'休養日',meta:[],items:[{id:'r1',l:'完全休養',s:''},{id:'r2',l:'軽いストレッチ',s:'チューブで裏もも・胸椎'}],note:''};
+  }
+  if(phase===3){
+    if(dow===2)return{type:'ペース走',tag:'tag-p',title:'マラソンペース走',meta:[{i:'clock',t:'60〜70分'},{i:'pace',t:'5\'00〜5\'10/km'},{i:'dist',t:'10〜12km'}],items:[{id:'r1',l:'ウォームアップ（10分ジョグ）',s:''},{id:'r2',l:'マラソンペース走 10〜12km',s:'5\'00〜5\'10/km'},{id:'r3',l:'クールダウン（5分ジョグ）',s:''},{id:'r4',l:'ハムストリングスストレッチ',s:'チューブ / 左右60秒'},{id:'r5',l:'フェイスプル × 15回 × 3セット',s:'チューブ'},{id:'r6',l:'アブローラー 立ちコロ × 5回 × 3セット',s:''}],note:''};
+    if(dow===4)return{type:'インターバル',tag:'tag-r',title:'インターバル走',meta:[{i:'clock',t:'70〜80分'},{i:'pace',t:'4\'40/km'},{i:'dist',t:'1km × 5〜6本'}],items:[{id:'r1',l:'ウォームアップ（15分ジョグ）',s:''},{id:'r2',l:'1km × 5〜6本',s:'4\'40/km'},{id:'r3',l:'クールダウン（10分ジョグ）',s:''},{id:'r4',l:'ハムストリングスストレッチ',s:'チューブ / 左右60秒'},{id:'r5',l:'バンドロウ × 12回 × 3セット',s:'チューブ'},{id:'r6',l:'アブローラー 立ちコロ × 5回 × 3セット',s:''}],note:''};
+    if(dow===6)return{type:'ロング走',tag:'tag-p',title:'ロング走',meta:[{i:'clock',t:'120〜150分'},{i:'pace',t:'5\'45〜6\'00/km'},{i:'dist',t:'20〜25km'}],items:[{id:'r1',l:'ウォームアップ（10分ジョグ）',s:''},{id:'r2',l:'ロング走 20〜25km',s:'5\'45〜6\'00/km'},{id:'r3',l:'クールダウン（10分ウォーク）',s:''},{id:'r4',l:'ハムストリングスストレッチ',s:'チューブ / 左右90秒'},{id:'r5',l:'胸椎ストレッチ',s:'チューブ / 左右30秒 × 2'}],note:'11月頃に30km試走を1回。'};
+    if(dow===0)return{type:'リカバリー',tag:'tag-b',title:'リカバリーjog',meta:[{i:'clock',t:'40〜50分'},{i:'pace',t:'超ゆっくり'},{i:'dist',t:'6〜8km'}],items:[{id:'r1',l:'リカバリーjog 6〜8km',s:''},{id:'r2',l:'ハムストリングスストレッチ',s:'チューブ / 左右60秒'},{id:'r3',l:'マッサージガンでケア',s:''}],note:''};
+    return{type:'休養',tag:'tag-b',title:'休養日',meta:[],items:[{id:'r1',l:'完全休養',s:''},{id:'r2',l:'チューブストレッチ',s:''}],note:''};
+  }
+  return{type:'テーパー',tag:'tag-o',title:'テーパリング',meta:[],items:[{id:'r1',l:'計画通りのメニュー',s:''},{id:'r2',l:'チューブストレッチ',s:''},{id:'r3',l:'マッサージガンでケア',s:''}],note:'体が軽くなっても焦らない。'};
+}
+
+function renderSession() {
+  const s=getTodaySession(new Date());
+  const tag=document.getElementById('session-tag');
+  tag.className=`tag ${s.tag}`;tag.textContent=s.type;
+
+  const icons={clock:`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,pace:`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,dist:`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`};
+
+  let html=`<div class="session-title">${s.title}</div>`;
+  if(s.meta.length){html+=`<div class="session-meta">`;s.meta.forEach(m=>{html+=`<span class="meta">${icons[m.i]||''} ${m.t}</span>`;});html+=`</div>`;}
+  if(s.items.length){
+    html+=`<div class="sec-lbl">チェックリスト</div><div class="checklist">`;
+    s.items.forEach(it=>{
+      const done=localStorage.getItem(todayKey(it.id))==='1';
+      html+=`<div class="ci${done?' done':''}" id="${it.id}" onclick="toggleCheck('${it.id}')"><div class="cb"><svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0a0014" stroke-width="2" stroke-linecap="round"><polyline points="1.5 5 4 7.5 8.5 2"/></svg></div><div class="ci-body"><div class="ci-lbl">${it.l}</div>${it.s?`<div class="ci-sub">${it.s}</div>`:''}</div></div>`;
+    });
+    html+=`</div>`;
+    const done=s.items.filter(i=>localStorage.getItem(todayKey(i.id))==='1').length;
+    const pct=Math.round(done/s.items.length*100);
+    html+=`<div class="prog-wrap"><div class="prog-row"><span class="prog-l">COMPLETION</span><span class="prog-v">${done} / ${s.items.length}</span></div><div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div></div>`;
+  }
+  if(s.note)html+=`<div style="padding:0 18px 16px;"><div class="tip"><div class="tip-lbl">NOTE</div>${s.note}</div></div>`;
+  document.getElementById('session-content').innerHTML=html;
+}
+
+function toggleCheck(id) {
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.toggle('done');
+  localStorage.setItem(todayKey(id),el.classList.contains('done')?'1':'0');
+  renderSession();
+}
+
+function loadNutritionChecks() {
+  ['n1','n2','n3','n4','n5','n6'].forEach(id=>{
+    if(localStorage.getItem(todayKey(id))==='1') document.getElementById(id)?.classList.add('done');
+  });
+}
+
+// KM
+function loadKm() {
+  const n=new Date();
+  const km=parseFloat(localStorage.getItem(kmKey(n))||'0');
+  document.getElementById('km-display').textContent=km.toFixed(1);
+  document.getElementById('stat-km').textContent=km.toFixed(1);
+  document.getElementById('stat-km-sub').textContent=km>0?`今日の記録`:'まだ記録なし';
+  document.getElementById('ai-km-status').textContent=`${km.toFixed(1)} km`;
+  renderBars();
+}
+function addKm(v){const n=new Date();const cur=parseFloat(localStorage.getItem(kmKey(n))||'0');localStorage.setItem(kmKey(n),Math.round((cur+v)*10)/10);loadKm();}
+function saveKm(){const inp=document.getElementById('km-input');const v=parseFloat(inp.value);if(isNaN(v)||v<0)return;localStorage.setItem(kmKey(new Date()),v);inp.value='';loadKm();}
+function resetKm(){localStorage.setItem(kmKey(new Date()),0);loadKm();}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('km-input')?.addEventListener('keydown',e=>{if(e.key==='Enter')saveKm();});
+  document.getElementById('modal-input')?.addEventListener('keydown',e=>{if(e.key==='Enter')saveModalKm();});
+  document.getElementById('ai-input')?.addEventListener('keydown',e=>{if(e.key==='Enter')sendAI();});
+});
+
+function renderBars() {
+  const container=document.getElementById('bars-container');
+  if(!container)return;
+  const days=['月','火','水','木','金','土','日'];
+  const now=new Date();
+  const dow=now.getDay();
+  const monday=new Date(now);
+  monday.setDate(now.getDate()-(dow===0?6:dow-1));
+  let total=0,html='';
+  for(let i=0;i<7;i++){
+    const d=new Date(monday);d.setDate(monday.getDate()+i);
+    const km=parseFloat(localStorage.getItem(kmKey(d))||'0');
+    total+=km;
+    const isToday=d.toDateString()===now.toDateString();
+    const isPast=d<now&&!isToday;
+    const h=km>0?Math.max(10,Math.min(85,km/25*85)):(isToday?14:6);
+    const cls=isToday?'today':(km>0?'done':(isPast?'rest':''));
+    const ds=`${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+    const lbl=`${d.getMonth()+1}/${d.getDate()}`;
+    html+=`<div class="bw" onclick="openEditModal('${ds}','${lbl}',${km})"><div class="b ${cls}" style="height:${h}px"></div><div class="bl ${isToday?'tl':''}">${days[i]}</div></div>`;
+  }
+  container.innerHTML=html;
+  document.getElementById('weekly-total').innerHTML=`${total.toFixed(1)} <span>km</span>`;
+  document.getElementById('stat-weekly').textContent=total.toFixed(1);
+}
+
+// MODAL
+let _editKey=null;
+function openEditModal(ds,label,cur){
+  _editKey=`stride_km_${ds}`;
+  document.getElementById('modal-title').textContent='走行距離を編集';
+  document.getElementById('modal-sub').textContent=`${label} — 現在: ${cur.toFixed(1)} km`;
+  document.getElementById('modal-input').value=cur>0?cur:'';
+  document.getElementById('edit-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('modal-input').focus(),200);
+}
+function closeModal(e){if(e&&e.target!==document.getElementById('edit-modal'))return;document.getElementById('edit-modal').classList.remove('open');_editKey=null;}
+function saveModalKm(){if(!_editKey)return;const v=parseFloat(document.getElementById('modal-input').value);if(isNaN(v)||v<0)return;localStorage.setItem(_editKey,v);document.getElementById('edit-modal').classList.remove('open');_editKey=null;loadKm();}
+
+// PAGE SWITCH
+function switchPage(page) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(`page-${page}`).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// AI
+function setPrompt(txt){document.getElementById('ai-input').value=txt;document.getElementById('ai-input').focus();}
+
+async function sendAI() {
+  const input=document.getElementById('ai-input');
+  const msg=input.value.trim();if(!msg)return;input.value='';
+  const area=document.getElementById('ai-chat-area');
+  area.innerHTML+=`<div class="chat-bubble chat-user">${msg}</div>`;
+  area.innerHTML+=`<div class="chat-bubble chat-ai" id="typing">考え中...</div>`;
+  area.scrollTop=area.scrollHeight;
+  const n=new Date();
+  const phase=getPhase(n);
+  const phaseNames=['','再構築期','基礎構築期','強化期','テーパリング期'];
+  const session=getTodaySession(n);
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:`あなたは光橋さん専属のランニングコンシェルジュです。光橋さんのプロフィール：熊本在住30歳、陸上経験者（中〜大学）、9年ブランク後に復帰、目標：熊本城マラソン2027でサブ3:30（2027年2月14日）、体重50kg身長161cm、現在${phaseNames[phase]}（Phase ${phase}）、今日のメニュー：${session.title}、VRTXチューブ(0番)・アブローラー・マッサージガンを使用中、毎日ホエイプロテイン摂取中。共感しながら具体的なアドバイスをしてください。怪我や痛みは無理させずメニュー変更を提案。200文字以内で簡潔に。絵文字不使用。`,messages:[{role:'user',content:msg}]})});
+    const data=await res.json();
+    document.getElementById('typing').textContent=data.content?.[0]?.text||'もう一度お試しください。';
+  }catch(e){document.getElementById('typing').textContent='通信エラーが発生しました。';}
+  area.scrollTop=area.scrollHeight;
+}
+
+init();
+</script>
+</body>
+</html>
