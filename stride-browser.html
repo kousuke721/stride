@@ -423,10 +423,14 @@ body {
         <div class="stat-sub" id="stat-km-sub">まだ記録なし</div>
       </div>
       <div class="stat-card blue">
-        <div class="stat-lbl">DAYS TO RACE</div>
-        <div><span class="stat-num blue" id="stat-days">—</span></div>
-        <div class="stat-sub">熊本城マラソン 2027</div>
-      </div>
+  <div class="stat-lbl">DAYS TO RACE</div>
+  <div style="display:flex;align-items:baseline;gap:6px;">
+    <span style="font-family:'Noto Sans JP',sans-serif;font-size:22px;font-weight:700;color:var(--blue);">残り</span>
+    <span class="stat-num blue" id="stat-days">—</span>
+    <span style="font-family:'Noto Sans JP',sans-serif;font-size:22px;font-weight:700;color:var(--blue);">日</span>
+  </div>
+  <div class="stat-sub" id="stat-days-sub">熊本城マラソン 2027</div>
+</div>
       <div class="stat-card green">
         <div class="stat-lbl">WEEKLY TOTAL</div>
         <div><span class="stat-num green" id="stat-weekly">0.0</span><span class="stat-unit">km</span></div>
