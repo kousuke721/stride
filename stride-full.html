@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>STRIDE</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent: #c084fc;
+  --accent-dim: #a855f7;
+  --accent-glow: rgba(192,132,252,0.25);
+  --text: #f3e8ff;
+  --muted: rgba(220,180,255,0.45);
+  --dim: rgba(220,180,255,0.7);
+  --surface: rgba(255,255,255,0.065);
+  --surface2: rgba(255,255,255,0.035);
+  --border: rgba(180,120,255,0.16);
+  --blue: #818cf8;
+  --green: #86efac;
+  --orange: #fb923c;
+  --red: #f87171;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  background:#08000f;
+  font-family:'Noto Sans JP',sans-serif;
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:12px;
+}
+
+.phone {
+  width:100%;
+  max-width:393px;
+  min-height:852px;
+  background:linear-gradient(155deg,#2a0d5e 0%,#1a0648 20%,#0f0328 55%,#08001a 100%);
+  border-radius:38px;
+  border:1px solid rgba(192,132,252,0.18);
+  overflow:hidden;
+  box-shadow:0 24px 80px rgba(100,0,200,0.35),inset 0 1px 0 rgba(255,255,255,0.07);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+/* ── STATUS BAR ── */
+.statusbar {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:13px 22px 5px;
+  font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);
+  flex-shrink:0;
+}
+
+/* ── HEADER ── */
+.header {
+  padding:4px 20px 14px;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.header-top {
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:10px;
+}
+.logo {
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:20px;letter-spacing:.14em;
+  color:var(--accent);
+  text-shadow:0 0 18px var(--accent-glow);
+}
+.phase-pill {
+  font-family:'DM Mono',monospace;font-size:8.5px;
+  background:rgba(192,132,252,0.13);
+  color:var(--accent);
+  border:1px solid rgba(192,132,252,0.22);
+  padding:3px 10px;border-radius:20px;letter-spacing:.05em;
+}
+.header-date {
+  display:flex;justify-content:space-between;align-items:flex-end;
+}
+.date-lbl {
+  font-family:'DM Mono',monospace;font-size:9px;
+  color:var(--muted);letter-spacing:.1em;margin-bottom:1px;
+}
+.date-main {
+  font-family:'Syne',sans-serif;font-weight:700;font-size:18px;
+}
+.week-num {
+  font-family:'DM Mono',monospace;font-size:9px;
+  color:var(--muted);padding-bottom:2px;
+}
+
+/* ── TABS ── */
+.tabs {
+  display:flex;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.tab {
+  flex:1;padding:9px 4px;text-align:center;
+  font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.08em;
+  color:var(--muted);cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+.tab svg { opacity:.4;transition:opacity .2s; }
+.tab.active { color:var(--accent);border-bottom-color:var(--accent); }
+.tab.active svg { opacity:1; }
+
+/* ── PAGES ── */
+.page { display:none;flex-direction:column;flex:1;overflow:hidden; }
+.page.active { display:flex; }
+.scroll {
+  overflow-y:auto;flex:1;
+  padding:14px 16px 110px;
+  display:flex;flex-direction:column;gap:11px;
+}
+.scroll::-webkit-scrollbar{display:none;}
+
+/* ── CARDS ── */
+.card {
+  background:var(--surface);
+  border-radius:16px;border:1px solid var(--border);
+  overflow:hidden;
+}
+.card-head {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:11px 15px 9px;border-bottom:1px solid var(--border);
+}
+.card-lbl {
+  font-family:'DM Mono',monospace;font-size:8.5px;
+  letter-spacing:.12em;color:var(--muted);text-transform:uppercase;
+}
+.tag {
+  font-family:'DM Mono',monospace;font-size:8.5px;
+  padding:2px 9px;border-radius:20px;
+}
+.tag-p{background:rgba(192,132,252,.14);color:var(--accent);border:1px solid rgba(192,132,252,.22);}
+.tag-b{background:rgba(129,140,248,.14);color:var(--blue);border:1px solid rgba(129,140,248,.22);}
+.tag-g{background:rgba(134,239,172,.14);color:var(--green);border:1px solid rgba(134,239,172,.22);}
+.tag-o{background:rgba(251,146,60,.14);color:var(--orange);border:1px solid rgba(251,146,60,.22);}
+.tag-r{background:rgba(248,113,113,.14);color:var(--red);border:1px solid rgba(248,113,113,.22);}
+
+/* ── MENU INFO ── */
+.menu-title {
+  padding:12px 15px 3px;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:17px;
+}
+.menu-meta {
+  padding:2px 15px 11px;display:flex;gap:12px;flex-wrap:wrap;
+}
+.meta {
+  display:flex;align-items:center;gap:4px;
+  font-family:'DM Mono',monospace;font-size:9.5px;color:var(--dim);
+}
+
+/* ── SECTION HEADER ── */
+.sec-lbl {
+  font-family:'DM Mono',monospace;font-size:8.5px;
+  letter-spacing:.1em;color:var(--muted);text-transform:uppercase;
+  padding:10px 15px 5px;
+  display:flex;align-items:center;gap:6px;
+}
+.sec-lbl::after {
+  content:'';flex:1;height:1px;background:var(--border);
+}
+
+/* ── CHECKLIST ── */
+.checklist { padding:0 15px 13px;display:flex;flex-direction:column;gap:5px; }
+.ci {
+  display:flex;align-items:center;gap:9px;
+  padding:9px 11px;
+  background:var(--surface2);border-radius:9px;border:1px solid var(--border);
+  cursor:pointer;transition:all .18s;position:relative;overflow:hidden;
+  user-select:none;
+}
+.ci.done {
+  border-color:rgba(192,132,252,.28);
+  background:rgba(192,132,252,.05);
+}
+.ci.done::before {
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:2.5px;background:var(--accent);border-radius:2px 0 0 2px;
+}
+.cb {
+  width:17px;height:17px;border-radius:5px;
+  border:1.5px solid rgba(192,132,252,.3);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:all .18s;
+}
+.ci.done .cb { background:var(--accent);border-color:var(--accent); }
+.ci-body { flex:1;min-width:0; }
+.ci-lbl {
+  font-size:11.5px;font-weight:500;transition:color .18s;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ci.done .ci-lbl { color:var(--muted);text-decoration:line-through; }
+.ci-sub {
+  font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);
+  margin-top:1px;
+}
+.ci-tag {
+  font-family:'DM Mono',monospace;font-size:8.5px;
+  color:var(--muted);flex-shrink:0;
+}
+
+/* ── PROGRESS ── */
+.prog-wrap { padding:0 15px 14px; }
+.prog-row { display:flex;justify-content:space-between;margin-bottom:5px; }
+.prog-l { font-family:'DM Mono',monospace;font-size:9px;color:var(--muted); }
+.prog-v { font-family:'DM Mono',monospace;font-size:9px;color:var(--accent); }
+.prog-bar { height:3px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden; }
+.prog-fill {
+  height:100%;
+  background:linear-gradient(90deg,var(--accent-dim),var(--accent));
+  border-radius:3px;transition:width .5s ease;
+}
+
+/* ── COUNTDOWN ── */
+.countdown {
+  padding:15px 16px;display:flex;justify-content:space-between;align-items:center;
+  position:relative;overflow:hidden;
+}
+.countdown::before {
+  content:'';position:absolute;top:-40px;right:-30px;
+  width:120px;height:120px;
+  background:radial-gradient(circle,rgba(192,132,252,.1) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cd-lbl { font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:5px; }
+.cd-race { font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:3px; }
+.cd-sub { font-family:'DM Mono',monospace;font-size:9px;color:var(--muted); }
+.cd-num { font-family:'Bebas Neue',sans-serif;font-size:62px;color:var(--accent);line-height:1;letter-spacing:.03em;text-shadow:0 0 22px rgba(192,132,252,.4); }
+.cd-unit { font-family:'DM Mono',monospace;font-size:8px;color:var(--accent-dim);letter-spacing:.1em;text-align:right; }
+
+/* ── AI BUTTON ── */
+.ai-btn {
+  background:rgba(129,140,248,.07);
+  border:1px solid rgba(129,140,248,.18);border-radius:16px;
+  padding:13px 15px;display:flex;align-items:center;gap:11px;cursor:pointer;
+  position:relative;overflow:hidden;
+}
+.ai-btn::before {
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(129,140,248,.07) 0%,transparent 60%);
+  pointer-events:none;
+}
+.ai-ico {
+  width:36px;height:36px;background:rgba(129,140,248,.12);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  border:1px solid rgba(129,140,248,.2);
+}
+.ai-txt h3 { font-size:12px;font-weight:700;margin-bottom:2px; }
+.ai-txt p { font-size:10px;color:var(--muted);line-height:1.4; }
+
+/* ── BARS ── */
+.bars-wrap { padding:14px 15px; }
+.bars-head { display:flex;justify-content:space-between;align-items:center;margin-bottom:12px; }
+.bars-ttl { font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase; }
+.bars-num { font-family:'Syne',sans-serif;font-weight:700;font-size:15px; }
+.bars-num span { font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);font-weight:400;margin-left:2px; }
+.bars { display:flex;align-items:flex-end;gap:5px;height:72px; }
+.bw { flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;height:100%;justify-content:flex-end; }
+.b { width:100%;border-radius:3px 3px 0 0;background:rgba(255,255,255,.07); }
+.b.done { background:rgba(192,132,252,.28); }
+.b.today { background:linear-gradient(180deg,#c084fc,#7c3aed);box-shadow:0 0 8px rgba(192,132,252,.35); }
+.b.rest { background:rgba(255,255,255,.04); }
+.bl { font-family:'DM Mono',monospace;font-size:8px;color:var(--muted); }
+.bl.tl { color:var(--accent); }
+
+/* ── KM INPUT ── */
+.km-card { padding:14px 15px; }
+.km-head { display:flex;justify-content:space-between;align-items:center;margin-bottom:12px; }
+.km-lbl { font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase; }
+.km-today { font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--accent);line-height:1;letter-spacing:.03em;text-shadow:0 0 14px var(--accent-glow); }
+.km-today span { font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);font-weight:400;margin-left:2px; }
+.km-quick { display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap; }
+.km-btn {
+  flex:1;min-width:40px;
+  padding:8px 4px;text-align:center;
+  font-family:'DM Mono',monospace;font-size:11px;font-weight:500;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;cursor:pointer;color:var(--dim);
+  transition:all .15s;
+}
+.km-btn:active { background:rgba(192,132,252,.15);border-color:var(--accent);color:var(--accent); }
+.km-manual { display:flex;gap:7px;align-items:center; }
+.km-input {
+  flex:1;background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:8px 11px;
+  color:var(--text);font-family:'DM Mono',monospace;font-size:12px;
+  outline:none;transition:border-color .15s;
+}
+.km-input:focus { border-color:var(--accent); }
+.km-input::placeholder { color:var(--muted); }
+.km-save {
+  background:var(--accent-dim);border:none;border-radius:8px;
+  padding:8px 14px;color:#fff;font-family:'DM Mono',monospace;
+  font-size:11px;cursor:pointer;white-space:nowrap;
+}
+.km-reset {
+  background:transparent;border:1px solid var(--border);border-radius:8px;
+  padding:8px 10px;color:var(--muted);font-family:'DM Mono',monospace;
+  font-size:10px;cursor:pointer;
+}
+
+/* ── EDIT MODAL ── */
+.modal-overlay {
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(6px);
+  display:flex;align-items:flex-end;justify-content:center;
+  z-index:100;opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.modal-overlay.open { opacity:1;pointer-events:all; }
+.modal {
+  width:100%;max-width:393px;
+  background:linear-gradient(160deg,#2a0d5e,#12042e);
+  border:1px solid rgba(192,132,252,0.25);
+  border-radius:24px 24px 0 0;
+  padding:20px 20px 36px;
+  transform:translateY(100%);transition:transform .25s ease;
+}
+.modal-overlay.open .modal { transform:translateY(0); }
+.modal-handle { width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 18px; }
+.modal-title { font-family:'Syne',sans-serif;font-weight:700;font-size:16px;margin-bottom:4px; }
+.modal-sub { font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:18px; }
+.modal-input-row { display:flex;gap:8px;align-items:center; }
+.modal-input {
+  flex:1;background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;padding:11px 14px;
+  color:var(--text);font-family:'DM Mono',monospace;font-size:14px;
+  outline:none;transition:border-color .15s;
+}
+.modal-input:focus { border-color:var(--accent); }
+.modal-save {
+  background:var(--accent-dim);border:none;border-radius:10px;
+  padding:11px 18px;color:#fff;font-family:'DM Mono',monospace;
+  font-size:12px;cursor:pointer;
+}
+.modal-cancel {
+  width:100%;margin-top:10px;
+  background:transparent;border:1px solid var(--border);border-radius:10px;
+  padding:10px;color:var(--muted);font-family:'DM Mono',monospace;
+  font-size:11px;cursor:pointer;
+}
+
+/* ── PLAN PAGE ── */
+.plan-phase {
+  border-radius:16px;border:1px solid var(--border);
+  overflow:hidden;background:var(--surface);
+}
+.plan-phase-head {
+  padding:12px 15px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.plan-phase-name { font-family:'Syne',sans-serif;font-weight:700;font-size:14px; }
+.plan-phase-range { font-family:'DM Mono',monospace;font-size:8.5px;color:var(--muted); }
+.plan-row {
+  display:flex;align-items:center;padding:9px 15px;gap:10px;
+  border-bottom:1px solid var(--border);
+}
+.plan-row:last-child { border-bottom:none; }
+.plan-day {
+  font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);
+  width:20px;flex-shrink:0;
+}
+.plan-menu { font-size:11px;font-weight:500;flex:1; }
+.plan-detail { font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-align:right; }
+
+/* ── AI PAGE ── */
+.ai-page-wrap { padding:14px 16px 100px;display:flex;flex-direction:column;gap:10px;flex:1;overflow-y:auto; }
+.ai-page-wrap::-webkit-scrollbar{display:none;}
+.ai-chat-area { display:flex;flex-direction:column;gap:8px;min-height:200px; }
+.chat-bubble {
+  max-width:82%;padding:10px 13px;border-radius:14px;
+  font-size:12px;line-height:1.55;
+}
+.chat-ai {
+  background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.18);
+  color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;
+}
+.chat-user {
+  background:rgba(192,132,252,.15);border:1px solid rgba(192,132,252,.22);
+  color:var(--text);align-self:flex-end;border-bottom-right-radius:4px;
+}
+.ai-input-wrap {
+  position:fixed;bottom:70px;left:50%;transform:translateX(-50%);
+  width:100%;max-width:393px;padding:0 16px;
+}
+.ai-input-inner {
+  display:flex;gap:8px;
+  background:rgba(20,5,50,.9);backdrop-filter:blur(20px);
+  border:1px solid var(--border);border-radius:12px;padding:8px 10px;
+}
+.ai-input {
+  flex:1;background:transparent;border:none;outline:none;
+  color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:12px;
+}
+.ai-input::placeholder { color:var(--muted); }
+.ai-send {
+  background:var(--accent-dim);border:none;border-radius:8px;
+  padding:6px 12px;color:#fff;font-size:11px;cursor:pointer;
+  font-family:'DM Mono',monospace;
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(14,4,35,.88);backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  display:flex;padding:10px 0 22px;
+  z-index:10;
+}
+.nav-item {
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;
+}
+.nav-lbl {
+  font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);
+  letter-spacing:.05em;
+}
+.nav-item.active .nav-lbl { color:var(--accent); }
+
+/* ── REST DAY ── */
+.rest-card {
+  padding:20px 16px;text-align:center;
+}
+.rest-icon { margin-bottom:10px; }
+.rest-title { font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:6px; }
+.rest-sub { font-size:12px;color:var(--muted);line-height:1.6; }
+
+/* ── TIPS ── */
+.tip-card {
+  border-left:3px solid var(--accent);
+  padding:10px 14px;background:rgba(192,132,252,.05);
+  border-radius:0 10px 10px 0;
+  font-size:11px;line-height:1.6;color:var(--dim);
+}
+.tip-lbl { font-family:'DM Mono',monospace;font-size:8.5px;color:var(--accent);letter-spacing:.08em;margin-bottom:4px; }
+
+/* ── STRENGTH DETAIL ── */
+.exercise-item {
+  padding:9px 11px;background:var(--surface2);border-radius:9px;
+  border:1px solid var(--border);margin-bottom:5px;
+}
+.ex-name { font-size:12px;font-weight:700;margin-bottom:3px; }
+.ex-detail { font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:4px; }
+.ex-point { font-size:10px;color:var(--dim);line-height:1.5; }
+
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <!-- STATUS BAR -->
+  <div class="statusbar">
+    <span id="time-display">9:41</span>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <svg width="15" height="11" viewBox="0 0 16 11" fill="none">
+        <rect x="0" y="5" width="2.5" height="6" rx="1" fill="rgba(220,180,255,0.4)"/>
+        <rect x="4" y="3" width="2.5" height="8" rx="1" fill="rgba(220,180,255,0.5)"/>
+        <rect x="8" y="1" width="2.5" height="10" rx="1" fill="rgba(220,180,255,0.7)"/>
+        <rect x="12" y="0" width="2.5" height="11" rx="1" fill="rgba(220,180,255,0.85)"/>
+      </svg>
+      <svg width="13" height="11" viewBox="0 0 24 18" fill="none">
+        <path d="M1 6C5 2 10.5 0 12 0s7 2 11 6" stroke="rgba(220,180,255,0.45)" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M4 10c2-2 5-3.5 8-3.5s6 1.5 8 3.5" stroke="rgba(220,180,255,0.6)" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M7.5 14C9 12.5 10.5 12 12 12s3 .5 4.5 2" stroke="rgba(220,180,255,0.8)" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="12" cy="17" r="1.5" fill="rgba(220,180,255,0.9)"/>
+      </svg>
+      <svg width="25" height="12" viewBox="0 0 26 13" fill="none">
+        <rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="rgba(220,180,255,0.25)"/>
+        <rect x="2" y="2" width="15" height="9" rx="2" fill="rgba(192,132,252,0.55)"/>
+        <path d="M24 4.5v4a2 2 0 000-4z" fill="rgba(220,180,255,0.35)"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="logo">STRIDE</div>
+      <div class="phase-pill" id="phase-pill">PHASE 1 / 再構築期</div>
+    </div>
+    <div class="header-date">
+      <div>
+        <div class="date-lbl">TODAY</div>
+        <div class="date-main" id="date-main">—</div>
+      </div>
+      <div class="week-num" id="week-num">Week —</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('today')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+        <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+        <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+        <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+      </svg>
+      TODAY
+    </div>
+    <div class="tab" onclick="switchTab('plan')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      PLAN
+    </div>
+    <div class="tab" onclick="switchTab('strength')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M6 5h12M6 19h12M4 12h16M6 5v14M18 5v14"/>
+      </svg>
+      STRENGTH
+    </div>
+    <div class="tab" onclick="switchTab('ai')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 16v-4M12 8h.01"/>
+      </svg>
+      AI相談
+    </div>
+  </div>
+
+  <!-- ───────── TODAY PAGE ───────── -->
+  <div class="page active" id="page-today">
+    <div class="scroll" id="scroll-today">
+
+      <!-- Session Card -->
+      <div class="card" id="session-card">
+        <div class="card-head">
+          <span class="card-lbl">TODAY'S SESSION</span>
+          <span class="tag tag-p" id="session-type-tag">—</span>
+        </div>
+        <div id="session-content"></div>
+      </div>
+
+      <!-- KM Record -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-lbl">RUN LOG</span>
+          <span class="tag tag-p">走行距離を記録</span>
+        </div>
+        <div class="km-card">
+          <div class="km-head">
+            <div>
+              <div class="km-lbl">TODAY'S DISTANCE</div>
+              <div class="km-today"><span id="km-display">0.0</span> <span>km</span></div>
+            </div>
+            <button class="km-reset" onclick="resetKm()">リセット</button>
+          </div>
+          <div class="km-quick">
+            <div class="km-btn" onclick="addKm(6)">+6km</div>
+            <div class="km-btn" onclick="addKm(8)">+8km</div>
+            <div class="km-btn" onclick="addKm(10)">+10km</div>
+            <div class="km-btn" onclick="addKm(14)">+14km</div>
+            <div class="km-btn" onclick="addKm(18)">+18km</div>
+          </div>
+          <div class="km-manual">
+            <input class="km-input" id="km-input" type="number" placeholder="距離を入力 (km)" step="0.1" min="0" max="50"/>
+            <button class="km-save" onclick="saveKm()">記録</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nutrition Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-lbl">NUTRITION</span>
+          <span class="tag tag-g">食事管理</span>
+        </div>
+        <div class="sec-lbl">プロテイン</div>
+        <div class="checklist">
+          <div class="ci" id="n1" onclick="toggleCheck('n1')">
+            <div class="cb"><svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0a0014" stroke-width="2" stroke-linecap="round"><polyline points="1.5 5 4 7.5 8.5 2"/></svg></div>
+            <div class="ci-body">
+              <div class="ci-lbl">朝のプロテイン（ホエイ）</div>
+              <div class="ci-sub">20〜25g / 朝食と一緒に</div>
+            </div>
+          </div>
+          <div class="ci" id="n2" onclick="toggleCheck('n2')">
+            <div class="cb"><svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0a0014" stroke-width="2" stroke-linecap="round"><polyline points="1.5 5 4 7.5 8.5 2"/></svg></div>
+            <div class="ci-body">
+              <div class="ci-lbl">練習後プロテイン（ホエイ）</div>
+              <div class="ci-sub">20〜25g / 30分以内に</div>
+            </div>
+          </div>
+        </div>
+        <div class="sec-lbl">食事チェック</div>
+        <div class="checklist">
+          <div class="ci" id="n3" onclick="toggleCheck('n3')">
+            <div class="cb"><svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0a0014" stroke-width="2" stroke-linecap="round"><polyline points="1.5 5 4 7.5 8.5 2"/></svg></div>
+            <div class="ci-body">
+              <div class="ci-lbl">タンパク質多めの食事</div>
+              <div class="ci-sub">鶏肉・卵・納豆・豆腐など</div>
+            </div>
+          </div>
+          <div class="ci" id="n4" onclick="toggleCheck('n4')">
+            <div class="cb"><svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0a0014" stroke-width="2" stroke-linecap="round"><polyline points="1.5 5 4 7.5 8.5 2"/></svg></div>
+            <div class="ci-body">
+              <div class="ci-lbl">炭水化物をしっかり摂った</div>
+              <div class="ci-sub">ごはん・バナナ・おにぎりなど</div>
+            </div>
+          </div>
+          <div class="ci" id="n5" onclick="toggleCheck('n5')">
+            <div class="cb"><svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0a0014" stroke-width="2" stroke-linecap="round"><polyline points="1.5 5 4 7.5 8.5 2"/></svg></div>
+            <div class="ci-body">
+              <div class="ci-lbl">水分補給（1.5L以上）</div>
+              <div class="ci-sub">運動日は特に意識</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Graph -->
+      <div class="card">
+        <div class="bars-wrap">
+          <div class="bars-head">
+            <span class="bars-ttl">WEEKLY DISTANCE</span>
+            <span class="bars-num" id="weekly-total">0 <span>km</span></span>
+          </div>
+          <div class="bars" id="bars-container"></div>
+        </div>
+      </div>
+
+      <!-- Countdown -->
+      <div class="card">
+        <div class="countdown">
+          <div>
+            <div class="cd-lbl">RACE DAY</div>
+            <div class="cd-race">熊本城マラソン 2027</div>
+            <div class="cd-sub">目標タイム — 3:30:00</div>
+          </div>
+          <div>
+            <div class="cd-num" id="days-left">—</div>
+            <div class="cd-unit">DAYS LEFT</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ───────── PLAN PAGE ───────── -->
+  <div class="page" id="page-plan">
+    <div class="scroll">
+
+      <div class="plan-phase">
+        <div class="plan-phase-head">
+          <div>
+            <div class="plan-phase-name">Phase 1 — 再構築期</div>
+            <div class="plan-phase-range" style="margin-top:2px;">2026年4月〜6月 / 週25〜30km</div>
+          </div>
+          <span class="tag tag-g">現在</span>
+        </div>
+        <div class="plan-row"><span class="plan-day">火</span><span class="plan-menu">イージーラン</span><span class="plan-detail">6〜8km / 6'00〜6'30</span></div>
+        <div class="plan-row"><span class="plan-day">木</span><span class="plan-menu">イージーラン</span><span class="plan-detail">6〜8km / 6'00〜6'30</span></div>
+        <div class="plan-row"><span class="plan-day">土</span><span class="plan-menu">ロング走</span><span class="plan-detail">10〜14km / 6'30</span></div>
+        <div class="plan-row"><span class="plan-day">日</span><span class="plan-menu">休養</span><span class="plan-detail">ウォーク or 完全休養</span></div>
+      </div>
+
+      <div class="plan-phase">
+        <div class="plan-phase-head">
+          <div>
+            <div class="plan-phase-name">Phase 2 — 基礎構築期</div>
+            <div class="plan-phase-range" style="margin-top:2px;">2026年7月〜9月 / 週35〜45km</div>
+          </div>
+          <span class="tag tag-b">次フェーズ</span>
+        </div>
+        <div class="plan-row"><span class="plan-day">火</span><span class="plan-menu">ペース走</span><span class="plan-detail">6km / 5'30〜5'45</span></div>
+        <div class="plan-row"><span class="plan-day">木</span><span class="plan-menu">インターバル / イージー</span><span class="plan-detail">1km×4〜5本 / 8km</span></div>
+        <div class="plan-row"><span class="plan-day">土</span><span class="plan-menu">ロング走</span><span class="plan-detail">15〜18km / 6'00〜6'15</span></div>
+        <div class="plan-row"><span class="plan-day">日</span><span class="plan-menu">リカバリーjog</span><span class="plan-detail">5〜6km / 超ゆっくり</span></div>
+      </div>
+
+      <div class="plan-phase">
+        <div class="plan-phase-head">
+          <div>
+            <div class="plan-phase-name">Phase 3 — 強化期</div>
+            <div class="plan-phase-range" style="margin-top:2px;">2026年10月〜12月 / 週50〜60km</div>
+          </div>
+        </div>
+        <div class="plan-row"><span class="plan-day">火</span><span class="plan-menu">マラソンペース走</span><span class="plan-detail">10〜12km / 5'00〜5'10</span></div>
+        <div class="plan-row"><span class="plan-day">木</span><span class="plan-menu">インターバル</span><span class="plan-detail">1km×5〜6本 / 4'40</span></div>
+        <div class="plan-row"><span class="plan-day">土</span><span class="plan-menu">ロング走</span><span class="plan-detail">20〜25km / 5'45〜6'00</span></div>
+        <div class="plan-row"><span class="plan-day">日</span><span class="plan-menu">リカバリーjog</span><span class="plan-detail">6〜8km</span></div>
+      </div>
+
+      <div class="plan-phase">
+        <div class="plan-phase-head">
+          <div>
+            <div class="plan-phase-name">Phase 4 — テーパリング期</div>
+            <div class="plan-phase-range" style="margin-top:2px;">2027年1月〜2月</div>
+          </div>
+        </div>
+        <div class="plan-row"><span class="plan-day">1-2週</span><span class="plan-menu">距離80%に削減</span><span class="plan-detail">ペース走・ロング維持</span></div>
+        <div class="plan-row"><span class="plan-day">3-4週</span><span class="plan-menu">距離60%に削減</span><span class="plan-detail">質の高いペース走のみ</span></div>
+        <div class="plan-row"><span class="plan-day">5週</span><span class="plan-menu">ショートジョグのみ</span><span class="plan-detail">3〜5km × 3回</span></div>
+        <div class="plan-row"><span class="plan-day">前日</span><span class="plan-menu">15分軽くjog・ストレッチ</span><span class="plan-detail">早めに就寝！</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-lbl">MILESTONES</span>
+          <span class="tag tag-o">中間目標</span>
+        </div>
+        <div class="plan-row">
+          <span class="plan-day" style="width:40px;font-size:9px;">6月</span>
+          <span class="plan-menu">10kmレース</span>
+          <span class="plan-detail">目標 50分切り</span>
+        </div>
+        <div class="plan-row">
+          <span class="plan-day" style="width:40px;font-size:9px;">10月</span>
+          <span class="plan-menu">ハーフマラソン</span>
+          <span class="plan-detail">目標 1:45切り</span>
+        </div>
+        <div class="plan-row">
+          <span class="plan-day" style="width:40px;font-size:9px;">11月</span>
+          <span class="plan-menu">30km試走</span>
+          <span class="plan-detail">5'45〜6'00/km</span>
+        </div>
+        <div class="plan-row">
+          <span class="plan-day" style="width:40px;font-size:9px;">2/14</span>
+          <span class="plan-menu" style="font-weight:700;color:var(--accent);">熊本城マラソン</span>
+          <span class="plan-detail" style="color:var(--accent);">目標 3:30:00</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ───────── STRENGTH PAGE ───────── -->
+  <div class="page" id="page-strength">
+    <div class="scroll">
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-lbl">AB ROLLER</span>
+          <span class="tag tag-p">アブローラー</span>
+        </div>
+        <div class="sec-lbl">Phase 1〜2（現在）</div>
+        <div style="padding:0 15px 14px;display:flex;flex-direction:column;gap:6px;">
+          <div class="exercise-item">
+            <div class="ex-name">膝コロ</div>
+            <div class="ex-detail">10回 × 3セット / セット間60秒休憩</div>
+            <div class="ex-point">膝をついた状態からスタート。腰を反らせず、腹筋に力を入れたまま前へ転がす。限界まで伸ばしたら、腹筋で引き戻す。</div>
+          </div>
+        </div>
+        <div class="sec-lbl">Phase 3〜（強化期から）</div>
+        <div style="padding:0 15px 14px;display:flex;flex-direction:column;gap:6px;">
+          <div class="exercise-item">
+            <div class="ex-name">立ちコロ（部分）</div>
+            <div class="ex-detail">5〜8回 × 3セット</div>
+            <div class="ex-point">膝コロが楽になってから挑戦。最初は膝に戻れる範囲だけ。絶対に腰を反らさない。</div>
+          </div>
+        </div>
+        <div style="padding:0 15px 14px;">
+          <div class="tip-card">
+            <div class="tip-lbl">POINT</div>
+            腸腰筋・腹横筋を鍛えることでランニング後半のフォーム崩れを防止。毎日やらず週3〜4回で十分。
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-lbl">RESISTANCE TUBE</span>
+          <span class="tag tag-b">VRTXチューブ 0番</span>
+        </div>
+        <div class="sec-lbl">肩甲骨・背中</div>
+        <div style="padding:0 15px 4px;display:flex;flex-direction:column;gap:6px;">
+          <div class="exercise-item">
+            <div class="ex-name">フェイスプル</div>
+            <div class="ex-detail">15回 × 3セット</div>
+            <div class="ex-point">チューブを目の高さで固定。両手でループに引っ掛け顔に向かって引く。肩甲骨を寄せることを意識。僧帽筋・菱形筋に効く。</div>
+          </div>
+          <div class="exercise-item">
+            <div class="ex-name">バンドロウ</div>
+            <div class="ex-detail">12回 × 3セット</div>
+            <div class="ex-point">足でループを踏み、上体を少し前傾。両手で引き上げる動作。広背筋と肩甲骨周り全体を鍛える。</div>
+          </div>
+        </div>
+        <div class="sec-lbl">ストレッチ（走後必須）</div>
+        <div style="padding:0 15px 14px;display:flex;flex-direction:column;gap:6px;">
+          <div class="exercise-item">
+            <div class="ex-name">ハムストリングスストレッチ</div>
+            <div class="ex-detail">左右 各30〜45秒 × 2セット</div>
+            <div class="ex-point">仰向けで足にループをかけ、脚を上に引っ張る。膝を伸ばしたまま限界まで引き上げてキープ。裏もも硬い人に超効果的。</div>
+          </div>
+          <div class="exercise-item">
+            <div class="ex-name">胸椎ストレッチ補助</div>
+            <div class="ex-detail">左右 各20〜30秒 × 2セット</div>
+            <div class="ex-point">チューブを背中に当て、両腕を前で持つ。ゆっくり左右にひねって胸椎の可動域を広げる。猫背改善に。</div>
+          </div>
+        </div>
+        <div style="padding:0 15px 14px;">
+          <div class="tip-card">
+            <div class="tip-lbl">順番のポイント</div>
+            マッサージガンで筋肉をほぐしてから → チューブストレッチの順番が効果的。可動域が広がりやすい。
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-lbl">RECOMMENDED SCHEDULE</span>
+          <span class="tag tag-o">週間スケジュール</span>
+        </div>
+        <div class="plan-row"><span class="plan-day">火</span><span class="plan-menu">ラン後 — チューブストレッチ</span><span class="plan-detail">10分</span></div>
+        <div class="plan-row"><span class="plan-day">水</span><span class="plan-menu">アブローラー + チューブ筋トレ</span><span class="plan-detail">20分</span></div>
+        <div class="plan-row"><span class="plan-day">木</span><span class="plan-menu">ラン後 — チューブストレッチ</span><span class="plan-detail">10分</span></div>
+        <div class="plan-row"><span class="plan-day">金</span><span class="plan-menu">アブローラー + チューブ筋トレ</span><span class="plan-detail">20分</span></div>
+        <div class="plan-row"><span class="plan-day">土</span><span class="plan-menu">ラン後 — チューブストレッチ</span><span class="plan-detail">10分</span></div>
+        <div class="plan-row"><span class="plan-day">日</span><span class="plan-menu">休養 or 軽いストレッチのみ</span><span class="plan-detail">—</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ───────── AI PAGE ───────── -->
+  <div class="page" id="page-ai">
+    <div class="ai-page-wrap" id="ai-chat-wrap">
+      <div class="ai-chat-area" id="ai-chat-area">
+        <div class="chat-bubble chat-ai">
+          こんにちは！コンシェルジュです。<br>
+          調子が悪い・脚が痛い・メニューを変えたいなど、何でも気軽に相談してください。トレーニング・栄養・リカバリーもOKです！
+        </div>
+      </div>
+    </div>
+    <div class="ai-input-wrap">
+      <div class="ai-input-inner">
+        <input class="ai-input" id="ai-input" placeholder="今日の調子を教えてください..." />
+        <button class="ai-send" onclick="sendAI()">送信</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT MODAL -->
+  <div class="modal-overlay" id="edit-modal" onclick="closeModal(event)">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <div class="modal-title" id="modal-title">距離を編集</div>
+      <div class="modal-sub" id="modal-sub">—</div>
+      <div class="modal-input-row">
+        <input class="modal-input" id="modal-input" type="number" placeholder="0.0" step="0.1" min="0" max="50"/>
+        <button class="modal-save" onclick="saveModalKm()">保存</button>
+      </div>
+      <button class="modal-cancel" onclick="closeModal()">キャンセル</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-item active" id="nav-today" onclick="switchTab('today')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round">
+        <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+        <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+      </svg>
+      <span class="nav-lbl">TODAY</span>
+    </div>
+    <div class="nav-item" id="nav-plan" onclick="switchTab('plan')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(220,180,255,0.4)" stroke-width="1.8" stroke-linecap="round">
+        <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      <span class="nav-lbl">PLAN</span>
+    </div>
+    <div class="nav-item" id="nav-strength" onclick="switchTab('strength')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(220,180,255,0.4)" stroke-width="1.8" stroke-linecap="round">
+        <path d="M6 5h12M6 19h12M4 12h16M6 5v14M18 5v14"/>
+      </svg>
+      <span class="nav-lbl">STRENGTH</span>
+    </div>
+    <div class="nav-item" id="nav-ai" onclick="switchTab('ai')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(220,180,255,0.4)" stroke-width="1.8" stroke-linecap="round">
+        <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+      </svg>
+      <span class="nav-lbl">AI相談</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── DATE / PHASE LOGIC ──
+const RACE_DATE = new Date('2027-02-14');
+const START_DATE = new Date('2026-04-01');
+
+const DAYS_JP = ['日','月','火','水','木','金','土'];
+const DAYS_EN = ['SU','MO','TU','WE','TH','FR','SA'];
+
+function getPhase(date) {
+  const y = date.getFullYear(), m = date.getMonth()+1;
+  if (y === 2026 && m >= 4 && m <= 6) return 1;
+  if (y === 2026 && m >= 7 && m <= 9) return 2;
+  if (y === 2026 && m >= 10 && m <= 12) return 3;
+  if (y === 2027 && m <= 2) return 4;
+  return 1;
+}
+
+function getWeekNum(date) {
+  const diff = Math.floor((date - START_DATE) / (7*24*60*60*1000));
+  return Math.max(1, diff + 1);
+}
+
+function getTodaySession(date) {
+  const dow = date.getDay(); // 0=Sun
+  const phase = getPhase(date);
+
+  // Special race day
+  if (date.toDateString() === RACE_DATE.toDateString()) {
+    return { type:'RACE', tag:'tag-r', title:'熊本城マラソン 2027', items:[], meta:[], note:'今日が本番！サブ3:30を目指して全力で！' };
+  }
+
+  if (phase === 1) {
+    if (dow === 2) return { type:'イージーラン', tag:'tag-g', title:'イージーラン', meta:[{i:'clock',t:'45〜60分'},{i:'pace',t:'6\'00〜6\'30/km'},{i:'dist',t:'6〜8km'}],
+      items:[
+        {id:'r1', label:'ウォームアップ（5分ウォーク）', sub:''},
+        {id:'r2', label:'イージーラン 6〜8km', sub:'会話できるペース厳守'},
+        {id:'r3', label:'クールダウン（5分ウォーク）', sub:''},
+        {id:'r4', label:'ハムストリングスストレッチ', sub:'チューブ使用 / 左右45秒'},
+        {id:'r5', label:'アブローラー 膝コロ × 10回 × 3セット', sub:''},
+      ], note:'最初の2〜3ヶ月は飛ばさないことが最重要。9年ブランク後の故障は長引く。'};
+    if (dow === 4) return { type:'イージーラン', tag:'tag-g', title:'イージーラン', meta:[{i:'clock',t:'45〜60分'},{i:'pace',t:'6\'00〜6\'30/km'},{i:'dist',t:'6〜8km'}],
+      items:[
+        {id:'r1', label:'ウォームアップ（5分ウォーク）', sub:''},
+        {id:'r2', label:'イージーラン 6〜8km', sub:'会話できるペース厳守'},
+        {id:'r3', label:'クールダウン（5分ウォーク）', sub:''},
+        {id:'r4', label:'ハムストリングスストレッチ', sub:'チューブ使用 / 左右45秒'},
+        {id:'r5', label:'アブローラー 膝コロ × 10回 × 3セット', sub:''},
+      ], note:'疲れていたら距離を6kmに短縮してOK。'};
+    if (dow === 6) return { type:'ロング走', tag:'tag-p', title:'ロング走', meta:[{i:'clock',t:'70〜90分'},{i:'pace',t:'6\'30/km'},{i:'dist',t:'10〜14km'}],
+      items:[
+        {id:'r1', label:'ウォームアップ（10分ジョグ）', sub:''},
+        {id:'r2', label:'ロング走 10〜14km', sub:'キロ6\'30 / 脚づくり優先'},
+        {id:'r3', label:'クールダウン（10分ウォーク）', sub:''},
+        {id:'r4', label:'ハムストリングスストレッチ', sub:'チューブ使用 / 左右60秒'},
+        {id:'r5', label:'チューブ 胸椎ストレッチ', sub:'左右30秒 × 2セット'},
+        {id:'r6', label:'アブローラー 膝コロ × 10回 × 3セット', sub:''},
+      ], note:'ロング走後は栄養補給が最重要。30分以内にプロテイン+炭水化物。'};
+    // Sun or rest
+    return { type:'休養', tag:'tag-b', title:'休養日', meta:[], items:[
+      {id:'r1', label:'ウォークまたは完全休養', sub:'疲れていれば完全オフでOK'},
+      {id:'r2', label:'ハムストリングスストレッチ', sub:'チューブで軽く / 左右30秒'},
+      {id:'r3', label:'マッサージガンでケア', sub:'ふくらはぎ・太もも・肩甲骨周り'},
+    ], note:'休養も練習のうち。睡眠7時間を確保することが走力の半分を決める。'};
+  }
+
+  if (phase === 2) {
+    if (dow === 2) return { type:'ペース走', tag:'tag-p', title:'ペース走', meta:[{i:'clock',t:'40〜50分'},{i:'pace',t:'5\'30〜5\'45/km'},{i:'dist',t:'6km'}],
+      items:[
+        {id:'r1', label:'ウォームアップ（10分ジョグ）', sub:''},
+        {id:'r2', label:'ペース走 6km', sub:'5\'30〜5\'45/km / 安定したペースを維持'},
+        {id:'r3', label:'クールダウン（5分ジョグ）', sub:''},
+        {id:'r4', label:'ハムストリングスストレッチ', sub:'チューブ使用 / 左右60秒'},
+        {id:'r5', label:'フェイスプル × 15回 × 3セット', sub:'チューブ / 肩甲骨を寄せる'},
+        {id:'r6', label:'アブローラー 膝コロ × 10回 × 3セット', sub:''},
+      ], note:'夏場は早朝か夜間推奨。熱中症に注意。'};
+    if (dow === 4) return { type:'インターバル', tag:'tag-r', title:'インターバル走', meta:[{i:'clock',t:'60〜70分'},{i:'pace',t:'4\'45/km'},{i:'dist',t:'1km × 4〜5本'}],
+      items:[
+        {id:'r1', label:'ウォームアップ（15分ジョグ）', sub:''},
+        {id:'r2', label:'1km × 4〜5本', sub:'4\'45/km / 間に400mジョグ休憩'},
+        {id:'r3', label:'クールダウン（10分ジョグ）', sub:''},
+        {id:'r4', label:'ハムストリングスストレッチ', sub:'チューブ使用 / 左右60秒'},
+        {id:'r5', label:'バンドロウ × 12回 × 3セット', sub:'チューブ / 広背筋'},
+        {id:'r6', label:'アブローラー 膝コロ × 10回 × 3セット', sub:''},
+      ], note:'インターバルは月2回のみ。残りの木曜はイージー8km。'};
+    if (dow === 6) return { type:'ロング走', tag:'tag-p', title:'ロング走', meta:[{i:'clock',t:'90〜110分'},{i:'pace',t:'6\'00〜6\'15/km'},{i:'dist',t:'15〜18km'}],
+      items:[
+        {id:'r1', label:'ウォームアップ（10分ジョグ）', sub:''},
+        {id:'r2', label:'ロング走 15〜18km', sub:'6\'00〜6\'15/km'},
+        {id:'r3', label:'クールダウン（10分ウォーク）', sub:''},
+        {id:'r4', label:'ハムストリングスストレッチ', sub:'チューブ使用 / 左右60秒'},
+        {id:'r5', label:'胸椎ストレッチ', sub:'チューブ / 左右30秒 × 2'},
+        {id:'r6', label:'アブローラー 膝コロ × 10回 × 3セット', sub:''},
+      ], note:'ロング走後30分以内にプロテイン補給。翌日のリカバリーjogも大事。'};
+    if (dow === 0) return { type:'リカバリー', tag:'tag-b', title:'リカバリーjog', meta:[{i:'clock',t:'30〜40分'},{i:'pace',t:'超ゆっくり'},{i:'dist',t:'5〜6km'}],
+      items:[
+        {id:'r1', label:'リカバリーjog 5〜6km', sub:'会話どころか鼻歌できるペース'},
+        {id:'r2', label:'ハムストリングスストレッチ', sub:'チューブ使用 / 左右45秒'},
+        {id:'r3', label:'マッサージガンでケア', sub:'ふくらはぎ・太もも'},
+      ], note:'リカバリーjogはゆっくりすぎるくらいでOK。疲労回復が目的。'};
+    return { type:'休養', tag:'tag-b', title:'休養日', meta:[], items:[
+      {id:'r1', label:'完全休養', sub:''},
+      {id:'r2', label:'軽いストレッチのみ', sub:'チューブで裏もも・胸椎をほぐす'},
+      {id:'r3', label:'マッサージガンでケア', sub:'全身をほぐす'},
+    ], note:'休養日は罪悪感を持たないこと。体は休んでいる間に強くなる。'};
+  }
+
+  if (phase === 3) {
+    if (dow === 2) return { type:'ペース走', tag:'tag-p', title:'マラソンペース走', meta:[{i:'clock',t:'60〜70分'},{i:'pace',t:'5\'00〜5\'10/km'},{i:'dist',t:'10〜12km'}],
+      items:[
+        {id:'r1', label:'ウォームアップ（10分ジョグ）', sub:''},
+        {id:'r2', label:'マラソンペース走 10〜12km', sub:'5\'00〜5\'10/km / レースペース感覚'},
+        {id:'r3', label:'クールダウン（5分ジョグ）', sub:''},
+        {id:'r4', label:'ハムストリングスストレッチ', sub:'チューブ使用 / 左右60秒'},
+        {id:'r5', label:'フェイスプル × 15回 × 3セット', sub:'チューブ'},
+        {id:'r6', label:'アブローラー 立ちコロ挑戦 × 5回 × 3セット', sub:''},
+      ], note:''};
+    if (dow === 4) return { type:'インターバル', tag:'tag-r', title:'インターバル走', meta:[{i:'clock',t:'70〜80分'},{i:'pace',t:'4\'40/km'},{i:'dist',t:'1km × 5〜6本'}],
+      items:[
+        {id:'r1', label:'ウォームアップ（15分ジョグ）', sub:''},
+        {id:'r2', label:'1km × 5〜6本', sub:'4\'40/km / インターバル400mjog'},
+        {id:'r3', label:'クールダウン（10分ジョグ）', sub:''},
+        {id:'r4', label:'ハムストリングスストレッチ', sub:'チューブ使用 / 左右60秒'},
+        {id:'r5', label:'バンドロウ × 12回 × 3セット', sub:'チューブ'},
+        {id:'r6', label:'アブローラー 立ちコロ × 5回 × 3セット', sub:''},
+      ], note:''};
+    if (dow === 6) return { type:'ロング走', tag:'tag-p', title:'ロング走', meta:[{i:'clock',t:'120〜150分'},{i:'pace',t:'5\'45〜6\'00/km'},{i:'dist',t:'20〜25km'}],
+      items:[
+        {id:'r1', label:'ウォームアップ（10分ジョグ）', sub:''},
+        {id:'r2', label:'ロング走 20〜25km', sub:'5\'45〜6\'00/km'},
+        {id:'r3', label:'クールダウン（10分ウォーク）', sub:''},
+        {id:'r4', label:'ハムストリングスストレッチ', sub:'チューブ使用 / 左右90秒'},
+        {id:'r5', label:'胸椎ストレッチ', sub:'チューブ / 左右30秒 × 2'},
+      ], note:'11月頃に30km試走を1回実施。レーシングシューズ（Adizero EVO SL Woven）もこの時期に。'};
+    if (dow === 0) return { type:'リカバリー', tag:'tag-b', title:'リカバリーjog', meta:[{i:'clock',t:'40〜50分'},{i:'pace',t:'超ゆっくり'},{i:'dist',t:'6〜8km'}],
+      items:[
+        {id:'r1', label:'リカバリーjog 6〜8km', sub:'超ゆっくり'},
+        {id:'r2', label:'ハムストリングスストレッチ', sub:'チューブ使用 / 左右60秒'},
+        {id:'r3', label:'マッサージガンでケア', sub:''},
+      ], note:''};
+    return { type:'休養', tag:'tag-b', title:'休養日', meta:[], items:[
+      {id:'r1', label:'完全休養 or 軽いウォーク', sub:''},
+      {id:'r2', label:'チューブストレッチ', sub:'裏もも・胸椎をほぐす'},
+    ], note:'強化期は疲労が溜まりやすい。休養日こそ大事。'};
+  }
+
+  // Phase 4
+  return { type:'テーパー', tag:'tag-o', title:'テーパリング期', meta:[], items:[
+    {id:'r1', label:'距離を削減して調整', sub:'計画通りのメニューで'},
+    {id:'r2', label:'チューブストレッチ', sub:'裏もも・胸椎'},
+    {id:'r3', label:'マッサージガンでケア', sub:''},
+  ], note:'テーパー期は体が軽くなっても焦らない。レース当日に合わせて調整中。'};
+}
+
+// ── RENDER TODAY ──
+function renderToday() {
+  const now = new Date();
+  const phase = getPhase(now);
+  const weekNum = getWeekNum(now);
+  const dow = now.getDay();
+
+  // Header
+  const m = now.getMonth()+1, d = now.getDate();
+  document.getElementById('date-main').textContent = `${DAYS_JP[dow]}曜日 — ${m}/${d}`;
+  document.getElementById('week-num').textContent = `Week ${weekNum}`;
+
+  const phaseNames = ['','再構築期','基礎構築期','強化期','テーパリング期'];
+  document.getElementById('phase-pill').textContent = `PHASE ${phase} / ${phaseNames[phase]}`;
+
+  // Countdown
+  const diff = Math.ceil((RACE_DATE - now) / (1000*60*60*24));
+  document.getElementById('days-left').textContent = Math.max(0, diff);
+
+  // Session
+  const session = getTodaySession(now);
+  document.getElementById('session-type-tag').className = `tag ${session.tag}`;
+  document.getElementById('session-type-tag').textContent = session.type;
+
+  let html = '';
+  if (session.type === '休養' || session.title === '休養日') {
+    html = `
+      <div class="rest-card">
+        <div class="rest-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round">
+            <path d="M12 2a10 10 0 0 0-6.88 17.28C6.93 20.56 9.37 22 12 22s5.07-1.44 6.88-3.72A10 10 0 0 0 12 2z"/>
+            <path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"/>
+          </svg>
+        </div>
+        <div class="rest-title">休養日</div>
+        <div class="rest-sub">今日は身体を休めましょう。<br>睡眠7時間以上 + 栄養補給が走力の半分を決めます。</div>
+      </div>`;
+  } else {
+    html = `<div class="menu-title">${session.title}</div>`;
+    if (session.meta.length) {
+      html += `<div class="menu-meta">`;
+      session.meta.forEach(m => {
+        const icons = {
+          clock:`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+          pace:`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+          dist:`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`,
+        };
+        html += `<span class="meta">${icons[m.i]||''} ${m.t}</span>`;
+      });
+      html += `</div>`;
+    }
+  }
+
+  if (session.items.length) {
+    html += `<div class="sec-lbl">チェックリスト</div><div class="checklist" id="run-checklist">`;
+    session.items.forEach(item => {
+      const saved = localStorage.getItem(todayKey(item.id)) === '1';
+      html += `
+        <div class="ci${saved?' done':''}" id="${item.id}" onclick="toggleCheck('${item.id}')">
+          <div class="cb"><svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0a0014" stroke-width="2" stroke-linecap="round"><polyline points="1.5 5 4 7.5 8.5 2"/></svg></div>
+          <div class="ci-body">
+            <div class="ci-lbl">${item.label}</div>
+            ${item.sub ? `<div class="ci-sub">${item.sub}</div>` : ''}
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+
+    // Progress
+    const total = session.items.length;
+    const saved = session.items.filter(i => localStorage.getItem(todayKey(i.id)) === '1').length;
+    const pct = total > 0 ? Math.round(saved/total*100) : 0;
+    html += `
+      <div class="prog-wrap">
+        <div class="prog-row"><span class="prog-l">COMPLETION</span><span class="prog-v">${saved} / ${total}</span></div>
+        <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+      </div>`;
+  }
+
+  if (session.note) {
+    html += `<div style="padding:0 15px 14px;"><div class="tip-card"><div class="tip-lbl">NOTE</div>${session.note}</div></div>`;
+  }
+
+  document.getElementById('session-content').innerHTML = html;
+
+  // Load nutrition checks
+  ['n1','n2','n3','n4','n5'].forEach(id => {
+    if (localStorage.getItem(todayKey(id)) === '1') {
+      document.getElementById(id)?.classList.add('done');
+    }
+  });
+
+  // Bars
+  renderBars(now);
+}
+
+function todayKey(id) {
+  const now = new Date();
+  return `stride_${now.getFullYear()}_${now.getMonth()}_${now.getDate()}_${id}`;
+}
+
+function toggleCheck(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('done');
+  const isDone = el.classList.contains('done');
+  localStorage.setItem(todayKey(id), isDone ? '1' : '0');
+  // Refresh progress
+  renderToday();
+}
+
+function renderBars(now) {
+  const container = document.getElementById('bars-container');
+  if (!container) return;
+  const days = ['月','火','水','木','金','土','日'];
+  const dow = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (dow === 0 ? 6 : dow - 1));
+
+  let total = 0;
+  let html = '';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    const key = `stride_km_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+    const km = parseFloat(localStorage.getItem(key) || '0');
+    total += km;
+
+    const isToday = d.toDateString() === now.toDateString();
+    const isPast = d < now && !isToday;
+    const maxH = 65;
+    const h = km > 0 ? Math.max(8, Math.min(maxH, km/20*maxH)) : (isToday ? 12 : 6);
+    const cls = isToday ? 'today' : (km > 0 ? 'done' : (isPast ? 'rest' : ''));
+    const dateStr = `${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+    const label = `${d.getMonth()+1}/${d.getDate()}`;
+
+    html += `<div class="bw" onclick="openEditModal('${dateStr}','${label}',${km})" style="cursor:pointer;">
+      <div class="b ${cls}" style="height:${h}px"></div>
+      <div class="bl ${isToday?'tl':''}">${days[i]}</div>
+    </div>`;
+  }
+  container.innerHTML = html;
+  document.getElementById('weekly-total').innerHTML = `${total.toFixed(1)} <span>km</span>`;
+}
+
+// ── EDIT MODAL ──
+let _editKey = null;
+
+function openEditModal(dateStr, label, current) {
+  _editKey = `stride_km_${dateStr}`;
+  document.getElementById('modal-title').textContent = '走行距離を編集';
+  document.getElementById('modal-sub').textContent = `${label} — 現在: ${current.toFixed(1)} km`;
+  document.getElementById('modal-input').value = current > 0 ? current : '';
+  document.getElementById('edit-modal').classList.add('open');
+  setTimeout(() => document.getElementById('modal-input').focus(), 300);
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('edit-modal')) return;
+  document.getElementById('edit-modal').classList.remove('open');
+  _editKey = null;
+}
+
+function saveModalKm() {
+  if (!_editKey) return;
+  const val = parseFloat(document.getElementById('modal-input').value);
+  if (isNaN(val) || val < 0) return;
+  localStorage.setItem(_editKey, val);
+  document.getElementById('edit-modal').classList.remove('open');
+  _editKey = null;
+  loadKm();
+  renderBars(new Date());
+}
+
+document.getElementById('modal-input')?.addEventListener('keydown', e => {
+  if (e.key === 'Enter') saveModalKm();
+});
+
+// ── KM RECORD ──
+function kmKey() {
+  const now = new Date();
+  return `stride_km_${now.getFullYear()}_${now.getMonth()}_${now.getDate()}`;
+}
+
+function loadKm() {
+  const km = parseFloat(localStorage.getItem(kmKey()) || '0');
+  const el = document.getElementById('km-display');
+  if (el) el.textContent = km.toFixed(1);
+  return km;
+}
+
+function addKm(val) {
+  const current = parseFloat(localStorage.getItem(kmKey()) || '0');
+  const newVal = Math.round((current + val) * 10) / 10;
+  localStorage.setItem(kmKey(), newVal);
+  loadKm();
+  renderBars(new Date());
+}
+
+function saveKm() {
+  const input = document.getElementById('km-input');
+  const val = parseFloat(input.value);
+  if (isNaN(val) || val < 0) return;
+  localStorage.setItem(kmKey(), val);
+  input.value = '';
+  loadKm();
+  renderBars(new Date());
+}
+
+function resetKm() {
+  localStorage.setItem(kmKey(), '0');
+  loadKm();
+  renderBars(new Date());
+}
+
+// ── TABS ──
+function switchTab(tab) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  document.getElementById(`page-${tab}`).classList.add('active');
+  document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+  document.getElementById(`nav-${tab}`)?.classList.add('active');
+
+  // Fix nav icon color
+  document.querySelectorAll('.nav-item svg').forEach(s => s.setAttribute('stroke','rgba(220,180,255,0.4)'));
+  const activeNav = document.getElementById(`nav-${tab}`);
+  if (activeNav) activeNav.querySelector('svg')?.setAttribute('stroke','var(--accent)');
+}
+
+// ── TIME ──
+function updateTime() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('time-display').textContent = `${h}:${m}`;
+}
+
+// ── AI CONCIERGE ──
+async function sendAI() {
+  const input = document.getElementById('ai-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+
+  const area = document.getElementById('ai-chat-area');
+  area.innerHTML += `<div class="chat-bubble chat-user">${msg}</div>`;
+  area.innerHTML += `<div class="chat-bubble chat-ai" id="typing">考え中...</div>`;
+  area.scrollTop = area.scrollHeight;
+
+  const now = new Date();
+  const phase = getPhase(now);
+  const phaseNames = ['','再構築期','基礎構築期','強化期','テーパリング期'];
+  const session = getTodaySession(now);
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:600,
+        system:`あなたは光橋さん専属のランニングコンシェルジュです。
+光橋さんのプロフィール：
+- 熊本在住、30歳
+- 陸上経験者（中〜大学）、9年ブランク後に復帰
+- 目標：熊本城マラソン2027でサブ3:30（2027年2月14日）
+- 体重50kg、身長161cm
+- 現在${phaseNames[phase]}（Phase ${phase}）
+- 今日のメニュー：${session.title}
+- 使用グッズ：VRTXチューブ(0番)、アブローラー、マッサージガン
+- 毎日ホエイプロテインを摂取中
+
+相談に対して、共感しながら具体的なアドバイスをしてください。
+怪我や痛みがある場合は無理をさせず、メニュー変更を提案してください。
+返答は200文字以内で簡潔に。絵文字は使わないこと。`,
+        messages:[{role:'user',content:msg}]
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || '申し訳ありません。もう一度お試しください。';
+    document.getElementById('typing').textContent = reply;
+  } catch(e) {
+    document.getElementById('typing').textContent = '通信エラーが発生しました。もう一度お試しください。';
+  }
+  area.scrollTop = area.scrollHeight;
+}
+
+document.getElementById('ai-input')?.addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendAI();
+});
+
+// ── INIT ──
+updateTime();
+setInterval(updateTime, 30000);
+renderToday();
+loadKm();
+</script>
+</body>
+</html>
