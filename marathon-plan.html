@@ -178,9 +178,18 @@ strong{font-weight:700;color:var(--ink)}
 .phaseband{display:flex;gap:2px;margin:9px 0 0 34px}
 .phaseband div{min-width:0;border-top:3px solid var(--pc);padding-top:5px;
   font-family:var(--cond);font-size:10px;font-weight:600;letter-spacing:.05em;
-  color:var(--ink-3);text-align:center;white-space:nowrap;overflow:hidden;
-  text-overflow:ellipsis}
+  color:var(--ink-3);text-align:center;display:flex;flex-direction:column;gap:1px}
+.phaseband .pb-n{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.phaseband .pb-km{font-size:11.5px;font-weight:700;color:var(--ink-2);
+  font-variant-numeric:tabular-nums;letter-spacing:0}
+.phaseband .pb-km i{font-style:normal;font-size:8.5px;font-weight:600;
+  color:var(--ink-3);margin-left:1px}
 .chart-cap{font-size:12.5px;color:var(--ink-3);margin-top:12px;line-height:1.6}
+@media (max-width:400px){
+  /* 狭い画面では帯の「km」を省く（数字が枠からはみ出すため。単位は説明文にある） */
+  .phaseband .pb-km i{display:none}
+  .phaseband .pb-km{font-size:11px}
+}
 @media (max-width:430px){
   /* 22本ぶんの数字が横並びでは入らないので縦組みにする */
   .plotarea{height:162px}
@@ -192,6 +201,8 @@ strong{font-weight:700;color:var(--ink)}
 }
 @media (max-width:560px){
   .phaseband div{font-size:9px;letter-spacing:0}
+  .phaseband .pb-km{font-size:10px}
+  .phaseband .pb-km i{font-size:7px;margin-left:0}
   .bar b{font-size:9px;margin-bottom:2px;letter-spacing:-.03em}
   .bar.peak b{font-size:10px}
 }
@@ -203,8 +214,13 @@ strong{font-weight:700;color:var(--ink)}
 .phase-hd .ph-n{font-family:var(--cond);font-size:12px;font-weight:700;letter-spacing:.14em;
   text-transform:uppercase;color:var(--pc,var(--indigo))}
 .phase-hd h3{font-size:18px;font-weight:700}
+.phase-hd .ph-km{font-family:var(--cond);font-size:15px;font-weight:700;
+  color:var(--pc,var(--indigo));margin-left:auto;font-variant-numeric:tabular-nums;
+  white-space:nowrap}
+.phase-hd .ph-km i{font-style:normal;font-size:10.5px;font-weight:600;
+  color:var(--ink-3);margin-left:1px}
 .phase-hd .ph-w{font-family:var(--cond);font-size:13px;font-weight:600;color:var(--ink-3);
-  margin-left:auto;font-variant-numeric:tabular-nums;white-space:nowrap}
+  font-variant-numeric:tabular-nums;white-space:nowrap}
 .phase-aim{margin-top:11px;font-size:13.5px;color:var(--ink-2);max-width:64ch}
 
 details.wk{border-bottom:1px solid var(--rule);background:var(--surface)}
@@ -408,7 +424,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     </div>
     <div class="xax" id="barx"></div>
     <div class="phaseband" id="phaseband"></div>
-    <p class="chart-cap"><strong>3週上げて1週落とす</strong>——各棒の上の数字がその週の走行距離（km）です。棒の色は軸下の期分けと同じで、同じ色で暗く沈んでいる棒（W4・W8・W12・W16）が回復週、一番明るい紫がピーク週。</p>
+    <p class="chart-cap"><strong>3週上げて1週落とす</strong>——各棒の上の数字がその週の走行距離（km）です。棒の色は軸下の期分けと同じで、同じ色で暗く沈んでいる棒（W4・W8・W12・W16）が回復週、一番明るい紫がピーク週。帯の中の数字は、その期の合計距離（km）です。</p>
   </div>
 
   <div id="phases"></div>
@@ -727,6 +743,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   PHASES.forEach(function(ph){
     html += '<div class="phase" style="--pc:' + ph.c + '">'
       + '<div class="phase-hd"><span class="ph-n">' + ph.n + '</span><h3>' + ph.name + '</h3>'
+      + '<span class="ph-km" data-ph="' + PHASES.indexOf(ph) + '"></span>'
       + '<span class="ph-w">' + ph.wk + '</span></div>'
       + '<p class="phase-aim">' + ph.aim + '</p>';
     ph.weeks.forEach(function(w){
@@ -755,8 +772,10 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   document.getElementById("barx").innerHTML = ALL.map(function(o,i){
     return '<div>' + ((i % 3 === 0 || i === ALL.length-1) ? o.w.n : '') + '</div>';
   }).join("");
-  document.getElementById("phaseband").innerHTML = PHASES.map(function(ph){
-    return '<div style="--pc:' + ph.bc + ';flex:' + ph.weeks.length + '">' + ph.name + '</div>';
+  document.getElementById("phaseband").innerHTML = PHASES.map(function(ph,i){
+    return '<div style="--pc:' + ph.bc + ';flex:' + ph.weeks.length + '">'
+      + '<span class="pb-n">' + ph.name + '</span>'
+      + '<b class="pb-km" data-ph="' + i + '"></b></div>';
   }).join("");
 
   /* ---------- 再計算 ---------- */
@@ -804,6 +823,16 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       [0,25,50,75,100].map(function(t){
         return '<i class="' + (t===100?'base':'') + '" style="top:' + t + '%"></i>';
       }).join("");
+
+    /* 期ごとの合計距離 */
+    PHASES.forEach(function(ph, i){
+      var s = 0;
+      ph.weeks.forEach(function(w){ s += totals[w.n]; });
+      Array.prototype.forEach.call(
+        document.querySelectorAll('[data-ph="' + i + '"]'), function(el){
+          el.innerHTML = s + '<i>km</i>';
+        });
+    });
 
     var last = ALL[ALL.length-1].w.n;
     Array.prototype.forEach.call(document.querySelectorAll(".bar"), function(el){
