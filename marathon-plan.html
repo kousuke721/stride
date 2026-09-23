@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="熊本城マラソン2027に向けた22週間のトレーニング計画。10kmタイムトライアルの結果からDaniels VDOT方式で各ペースを自動計算します。">
+<meta name="robots" content="noindex">
+<title>熊本城マラソンへの22週</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>
+/* --- standalone reset --- */
+html{color-scheme:light dark}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%}
+[hidden]{display:none!important}
+:root{
+  --paper:#F4F5F2; --surface:#FFFFFF; --surface-2:#EDEFEA;
+  --ink:#1A2230; --ink-2:#4A5568; --ink-3:#7C8797;
+  --rule:#DCE0D9; --rule-strong:#C3C9BE;
+  --indigo:#2F4A7A; --indigo-soft:#E4EAF3;
+  --rest:#8B94A3; --easy:#3F7E63; --mp:#B5831F; --thr:#BC5334; --intv:#9B3149;
+  --rest-bg:#EDEFF1; --easy-bg:#E3EFE8; --mp-bg:#F7EEDA; --thr-bg:#F8E7E0; --intv-bg:#F6E2E6;
+  --shadow:0 1px 2px rgba(26,34,48,.06), 0 8px 24px -12px rgba(26,34,48,.18);
+  --sans:"Zen Kaku Gothic New",-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+  --cond:"Barlow Condensed","Zen Kaku Gothic New",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#12181F; --surface:#1A222C; --surface-2:#222B36;
+  --ink:#E8ECEF; --ink-2:#A9B4C0; --ink-3:#77838F;
+  --rule:#2C3742; --rule-strong:#3D4956;
+  --indigo:#8FAEDC; --indigo-soft:#1E2A3C;
+  --rest:#8B94A3; --easy:#6FBF97; --mp:#E0B152; --thr:#E68A63; --intv:#E0708B;
+  --rest-bg:#242C36; --easy-bg:#1B2E26; --mp-bg:#312817; --thr-bg:#33211A; --intv-bg:#331C24;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --paper:#12181F; --surface:#1A222C; --surface-2:#222B36;
+  --ink:#E8ECEF; --ink-2:#A9B4C0; --ink-3:#77838F;
+  --rule:#2C3742; --rule-strong:#3D4956;
+  --indigo:#8FAEDC; --indigo-soft:#1E2A3C;
+  --rest:#8B94A3; --easy:#6FBF97; --mp:#E0B152; --thr:#E68A63; --intv:#E0708B;
+  --rest-bg:#242C36; --easy-bg:#1B2E26; --mp-bg:#312817; --thr-bg:#33211A; --intv-bg:#331C24;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased;
+  font-feature-settings:"palt" 1;}
+.wrap{max-width:860px;margin:0 auto;padding-inline:20px;padding-block:0 72px}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.35}
+p{margin:0}
+.num{font-family:var(--cond);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+
+/* ---- header ---- */
+header{padding-block:44px 30px;border-bottom:2px solid var(--ink)}
+.eyebrow{font-family:var(--cond);font-size:14px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--indigo);margin-bottom:12px}
+h1{font-size:clamp(30px,7vw,46px);font-weight:900;letter-spacing:-.01em}
+.sub{margin-top:14px;color:var(--ink-2);font-size:15px}
+.hdr-stats{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:22px;align-items:flex-end}
+.hstat{display:flex;flex-direction:column;gap:1px}
+.hstat b{font-family:var(--cond);font-size:34px;font-weight:700;line-height:1;
+  font-variant-numeric:tabular-nums}
+.hstat span{font-size:11px;letter-spacing:.1em;color:var(--ink-3);
+  font-family:var(--cond);font-weight:600;text-transform:uppercase}
+
+section{margin-top:52px}
+h2{font-size:21px;font-weight:700;display:flex;align-items:baseline;gap:12px;
+  padding-bottom:10px;border-bottom:1px solid var(--rule-strong)}
+h2 .n{font-family:var(--cond);font-size:14px;font-weight:700;color:var(--indigo);
+  letter-spacing:.1em}
+.lede{margin-top:18px;color:var(--ink-2);max-width:62ch}
+.lede + .lede{margin-top:12px}
+strong{font-weight:700;color:var(--ink)}
+
+/* ---- reality check ---- */
+.reality{margin-top:22px;border:1px solid var(--rule);border-left:3px solid var(--thr);
+  background:var(--surface);border-radius:3px;padding:20px 22px}
+.reality h3{font-size:15px;font-weight:700;margin-bottom:10px}
+.reality p{color:var(--ink-2);font-size:14.5px}
+.reality p + p{margin-top:10px}
+
+.gap-table{margin-top:24px;width:100%;border-collapse:collapse;font-size:14px}
+.gap-table th{text-align:left;font-family:var(--cond);font-size:12px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  padding:0 12px 8px 0;border-bottom:1px solid var(--rule-strong)}
+.gap-table td{padding:11px 12px 11px 0;border-bottom:1px solid var(--rule);
+  vertical-align:baseline}
+.gap-table td.n{font-family:var(--cond);font-size:19px;font-weight:600;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.gap-table tr.goal td{color:var(--ink)}
+.gap-table tr.now td{color:var(--ink-2)}
+.tbl-scroll{overflow-x:auto}
+
+/* ---- calculator ---- */
+.calc{margin-top:22px;background:var(--surface);border:1px solid var(--rule);
+  border-radius:4px;box-shadow:var(--shadow);overflow:hidden}
+.calc-in{padding:20px 22px;border-bottom:1px solid var(--rule);
+  display:flex;flex-wrap:wrap;gap:18px 26px;align-items:flex-end;background:var(--indigo-soft)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-family:var(--cond);font-size:12px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-2)}
+.field input{width:112px;font-family:var(--cond);font-size:28px;font-weight:700;
+  font-variant-numeric:tabular-nums;padding:4px 10px;border:1px solid var(--rule-strong);
+  border-radius:3px;background:var(--surface);color:var(--ink);text-align:center}
+.field input:focus-visible{outline:2px solid var(--indigo);outline-offset:1px}
+.pred{display:flex;flex-direction:column;gap:2px}
+.pred span{font-family:var(--cond);font-size:12px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-2)}
+.pred b{font-family:var(--cond);font-size:30px;font-weight:700;line-height:1.1;
+  font-variant-numeric:tabular-nums;color:var(--indigo)}
+.note-in{width:100%;font-size:12.5px;color:var(--ink-2);margin:0}
+
+.zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0}
+.zone{padding:16px 18px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.zone:last-child{border-right:none}
+.zone-k{display:inline-flex;align-items:center;gap:7px;font-family:var(--cond);
+  font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.dot{width:9px;height:9px;border-radius:50%;flex:none}
+.zone-v{font-family:var(--cond);font-size:25px;font-weight:700;margin-top:5px;
+  font-variant-numeric:tabular-nums;line-height:1.15}
+.zone-d{font-size:12.5px;color:var(--ink-3);margin-top:3px;line-height:1.5}
+.z-E .zone-v{font-size:19px;letter-spacing:-.01em}
+.z-E .dot{background:var(--easy)} .z-E .zone-k{color:var(--easy)}
+.hr-strip{padding:18px 20px;border-top:1px solid var(--rule);background:var(--surface-2)}
+.hr-hd{font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-2);margin-bottom:12px}
+.hr-hd span{font-weight:600;letter-spacing:.02em;text-transform:none;color:var(--ink-3)}
+.hr-rows{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);
+  border-radius:3px;overflow:hidden}
+.hr-row{display:grid;grid-template-columns:62px 76px 1fr;gap:10px;align-items:baseline;
+  padding:8px 12px;background:var(--surface);font-size:13px}
+.hr-row.on{background:var(--indigo-soft)}
+.hr-row b{font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:.05em}
+.hr-row span{font-family:var(--cond);font-size:16px;font-weight:700;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.hr-row em{font-style:normal;color:var(--ink-3);font-size:12.5px}
+.hr-note{margin-top:11px;font-size:12.5px;color:var(--ink-2);line-height:1.65}
+@media (max-width:480px){
+  .hr-row{grid-template-columns:54px 70px;row-gap:2px}
+  .hr-row em{grid-column:1/-1}
+}
+.z-M .dot{background:var(--mp)}   .z-M .zone-k{color:var(--mp)}
+.z-T .dot{background:var(--thr)}  .z-T .zone-k{color:var(--thr)}
+.z-I .dot{background:var(--intv)} .z-I .zone-k{color:var(--intv)}
+.z-R .dot{background:var(--intv)} .z-R .zone-k{color:var(--intv)}
+
+/* ---- week template ---- */
+.tmpl{margin-top:22px;border:1px solid var(--rule);border-radius:4px;overflow:hidden;
+  background:var(--surface)}
+.tmpl-row{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:center;
+  padding:12px 18px;border-bottom:1px solid var(--rule)}
+.tmpl-row:last-child{border-bottom:none}
+.tmpl-day{font-family:var(--cond);font-size:16px;font-weight:700;color:var(--ink-2);
+  letter-spacing:.04em}
+.tmpl-body{font-size:14px}
+.tmpl-body em{font-style:normal;color:var(--ink-3);font-size:12.5px;display:block;
+  margin-top:1px}
+
+/* ---- volume chart ---- */
+.chart{margin-top:24px;background:var(--surface);border:1px solid var(--rule);
+  border-radius:4px;padding:20px 18px 14px}
+.bars{display:flex;align-items:flex-end;gap:3px;height:132px}
+.bar{flex:1;min-width:0;border-radius:2px 2px 0 0;position:relative;transition:opacity .15s}
+.bar span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);
+  font-family:var(--cond);font-size:11px;font-weight:700;color:var(--ink-2);
+  margin-bottom:3px;white-space:nowrap}
+.bar-x{display:flex;gap:3px;margin-top:7px;border-top:1px solid var(--rule);padding-top:7px}
+.bar-x div{flex:1;text-align:center;font-family:var(--cond);font-size:10.5px;
+  color:var(--ink-3);font-variant-numeric:tabular-nums}
+.chart-cap{font-size:12.5px;color:var(--ink-3);margin-top:10px}
+
+/* ---- phases + weeks ---- */
+.phase{margin-top:34px}
+.phase-hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;
+  padding:0 0 11px;border-bottom:2px solid var(--pc,var(--indigo))}
+.phase-hd .ph-n{font-family:var(--cond);font-size:12px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--pc,var(--indigo))}
+.phase-hd h3{font-size:18px;font-weight:700}
+.phase-hd .ph-w{font-family:var(--cond);font-size:13px;font-weight:600;color:var(--ink-3);
+  margin-left:auto;font-variant-numeric:tabular-nums;white-space:nowrap}
+.phase-aim{margin-top:11px;font-size:13.5px;color:var(--ink-2);max-width:64ch}
+
+details.wk{border-bottom:1px solid var(--rule);background:var(--surface)}
+details.wk:first-of-type{border-top:1px solid var(--rule)}
+details.wk[open]{background:var(--surface-2)}
+.wk summary{list-style:none;cursor:pointer;display:grid;
+  grid-template-columns:38px 1fr auto;gap:12px;align-items:center;padding:13px 16px}
+.wk summary::-webkit-details-marker{display:none}
+.wk summary:focus-visible{outline:2px solid var(--indigo);outline-offset:-2px}
+.wk-n{font-family:var(--cond);font-size:20px;font-weight:700;color:var(--pc,var(--indigo));
+  font-variant-numeric:tabular-nums;line-height:1}
+.wk-mid{min-width:0}
+.wk-t{font-size:14.5px;font-weight:500;line-height:1.45}
+.wk-d{font-family:var(--cond);font-size:12.5px;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.wk-km{font-family:var(--cond);font-size:20px;font-weight:700;
+  font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1}
+.wk-km i{font-style:normal;font-size:12px;color:var(--ink-3);font-weight:600;margin-left:1px}
+.wk-body{padding:2px 16px 16px}
+.dayrow{display:grid;grid-template-columns:34px 46px 1fr;gap:10px;align-items:baseline;
+  padding:7px 0;border-top:1px dashed var(--rule)}
+.dayrow:first-child{border-top:1px solid var(--rule-strong)}
+.dayrow .d{font-family:var(--cond);font-size:14px;font-weight:700;color:var(--ink-2)}
+.chip{font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding:2px 0;border-radius:3px;text-align:center;
+  display:block;white-space:nowrap}
+.c-rest{background:var(--rest-bg);color:var(--rest)}
+.c-E{background:var(--easy-bg);color:var(--easy)}
+.c-M{background:var(--mp-bg);color:var(--mp)}
+.c-T{background:var(--thr-bg);color:var(--thr)}
+.c-I{background:var(--intv-bg);color:var(--intv)}
+.c-key{background:var(--indigo);color:var(--surface)}
+:root[data-theme="dark"] .c-key,
+:root:not([data-theme="light"]) .c-key{color:#12181F}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .c-key{color:#fff}}
+.dayrow .m{font-size:13.5px;line-height:1.6}
+.dayrow .m em{font-style:normal;color:var(--ink-3);font-size:12.5px;
+  display:block;margin-top:2px;line-height:1.55}
+.lr{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:15px;white-space:nowrap}
+.p{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;
+  white-space:nowrap;font-size:14.5px}
+.p-E{color:var(--easy)} .p-M{color:var(--mp)} .p-T{color:var(--thr)}
+.p-I{color:var(--intv)} .p-R{color:var(--intv)}
+.milestone{margin-top:10px;font-size:13px;padding:9px 12px;border-radius:3px;
+  background:var(--indigo-soft);color:var(--ink-2);border-left:3px solid var(--indigo)}
+
+/* ---- support ---- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:4px;
+  overflow:hidden;margin-top:22px}
+.card{background:var(--surface);padding:18px}
+.card h4{margin:0 0 8px;font-size:14px;font-weight:700}
+.card ul{margin:0;padding-left:17px;font-size:13.5px;color:var(--ink-2);line-height:1.7}
+.card li + li{margin-top:3px}
+
+.risk{margin-top:22px;border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.risk-row{display:grid;grid-template-columns:minmax(96px,132px) 1fr;gap:16px;
+  padding:14px 18px;background:var(--surface);border-bottom:1px solid var(--rule);
+  font-size:13.5px}
+.risk-row:last-child{border-bottom:none}
+.risk-row b{font-size:13.5px;font-weight:700}
+.risk-row p{color:var(--ink-2)}
+
+footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
+  font-size:12.5px;color:var(--ink-3)}
+@media (max-width:560px){
+  .zone{border-right:none}
+  .tmpl-row{grid-template-columns:44px 1fr;gap:10px;padding:11px 14px}
+  .dayrow{grid-template-columns:28px 42px 1fr;gap:8px}
+  .risk-row{grid-template-columns:1fr;gap:4px}
+  .bar span{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">熊本城マラソン 2027 ／ 2月21日(日)</div>
+  <h1>スタートラインまで、22週</h1>
+  <p class="sub">サブ3:15を目指す22週間のトレーニング計画　—　2026年9月 作成</p>
+  <div class="hdr-stats">
+    <div class="hstat"><b class="num">22</b><span>Weeks</span></div>
+    <div class="hstat"><b class="num">153</b><span>Days</span></div>
+    <div class="hstat"><b class="num" id="statPeak">—</b><span>Peak km / wk</span></div>
+    <div class="hstat"><b class="num" id="statTotal">—</b><span>Total km</span></div>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">01</span>現在地</h2>
+
+  <div class="reality">
+    <h3>測定完了 — 10km 50分22秒</h3>
+    <p>W1のTTで現在地を測定しました。<strong>10km 50分22秒（5'02"/km）</strong>、気温20℃。ここから換算したフルマラソン相当は<strong>3時間52分</strong>です。</p>
+    <p>ただし<strong>ラスト1kmが4'32"</strong>。6〜9kmの平均5'01"から29秒のギアチェンジができており、通常のTT（ラストは平均より5〜15秒速い程度）と比べて余力が残っていました。<strong>50:22は下限値</strong>です。ペース設定がやや楽に感じても、それは安全側の誤差として受け入れます。</p>
+    <p>サブ3:15は<strong>4'37"/km を42.195km</strong>。Riegel式で逆算すると<strong>10kmを42分23秒</strong>で走れる走力に相当します。今日の50:22との差は<strong>7分59秒</strong>。これを21週で詰める計算になります。</p>
+    <p>なお、この計画は<strong>過去に競技経験があり、ブランクを経て復帰した走者</strong>を想定して組んでいます。一度到達した水準へ戻す過程は、未経験の水準へ初めて挑む過程とは伸び方が違うため、想定もそれに合わせています。</p>
+  </div>
+
+  <div class="tbl-scroll">
+  <table class="gap-table">
+    <thead><tr><th>目標</th><th>必要ペース</th><th>相当する10kmタイム</th></tr></thead>
+    <tbody>
+      <tr class="goal"><td>サブ3:15</td><td class="n">4'37"</td><td class="n">42:23</td></tr>
+      <tr class="goal"><td>サブ3:20</td><td class="n">4'44"</td><td class="n">43:29</td></tr>
+      <tr class="goal"><td>サブ3:30</td><td class="n">4'59"</td><td class="n">45:39</td></tr>
+      <tr class="now"><td>サブ3:45</td><td class="n">5'20"</td><td class="n">48:55</td></tr>
+      <tr class="now"><td>サブ4:00</td><td class="n">5'41"</td><td class="n">52:10</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">02</span>ペース設定</h2>
+  <p class="lede">W1のTTで測定した<strong>10km 50分22秒</strong>を基準に、全ペースを算出しています。タイムを書き換えると、ページ全体のペースとロング走の距離が一斉に再計算されます。</p>
+
+  <div class="calc">
+    <div class="calc-in">
+      <div class="field">
+        <label for="tt10">10km TT</label>
+        <input id="tt10" type="text" inputmode="numeric" value="50:22" aria-describedby="ttnote">
+      </div>
+      <div class="pred"><span>予想フルタイム</span><b class="num" id="predFull">—</b></div>
+      <div class="pred"><span>目標との差</span><b class="num" id="predGap">—</b></div>
+      <p class="note-in" id="ttnote">W1のTT実測値。ラスト1kmが平均より29秒速く余力を残していたため、実力はこれより上。W12のハーフTTで再設定します。</p>
+    </div>
+    <div class="zones">
+      <div class="zone z-E"><span class="zone-k"><i class="dot"></i>E ジョグ</span>
+        <div class="zone-v num" id="zE">—</div>
+        <div class="zone-d">会話ができる楽なペース。走行距離の8割はここ</div></div>
+      <div class="zone z-M"><span class="zone-k"><i class="dot"></i>M レースペース</span>
+        <div class="zone-v num" id="zM">—</div>
+        <div class="zone-d">本番で刻むペース。W13以降のメイン</div></div>
+      <div class="zone z-T"><span class="zone-k"><i class="dot"></i>T 閾値</span>
+        <div class="zone-v num" id="zT">—</div>
+        <div class="zone-d">1時間なら維持できるきつさ。サブ3:15の鍵</div></div>
+      <div class="zone z-I"><span class="zone-k"><i class="dot"></i>I インターバル</span>
+        <div class="zone-v num" id="zI">—</div>
+        <div class="zone-d">3〜5分維持が限界の強度。VO2max向上</div></div>
+      <div class="zone z-R"><span class="zone-k"><i class="dot"></i>R 流し・レペ</span>
+        <div class="zone-v num" id="zR">—</div>
+        <div class="zone-d">200〜400m。フォームと接地の再教育</div></div>
+    </div>
+    <div class="hr-strip">
+      <div class="hr-hd">心拍ゾーン <span>LTHRを100%とした割合。LTHR＝10kmTTの平均心拍がほぼ実測値になります</span></div>
+      <div class="hr-rows">
+        <div class="hr-row"><b>Zone 1</b><span>〜80%</span><em>リカバリージョグ</em></div>
+        <div class="hr-row on"><b>Zone 2</b><span>81〜89%</span><em>Eジョグ・ロング走の大半はここ</em></div>
+        <div class="hr-row"><b>Zone 3</b><span>90〜93%</span><em>Mペース走</em></div>
+        <div class="hr-row"><b>Zone 4</b><span>94〜99%</span><em>T走</em></div>
+        <div class="hr-row"><b>Zone 5</b><span>100%〜</span><em>インターバル</em></div>
+      </div>
+      <p class="hr-note"><strong>Eジョグはペースより心拍を優先してください。</strong>上のEペースは計算値ですが、短い距離が相対的に強いタイプ（距離が伸びるとタイムの落ち方が大きい走者）の場合、この式はEペースを速めに見積もります。Zone 2の上限を超えるなら、表示より遅くても正解です。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">03</span>週の組み立て方</h2>
+  <p class="lede">平日は仕事終わりの夜に走る前提です。<strong>強度の高い練習は火曜と日曜の2本だけに絞り、他はすべてEペース</strong>にしました。平日に2回ポイント練習を入れると仕事との両立が続かず、土曜に入れると翌日のロング走の質が落ちます。</p>
+
+  <div class="tmpl">
+    <div class="tmpl-row"><div class="tmpl-day">月</div><div class="tmpl-body">完全休養＋補強20分<em>週の疲労をここで切る。走らない日を必ず作る</em></div></div>
+    <div class="tmpl-row"><div class="tmpl-day">火</div><div class="tmpl-body"><strong>ポイント練習（T走／Mペース走）</strong><em>月曜に休んだ後の一番フレッシュな日。一定ペースなので暗い道でも安全</em></div></div>
+    <div class="tmpl-row"><div class="tmpl-day">水</div><div class="tmpl-body">Eジョグ＋流し<em>火の疲れを抜きながら距離を稼ぐ</em></div></div>
+    <div class="tmpl-row"><div class="tmpl-day">木</div><div class="tmpl-body">Eジョグ<em>つなぎ。きつければ迷わず短縮</em></div></div>
+    <div class="tmpl-row"><div class="tmpl-day">金</div><div class="tmpl-body">休養 or リカバリージョグ<em>日曜のロング走に向けて脚を戻す</em></div></div>
+    <div class="tmpl-row"><div class="tmpl-day">土</div><div class="tmpl-body">Eジョグ＋流し<em>絶対に追い込まない。翌日のための日</em></div></div>
+    <div class="tmpl-row"><div class="tmpl-day">日</div><div class="tmpl-body"><strong>ロング走（W10以降は後半にMペース）</strong><em>この計画の背骨。最優先で確保する</em></div></div>
+  </div>
+
+  <div class="reality">
+    <h3>インターバルを入れていない理由</h3>
+    <p>VO2maxを上げるインターバル（1000m×5など）は、マラソンの練習の中では<strong>優先度が最も低い部類</strong>です。マラソンのタイムを決めるのは、順に「週間走行距離 → ロング走 → 閾値走 → Mペース走」で、インターバルはその後に来ます。</p>
+    <p>加えて、短い距離が相対的に強いタイプの走者は<strong>スピード側にすでに余裕があり、足りないのは有酸素側</strong>です。限られた練習枠をインターバルに使うより、Eペースの距離とロング走に回した方が、同じ時間で得られるものが大きくなります。</p>
+    <p>週2回の流し（100m×4〜6）で神経系の刺激は維持できます。インターバルが必要になるのは、マラソン後にトラック種目へ移行する段階です。</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">04</span>22週の全体像</h2>
+  <p class="lede">週間走行距離は3週上げて1週落とす。落とす週を先に決めておくのが、距離を大きく伸ばす期間に故障を避ける一番確実な方法です。</p>
+
+  <div class="reality">
+    <h3>ロング走は「距離」ではなく「時間」で指定しています</h3>
+    <p>距離で決めると、走力によって所要時間が大きく変わります。仮に32kmと指定した場合、10kmが55分の走力なら<strong>3時間39分</strong>かかる一方、45分の走力なら3時間ちょうど。同じメニューのはずが、負荷はまったく別物になります。</p>
+    <p>ロング走で故障を招くのは距離ではなく<strong>地面に足を着き続けた時間</strong>です。そこでこの計画では時間で上限を切り、距離は結果として決まる形にしました。Phase 1〜2は130分まで、Phase 3〜4は150〜160分、最長でもW18の<strong>180分で打ち切り</strong>。走力が上がれば同じ時間で距離が伸びるので、常に適正な負荷が保たれます。</p>
+    <p>上のTTタイムを変えると、各週のロング走の想定距離と週間走行距離も一緒に計算し直されます。</p>
+  </div>
+
+  <div class="chart">
+    <div class="bars" id="bars"></div>
+    <div class="bar-x" id="barx"></div>
+    <p class="chart-cap">週間走行距離（km）。ロング走が時間指定のため、TTタイムに応じて自動で変わります。色は期分け、薄い棒（W4・W8・W12・W16）が回復週。</p>
+  </div>
+
+  <div id="phases"></div>
+</section>
+
+<section>
+  <h2><span class="n">05</span>補強と故障予防</h2>
+  <p class="lede">22週で週間距離をほぼ倍まで引き上げる計画です。<strong>この伸ばし方で故障するとしたら股関節まわりが最初なので、補強は「余裕があればやる」ではなく必須メニュー</strong>として月曜と水曜に固定します。</p>
+
+  <div class="cards">
+    <div class="card"><h4>腸腰筋（最優先）</h4><ul>
+      <li>レッグレイズ 15回×3</li>
+      <li>ニーアップ（立位・左右30秒×2）</li>
+      <li>腸腰筋ストレッチ 左右60秒</li>
+      <li>走る前のスイング動作 左右10回</li>
+    </ul></div>
+    <div class="card"><h4>体幹・呼吸</h4><ul>
+      <li>プランク 60秒×3</li>
+      <li>サイドプランク 左右45秒×2</li>
+      <li>デッドバグ 10回×2</li>
+      <li>息を吐き切って肋骨を締める呼吸 10回</li>
+    </ul></div>
+    <div class="card"><h4>臀筋・ハムストリング</h4><ul>
+      <li>ヒップリフト 20回×3</li>
+      <li>片脚ヒップリフト 左右12回</li>
+      <li>ランジ 左右12回×2</li>
+      <li>カーフレイズ 20回×3</li>
+    </ul></div>
+    <div class="card"><h4>姿勢（上半身）</h4><ul>
+      <li>胸椎伸展ストレッチ 60秒</li>
+      <li>肩甲骨の寄せ 15回×2</li>
+      <li>壁に背をつけたバンザイ 10回</li>
+      <li>走行中は肩を落として肩甲骨で腕を振る</li>
+    </ul></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">06</span>止めどき・下げどき</h2>
+  <p class="lede">計画通りに進まない週が必ず出ます。<strong>そのとき何を削って何を守るかを、先に決めておきます。</strong></p>
+
+  <div class="risk">
+    <div class="risk-row"><b>時間が足りない週</b><p>削る順番は <strong>木 → 水 → 土</strong>。日曜のロング走と火曜のポイント練習だけは死守する。この2本が残れば、その週は成立している。</p></div>
+    <div class="risk-row"><b>脚に違和感</b><p>腸腰筋・膝・アキレス腱に「走り始めても消えない痛み」が出たら、その週のポイント練習を全部Eジョグに置き換える。2週続いたら走るのを止めて医療機関へ。</p></div>
+    <div class="risk-row"><b>安静時心拍が上がる</b><p>普段のベースラインに対し<strong>朝の安静時心拍が5bpm以上高い日が3日続いたら</strong>オーバーリーチ。その週を回復週として扱い、距離を6割に落とす。</p></div>
+    <div class="risk-row"><b>年末年始・行事</b><p>W15（12/28〜1/3）とW16（1/4〜1/10）は予定が読めない時期。W16をもともと回復週に置いてあるので、W15が潰れてもW16と入れ替えれば計画は崩れない。</p></div>
+    <div class="risk-row"><b>夜ランの装備</b><p>ヘッドライト・反射ベスト・反射タスキは10月以降必須。日没が早まるW5以降は、明るさを理由に練習を飛ばさないための投資として先に揃えておく。</p></div>
+  </div>
+</section>
+
+<footer>
+  ペース換算はRiegel式（距離比の1.06乗）、E/T/I/Rは10kmペースに対する係数（×1.28〜1.40 / ×1.03 / ×0.96 / ×0.90）で算出。W1のTT結果を入れ直すと全ページが再計算されます。
+</footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var MARA = 42.195, RIEGEL = Math.pow(MARA/10, 1.06);
+  var GOAL = 3*3600 + 15*60;
+
+  function pace(s){ s=Math.round(s); return Math.floor(s/60) + "'" + String(s%60).padStart(2,"0") + '"'; }
+  function clock(s){ s=Math.round(s); var h=Math.floor(s/3600), m=Math.floor(s%3600/60);
+    return h + ":" + String(m).padStart(2,"0") + ":" + String(s%60).padStart(2,"0"); }
+  function hhmm(min){ var h=Math.floor(min/60), m=Math.round(min%60);
+    return h ? (h + "時間" + String(m).padStart(2,"0") + "分") : (m + "分"); }
+  function parseTT(v){
+    var m = String(v).trim().match(/^(\d{1,3})\s*[:'′]\s*(\d{1,2})$/);
+    if(!m) return null;
+    var t = parseInt(m[1],10)*60 + parseInt(m[2],10);
+    return (t >= 1500 && t <= 5400) ? t : null;
+  }
+
+  var P = {};
+  /* Daniels VDOT方式：10kmTTからVO2maxを推定し、%VO2maxで各ペースを導出 */
+  function vdotOf(t10){
+    var t = t10/60, v = 10000/t;
+    var vo2 = -4.60 + 0.182258*v + 0.000104*v*v;
+    var pct = 0.8 + 0.1894393*Math.exp(-0.012778*t) + 0.2989558*Math.exp(-0.1932605*t);
+    return vo2/pct;
+  }
+  function paceAt(vd, pct){
+    var a = 0.000104, b = 0.182258, c = -(4.60 + vd*pct);
+    return 60000 / ((-b + Math.sqrt(b*b - 4*a*c)) / (2*a));   // 秒/km
+  }
+  function compute(t10){
+    var V = vdotOf(t10);
+    P.vdot = V;
+    P.E = [paceAt(V,0.70), paceAt(V,0.60)];
+    P.Emid = paceAt(V,0.645);
+    P.M = t10/10*(RIEGEL*10/MARA);
+    P.T = paceAt(V,0.87);
+    P.I = paceAt(V,1.00);
+    P.R = paceAt(V,1.06);
+    P.full = t10*RIEGEL;
+  }
+  function paceText(k){ return k === "E" ? pace(P.E[0]) + "〜" + pace(P.E[1]) : pace(P[k]); }
+  function lrKm(lr){ if(!lr) return 0;
+    return ((lr.e||0)*60)/P.Emid + ((lr.m||0)*60)/P.M; }
+  function wkKm(w){ return Math.round(w.fx + lrKm(w.lr)); }
+
+  /* ---------- 22週データ ----------
+     fx = ロング走以外の固定距離(km) / lr = ロング走の時間(分) {e:Eペース, m:Mペース} */
+  var PHASES = [
+    { n:"Phase 1", name:"基礎再構築", c:"var(--easy)", wk:"W1–W4 ／ 9月21日 – 10月18日",
+      aim:"週間距離を戻しながら、Tペースの刺激に体を慣らす。ここで無理に速く走る必要はまったくない。W1のTTが全ての基準になる。",
+      weeks:[
+      { n:1, d:"9/21 – 9/27", fx:30, lr:{e:90}, t:"現在地の測定",
+        key:"9/23(水) 10kmタイムトライアル — 早朝6:30〜7:30に実施。この結果で全ペースと目標を確定",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","E","E",'Eジョグ 5km ＋ 流し100m×4（TT前日。脚を起こすだけ）'],
+              ["水","TT","key",'<strong>10km TT</strong>　W/U 2km ＋ 本番10km ＋ C/D 2km<em>早朝に走る。日中は31℃予報で、昼に走ると結果が4分以上遅く出る</em>'],
+              ["木","E","E",'Eジョグ 5km（完全に回復のため）'],
+              ["金","休","rest","完全休養"],
+              ["土","E","E",'Eジョグ 6km ＋ 流し100m×4'],
+              ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="90"></span> <span class="p p-E" data-p="E"></span>']] },
+      { n:2, d:"9/28 – 10/4", fx:28, lr:{e:100}, t:"T走の導入",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","T","T",'W/U 2km → <strong>T走 20分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計8km）'],
+              ["水","E","E",'Eジョグ 8km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 7km"],
+              ["金","休","rest","休養 or 補強のみ"],
+              ["土","E","E",'Eジョグ 5km ＋ 流し100m×4'],
+              ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="100"></span> <span class="p p-E" data-p="E"></span><em>全部Eペース。後半ペースが落ちなければ成功</em>']] },
+      { n:3, d:"10/5 – 10/11", fx:30, lr:{e:110}, t:"時間を伸ばす",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","T","T",'W/U 2km → <strong>T走 25分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計9km）'],
+              ["水","E","E",'Eジョグ 7km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 7km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 7km ＋ 流し100m×4'],
+              ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="110"></span> <span class="p p-E" data-p="E"></span>']] },
+      { n:4, d:"10/12 – 10/18", fx:20, lr:{e:100}, t:"回復週", rec:true,
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","E","E","Eジョグ 8km（ポイント練習なし）"],
+              ["水","E","E","Eジョグ 7km"],
+              ["木","休","rest","休養"],
+              ["金","E","E",'Eジョグ 5km ＋ 流し100m×4'],
+              ["土","休","rest","休養"],
+              ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="100"></span> <span class="p p-E" data-p="E"></span><em>回復週。落とすことに罪悪感を持たない</em>']] }
+    ]},
+    { n:"Phase 2", name:"LT構築", c:"var(--thr)", wk:"W5–W8 ／ 10月19日 – 11月15日",
+      aim:"火曜のクルーズインターバルで閾値の滞在時間を伸ばす。マラソンのタイムを最も直接的に決めるのがこの能力。ロング走は130分まで、全てEペース。",
+      weeks:[
+      { n:5, d:"10/19 – 10/25", fx:32, lr:{e:115}, t:"クルーズインターバル開始",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","T","T",'W/U 2km → <strong>T 8分×3</strong>（つなぎ90秒ジョグ）<span class="p p-T" data-p="T"></span> → C/D 2km（計10km）'],
+              ["水","E","E",'Eジョグ 8km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 8km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 6km ＋ 流し100m×4'],
+              ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="115"></span> <span class="p p-E" data-p="E"></span>']] },
+      { n:6, d:"10/26 – 11/1", fx:34, lr:{e:125}, t:"閾値の滞在時間を伸ばす",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","T","T",'W/U 2km → <strong>T 10分×3</strong>（つなぎ2分ジョグ）<span class="p p-T" data-p="T"></span> → C/D 2km（計11km）'],
+              ["水","E","E",'Eジョグ 9km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 8km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 6km ＋ 流し100m×4'],
+              ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="125"></span> <span class="p p-E" data-p="E"></span>']] },
+      { n:7, d:"11/2 – 11/8", fx:36, lr:{e:130}, t:"T走を連続30分へ",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","T","T",'W/U 2km → <strong>T走 30分 連続</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計11km）<em>分割せず一本で押せるかがPhase 2の到達点</em>'],
+              ["水","E","E",'Eジョグ 10km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 9km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 6km ＋ 流し100m×4'],
+              ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="130"></span> <span class="p p-E" data-p="E"></span>']] },
+      { n:8, d:"11/9 – 11/15", fx:28, lr:{e:100}, t:"回復週", rec:true,
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","T","T",'W/U 2km → <strong>T走 20分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計8km）'],
+              ["水","E","E","Eジョグ 8km"],
+              ["木","E","E","Eジョグ 7km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 5km ＋ 流し100m×4'],
+              ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="100"></span> <span class="p p-E" data-p="E"></span>']] }
+    ]},
+    { n:"Phase 3", name:"Mペース導入", c:"var(--intv)", wk:"W9–W12 ／ 11月16日 – 12月13日",
+      aim:"ロング走の後半にMペースを入れ始める。週の強度は火曜のT走と日曜のロング走の2本に集約し、土曜は完全に回復に回す。W12のハーフTTで最終目標を確定する。",
+      weeks:[
+      { n:9, d:"11/16 – 11/22", fx:42, lr:{e:115}, t:"ロング走に質を入れ始める",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","T","T",'W/U 2km → <strong>T走 35分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計12km）'],
+              ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 10km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 9km ＋ <strong>流し100m×6</strong><em>土曜は完全にEペース。日曜のロング走に脚を残す</em>'],
+              ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="115"></span> <span class="p p-E" data-p="E"></span><em>最後の20分だけ自然に上げる（ビルドアップ）。時計は見ない</em>']] },
+      { n:10, d:"11/23 – 11/29", fx:43, lr:{e:105,m:25}, t:"Mペースを後半に",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","T","T",'W/U 2km → <strong>T走 40分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計13km）'],
+              ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 10km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 9km ＋ 流し100m×6'],
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="105" data-m="25"></span>　前半105分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半25分をMペース</strong> <span class="p p-M" data-p="M"></span>']] },
+      { n:11, d:"11/30 – 12/6", fx:44, lr:{e:120,m:30}, t:"150分の壁",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","T","T",'W/U 2km → <strong>T走 40分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計13km）'],
+              ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 10km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="30"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半30分をMペース</strong> <span class="p p-M" data-p="M"></span><em>初めての150分走。補給の練習も兼ねる</em>']] },
+      { n:12, d:"12/7 – 12/13", fx:50, lr:null, t:"ハーフTTで目標確定", rec:true,
+        key:"12/13(日) ハーフマラソンTT — ここで最終目標（サブ3:15 / 3:20 / 3:30）を決める",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","E","E","Eジョグ 8km"],
+              ["水","E","E","Eジョグ 8km"],
+              ["木","休","rest","休養"],
+              ["金","E","E",'Eジョグ 5km ＋ 流し100m×4'],
+              ["土","E","E","Eジョグ 4km（脚の確認だけ）"],
+              ["日","TT","key",'<strong>ハーフTT 21.1km</strong>　W/U 2km ＋ 本番 ＋ C/D 2km（計25km）<em>レースにエントリーできればなお良い。ハーフタイム×2＋10分がフル予想</em>']] }
+    ]},
+    { n:"Phase 4", name:"マラソン特異期", c:"var(--mp)", wk:"W13–W16 ／ 12月14日 – 1月10日",
+      aim:"レースペースを体に覚えさせる。ロング走の後半にMペースを組み込み、「疲れた脚でレースペースを刻む」感覚をつくる。この期が本番の結果を決める。",
+      weeks:[
+      { n:13, d:"12/14 – 12/20", fx:46, lr:{e:115,m:35}, t:"Mペース走を開始",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","M","M",'W/U 2km → <strong>Mペース走 12km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計15km）<em>一定ペースなので夜でも可。時計を見ずに体感で刻む練習</em>'],
+              ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 10km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="115" data-m="35"></span>　前半115分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半35分をMペース</strong> <span class="p p-M" data-p="M"></span>']] },
+      { n:14, d:"12/21 – 12/27", fx:48, lr:{e:120,m:40}, t:"160分へ",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","M","M",'W/U 2km → <strong>Mペース走 14km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計17km）'],
+              ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 10km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="40"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半40分をMペース</strong> <span class="p p-M" data-p="M"></span>']] },
+      { n:15, d:"12/28 – 1/3", fx:50, lr:{e:120,m:45}, t:"165分・後半45分M",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","M","M",'W/U 2km → <strong>Mペース走 16km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計19km）'],
+              ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 10km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="45"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半45分をMペース</strong> <span class="p p-M" data-p="M"></span><em>この計画で最も重要な練習形式。年末年始で潰れたらW16と入れ替える</em>']] },
+      { n:16, d:"1/4 – 1/10", fx:34, lr:{e:150}, t:"回復週", rec:true,
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","E","E","Eジョグ 10km"],
+              ["水","E","E","Eジョグ 9km"],
+              ["木","休","rest","休養"],
+              ["金","E","E",'Eジョグ 7km ＋ 流し100m×4'],
+              ["土","E","E","Eジョグ 8km"],
+              ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="150"></span> <span class="p p-E" data-p="E"></span><em>回復週なのでMペースは入れない。年末年始が潰れたらW15と入れ替え</em>']] }
+    ]},
+    { n:"Phase 5", name:"仕上げ", c:"var(--indigo)", wk:"W17–W19 ／ 1月11日 – 1月31日",
+      aim:"最大の負荷をかける3週間。W18の180分走（後半60分がMペース）がこの計画の上限で、これ以上は伸ばさない。ここを越えたら、あとは疲労を抜くだけ。",
+      weeks:[
+      { n:17, d:"1/11 – 1/17", fx:50, lr:{e:115,m:55}, t:"距離のピーク",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","M","M",'W/U 2km → <strong>Mペース走 16km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計19km）'],
+              ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 10km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="115" data-m="55"></span>　前半115分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半55分をMペース</strong> <span class="p p-M" data-p="M"></span>']] },
+      { n:18, d:"1/18 – 1/24", fx:45, lr:{e:120,m:60}, t:"最長のロング走",
+        key:"1/24(日) 180分走 — 本番4週前、この計画の山場。3時間を超えたら距離が残っていても打ち切る",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","M","M",'W/U 2km → <strong>Mペース走 14km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計17km）'],
+              ["水","E","E",'Eジョグ 10km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 9km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 9km ＋ 流し100m×6'],
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="60"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半60分をMペース</strong> <span class="p p-M" data-p="M"></span><em>本番当日と同じ時間・同じ朝食・同じシューズ・同じ補給で走る</em>']] },
+      { n:19, d:"1/25 – 1/31", fx:42, lr:{e:100,m:30}, t:"負荷を下げ始める",
+        days:[["月","休","rest","完全休養＋補強20分"],
+              ["火","M","M",'W/U 2km → <strong>Mペース走 12km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計15km）'],
+              ["水","E","E",'Eジョグ 10km ＋ 流し100m×4'],
+              ["木","E","E","Eジョグ 9km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 8km ＋ 流し100m×6'],
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="100" data-m="30"></span>　前半100分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半30分をMペース</strong> <span class="p p-M" data-p="M"></span>']] }
+    ]},
+    { n:"Taper", name:"調整", c:"var(--rest)", wk:"W20–W22 ／ 2月1日 – 2月21日",
+      aim:"距離だけを落とし、強度は最後まで残す。走らないと不安になるが、ここで走りすぎると本番で脚が残らない。「物足りない」が正解。",
+      weeks:[
+      { n:20, d:"2/1 – 2/7", fx:35, lr:{e:75,m:20}, t:"テーパー開始（量−35%）",
+        days:[["月","休","rest","完全休養＋補強15分"],
+              ["火","M","M",'W/U 2km → <strong>Mペース走 10km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計13km）'],
+              ["水","E","E","Eジョグ 8km"],
+              ["木","E","E","Eジョグ 7km"],
+              ["金","休","rest","休養"],
+              ["土","E","E",'Eジョグ 7km ＋ 流し100m×4'],
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="75" data-m="20"></span>　前半75分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半20分をMペース</strong> <span class="p p-M" data-p="M"></span>']] },
+      { n:21, d:"2/8 – 2/14", fx:26, lr:{e:70}, t:"1週前（量−55%）",
+        days:[["月","休","rest","完全休養＋ストレッチ"],
+              ["火","M","M",'W/U 2km → <strong>Mペース走 8km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計11km）'],
+              ["水","E","E","Eジョグ 6km"],
+              ["木","E","E",'Eジョグ 5km ＋ 流し100m×4'],
+              ["金","休","rest","休養"],
+              ["土","E","E","Eジョグ 4km"],
+              ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="70"></span> <span class="p p-E" data-p="E"></span><em>ここから先は脚を「貯める」フェーズ</em>']] },
+      { n:22, d:"2/15 – 2/21", fx:20, lr:null, t:"レース週", key:"2/21(日) 熊本城マラソン2027",
+        days:[["月","休","rest","完全休養"],
+              ["火","M","M",'Eジョグ 8km の中に <strong>Mペース 3km</strong> <span class="p p-M" data-p="M"></span> を挿入<em>本番ペースの最終確認。楽に感じるはず</em>'],
+              ["水","E","E","Eジョグ 5km"],
+              ["木","E","E",'Eジョグ 4km ＋ 流し100m×4'],
+              ["金","休","rest","完全休養。カーボローディング開始"],
+              ["土","E","E",'Eジョグ 3km ＋ 流し100m×2（脚の確認のみ）'],
+              ["日","RACE","key",'<strong>熊本城マラソン2027</strong>　42.195km <span class="p p-M" data-p="M"></span><em>最初の5kmは設定より5秒/km遅く入る。30kmまで我慢、そこから勝負</em>']] }
+    ]}
+  ];
+
+  var ALL = [];
+  PHASES.forEach(function(ph){ ph.weeks.forEach(function(w){ ALL.push({w:w, c:ph.c}); }); });
+
+  /* ---------- render ---------- */
+  var html = "";
+  PHASES.forEach(function(ph){
+    html += '<div class="phase" style="--pc:' + ph.c + '">'
+      + '<div class="phase-hd"><span class="ph-n">' + ph.n + '</span><h3>' + ph.name + '</h3>'
+      + '<span class="ph-w">' + ph.wk + '</span></div>'
+      + '<p class="phase-aim">' + ph.aim + '</p>';
+    ph.weeks.forEach(function(w){
+      html += '<details class="wk"><summary>'
+        + '<span class="wk-n">' + w.n + '</span>'
+        + '<span class="wk-mid"><span class="wk-t">' + w.t + '</span><br>'
+        + '<span class="wk-d">' + w.d + '</span></span>'
+        + '<span class="wk-km" data-w="' + w.n + '">—</span></summary>'
+        + '<div class="wk-body">';
+      w.days.forEach(function(d){
+        html += '<div class="dayrow"><span class="d">' + d[0] + '</span>'
+          + '<span class="chip c-' + d[2] + '">' + d[1] + '</span>'
+          + '<span class="m">' + d[3] + '</span></div>';
+      });
+      if(w.key) html += '<p class="milestone">' + w.key + '</p>';
+      html += '</div></details>';
+    });
+    html += '</div>';
+  });
+  document.getElementById("phases").innerHTML = html;
+
+  var barsHost = document.getElementById("bars");
+  barsHost.innerHTML = ALL.map(function(o){
+    return '<div class="bar" data-w="' + o.w.n + '" style="background:' + o.c
+      + ';opacity:' + (o.w.rec ? ".45" : "1") + '"><span></span></div>';
+  }).join("");
+  document.getElementById("barx").innerHTML = ALL.map(function(o,i){
+    return '<div>' + ((i % 3 === 0 || i === ALL.length-1) ? o.w.n : '') + '</div>';
+  }).join("");
+
+  /* ---------- 再計算 ---------- */
+  var input = document.getElementById("tt10");
+  function render(){
+    var t = parseTT(input.value);
+    if(t === null){ input.style.borderColor = "var(--thr)"; return; }
+    input.style.borderColor = "";
+    compute(t);
+
+    document.getElementById("zE").textContent = paceText("E") + " /km";
+    ["M","T","I","R"].forEach(function(k){
+      document.getElementById("z"+k).textContent = pace(P[k]) + " /km";
+    });
+    document.getElementById("predFull").textContent = clock(P.full);
+    var diff = P.full - GOAL, g = document.getElementById("predGap");
+    g.textContent = Math.abs(diff) < 30 ? "サブ3:15 到達"
+      : (diff > 0 ? "+" : "−") + clock(Math.abs(diff)).replace(/^0:/, "");
+
+    Array.prototype.forEach.call(document.querySelectorAll(".p[data-p]"), function(el){
+      el.textContent = paceText(el.getAttribute("data-p")) + "/km";
+    });
+
+    /* ロング走：時間 → 距離 */
+    Array.prototype.forEach.call(document.querySelectorAll(".lr"), function(el){
+      var e = +(el.getAttribute("data-e") || 0), m = +(el.getAttribute("data-m") || 0);
+      var d = lrKm({e:e, m:m});
+      el.textContent = hhmm(e+m) + "（約" + d.toFixed(0) + "km）";
+    });
+
+    /* 週間距離とグラフ */
+    var totals = {}, max = 0, sum = 0;
+    ALL.forEach(function(o){
+      var k = wkKm(o.w); totals[o.w.n] = k; sum += k; if(k > max) max = k;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".wk-km"), function(el){
+      el.innerHTML = totals[el.getAttribute("data-w")] + '<i>km</i>';
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".bar"), function(el){
+      var k = totals[el.getAttribute("data-w")];
+      el.style.height = Math.max(4, k/max*100).toFixed(1) + "%";
+      el.title = "W" + el.getAttribute("data-w") + " — " + k + "km";
+      el.firstChild.textContent = (k === max ? String(max) : "");
+    });
+    document.getElementById("statPeak").textContent = max;
+    document.getElementById("statTotal").textContent = (sum + 42).toLocaleString();
+  }
+  input.addEventListener("input", render);
+  render();
+})();
+</script>
+</body>
+</html>
