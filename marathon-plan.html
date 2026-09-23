@@ -22,6 +22,7 @@ img{max-width:100%}
   --ink:#E9E7EE; --ink-2:#AAA5B6; --ink-3:#8C8797;
   --rule:#2C2936; --rule-strong:#3E3A4D;
   --indigo:#A26BEE; --indigo-soft:#251C36;
+  --bar:#5E5972; --bar-rec:#332F41;
   --rest:#8B8794; --easy:#6FBF97; --mp:#E0B152; --thr:#E68A63; --intv:#E0708B;
   --rest-bg:#26242F; --easy-bg:#1B2E26; --mp-bg:#31281B; --thr-bg:#33231B; --intv-bg:#331D24;
   --shadow:0 1px 2px rgba(0,0,0,.45), 0 8px 24px -12px rgba(0,0,0,.65);
@@ -145,16 +146,55 @@ strong{font-weight:700;color:var(--ink)}
 
 /* ---- volume chart ---- */
 .chart{margin-top:24px;background:var(--surface);border:1px solid var(--rule);
-  border-radius:4px;padding:20px 18px 14px}
-.bars{display:flex;align-items:flex-end;gap:3px;height:132px}
-.bar{flex:1;min-width:0;border-radius:2px 2px 0 0;position:relative;transition:opacity .15s}
-.bar span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);
-  font-family:var(--cond);font-size:11px;font-weight:700;color:var(--ink-2);
-  margin-bottom:3px;white-space:nowrap}
-.bar-x{display:flex;gap:3px;margin-top:7px;border-top:1px solid var(--rule);padding-top:7px}
-.bar-x div{flex:1;text-align:center;font-family:var(--cond);font-size:10.5px;
-  color:var(--ink-3);font-variant-numeric:tabular-nums}
-.chart-cap{font-size:12.5px;color:var(--ink-3);margin-top:10px}
+  border-radius:4px;padding:18px 18px 14px}
+.chart-hd{font-family:var(--cond);font-size:12px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-2);margin-bottom:14px;
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.chart-hd em{font-style:normal;font-size:11.5px;font-weight:600;color:var(--ink-3);
+  letter-spacing:.04em;text-transform:none}
+.plot{display:grid;grid-template-columns:26px 1fr;gap:8px}
+.yax{display:flex;flex-direction:column;justify-content:space-between;
+  height:134px;margin-top:20px;font-family:var(--cond);font-size:10.5px;
+  font-weight:600;color:var(--ink-3);text-align:right;
+  font-variant-numeric:tabular-nums;transform:translateY(-5px)}
+.plotarea{position:relative;height:154px}
+.gridlines{position:absolute;left:0;right:0;top:20px;bottom:0}
+.gridlines i{position:absolute;left:0;right:0;height:1px;background:var(--rule)}
+.gridlines i.base{background:var(--rule-strong)}
+.bars{position:absolute;left:0;right:0;top:20px;bottom:0;
+  display:flex;align-items:flex-end;gap:2px}
+.bar{flex:1;min-width:0;border-radius:2px 2px 0 0;position:relative;
+  background:var(--bc,var(--bar));transition:background .12s}
+.bar.rec{background:var(--rc,var(--bar-rec))}
+.bar.peak{background:var(--indigo)}
+.bar b{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);
+  font-family:var(--cond);font-size:10px;font-weight:600;color:var(--ink-3);
+  margin-bottom:3px;white-space:nowrap;font-variant-numeric:tabular-nums;
+  letter-spacing:-.01em}
+.bar.peak b{color:var(--indigo);font-weight:700;font-size:11px}
+.xax{display:flex;gap:2px;margin:6px 0 0 34px}
+.xax div{flex:1;text-align:center;font-family:var(--cond);font-size:10px;
+  color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:0}
+.phaseband{display:flex;gap:2px;margin:9px 0 0 34px}
+.phaseband div{min-width:0;border-top:3px solid var(--pc);padding-top:5px;
+  font-family:var(--cond);font-size:10px;font-weight:600;letter-spacing:.05em;
+  color:var(--ink-3);text-align:center;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+.chart-cap{font-size:12.5px;color:var(--ink-3);margin-top:12px;line-height:1.6}
+@media (max-width:430px){
+  /* 22本ぶんの数字が横並びでは入らないので縦組みにする */
+  .plotarea{height:162px}
+  .gridlines,.bars{top:28px}
+  .yax{margin-top:28px}
+  .bar b{writing-mode:vertical-rl;transform:translateX(-50%) rotate(180deg);
+    font-size:8.5px;line-height:1;margin-bottom:3px;letter-spacing:0}
+  .bar.peak b{font-size:9.5px}
+}
+@media (max-width:560px){
+  .phaseband div{font-size:9px;letter-spacing:0}
+  .bar b{font-size:9px;margin-bottom:2px;letter-spacing:-.03em}
+  .bar.peak b{font-size:10px}
+}
 
 /* ---- phases + weeks ---- */
 .phase{margin-top:34px}
@@ -358,9 +398,17 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   </div>
 
   <div class="chart">
-    <div class="bars" id="bars"></div>
-    <div class="bar-x" id="barx"></div>
-    <p class="chart-cap">週間走行距離（km）。ロング走が時間指定のため、TTタイムに応じて自動で変わります。色は期分け、薄い棒（W4・W8・W12・W16）が回復週。</p>
+    <div class="chart-hd">週間走行距離（km） <em id="chartRange"></em></div>
+    <div class="plot">
+      <div class="yax" id="yax"></div>
+      <div class="plotarea">
+        <div class="gridlines" id="gridlines"></div>
+        <div class="bars" id="bars"></div>
+      </div>
+    </div>
+    <div class="xax" id="barx"></div>
+    <div class="phaseband" id="phaseband"></div>
+    <p class="chart-cap"><strong>3週上げて1週落とす</strong>——各棒の上の数字がその週の走行距離（km）です。棒の色は軸下の期分けと同じで、同じ色で暗く沈んでいる棒（W4・W8・W12・W16）が回復週、一番明るい紫がピーク週。</p>
   </div>
 
   <div id="phases"></div>
@@ -466,7 +514,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   /* ---------- 22週データ ----------
      fx = ロング走以外の固定距離(km) / lr = ロング走の時間(分) {e:Eペース, m:Mペース} */
   var PHASES = [
-    { n:"Phase 1", name:"基礎再構築", c:"var(--easy)", wk:"W1–W4 ／ 9月21日 – 10月18日",
+    { n:"Phase 1", name:"基礎再構築", c:"#339C77", bc:"#199E70", rc:"#1E624B", wk:"W1–W4 ／ 9月21日 – 10月18日",
       aim:"週間距離を戻しながら、Tペースの刺激に体を慣らす。ここで無理に速く走る必要はまったくない。W1のTTが全ての基準になる。",
       weeks:[
       { n:1, d:"9/21 – 9/27", fx:30, lr:{e:90}, t:"現在地の測定",
@@ -503,7 +551,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["土","休","rest","休養"],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="100"></span> <span class="p p-E" data-p="E"></span><em>回復週。落とすことに罪悪感を持たない</em>']] }
     ]},
-    { n:"Phase 2", name:"LT構築", c:"var(--thr)", wk:"W5–W8 ／ 10月19日 – 11月15日",
+    { n:"Phase 2", name:"LT構築", c:"#D9724A", bc:"#D95926", rc:"#87452C", wk:"W5–W8 ／ 10月19日 – 11月15日",
       aim:"火曜のクルーズインターバルで閾値の滞在時間を伸ばす。マラソンのタイムを最も直接的に決めるのがこの能力。ロング走は130分まで、全てEペース。",
       weeks:[
       { n:5, d:"10/19 – 10/25", fx:32, lr:{e:115}, t:"クルーズインターバル開始",
@@ -539,7 +587,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["土","E","E",'Eジョグ 5km ＋ 流し100m×4'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="100"></span> <span class="p p-E" data-p="E"></span>']] }
     ]},
-    { n:"Phase 3", name:"Mペース導入", c:"var(--intv)", wk:"W9–W12 ／ 11月16日 – 12月13日",
+    { n:"Phase 3", name:"Mペース導入", c:"#5B98E3", bc:"#3987E5", rc:"#375E8E", wk:"W9–W12 ／ 11月16日 – 12月13日",
       aim:"ロング走の後半にMペースを入れ始める。週の強度は火曜のT走と日曜のロング走の2本に集約し、土曜は完全に回復に回す。W12のハーフTTで最終目標を確定する。",
       weeks:[
       { n:9, d:"11/16 – 11/22", fx:42, lr:{e:115}, t:"ロング走に質を入れ始める",
@@ -576,7 +624,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["土","E","E","Eジョグ 4km（脚の確認だけ）"],
               ["日","TT","key",'<strong>ハーフTT 21.1km</strong>　W/U 2km ＋ 本番 ＋ C/D 2km（計25km）<em>レースにエントリーできればなお良い。ハーフタイム×2＋10分がフル予想</em>']] }
     ]},
-    { n:"Phase 4", name:"マラソン特異期", c:"var(--mp)", wk:"W13–W16 ／ 12月14日 – 1月10日",
+    { n:"Phase 4", name:"マラソン特異期", c:"#C79128", bc:"#C98500", rc:"#7D5A16", wk:"W13–W16 ／ 12月14日 – 1月10日",
       aim:"レースペースを体に覚えさせる。ロング走の後半にMペースを組み込み、「疲れた脚でレースペースを刻む」感覚をつくる。この期が本番の結果を決める。",
       weeks:[
       { n:13, d:"12/14 – 12/20", fx:46, lr:{e:115,m:35}, t:"Mペース走を開始",
@@ -612,7 +660,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["土","E","E","Eジョグ 8km"],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="150"></span> <span class="p p-E" data-p="E"></span><em>回復週なのでMペースは入れない。年末年始が潰れたらW15と入れ替え</em>']] }
     ]},
-    { n:"Phase 5", name:"仕上げ", c:"var(--indigo)", wk:"W17–W19 ／ 1月11日 – 1月31日",
+    { n:"Phase 5", name:"仕上げ", c:"#A78BCC", bc:"#8249CC", rc:"#593C7E", wk:"W17–W19 ／ 1月11日 – 1月31日",
       aim:"最大の負荷をかける3週間。W18の180分走（後半60分がMペース）がこの計画の上限で、これ以上は伸ばさない。ここを越えたら、あとは疲労を抜くだけ。",
       weeks:[
       { n:17, d:"1/11 – 1/17", fx:50, lr:{e:115,m:55}, t:"距離のピーク",
@@ -641,7 +689,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["土","E","E",'Eジョグ 8km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="100" data-m="30"></span>　前半100分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半30分をMペース</strong> <span class="p p-M" data-p="M"></span>']] }
     ]},
-    { n:"Taper", name:"調整", c:"var(--rest)", wk:"W20–W22 ／ 2月1日 – 2月21日",
+    { n:"Taper", name:"調整", c:"#8A898F", bc:"#6E6B78", rc:"#45444A", wk:"W20–W22 ／ 2月1日 – 2月21日",
       aim:"距離だけを落とし、強度は最後まで残す。走らないと不安になるが、ここで走りすぎると本番で脚が残らない。「物足りない」が正解。",
       weeks:[
       { n:20, d:"2/1 – 2/7", fx:35, lr:{e:75,m:20}, t:"テーパー開始（量−35%）",
@@ -672,7 +720,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   ];
 
   var ALL = [];
-  PHASES.forEach(function(ph){ ph.weeks.forEach(function(w){ ALL.push({w:w, c:ph.c}); }); });
+  PHASES.forEach(function(ph){ ph.weeks.forEach(function(w){ ALL.push({w:w, bc:ph.bc, rc:ph.rc}); }); });
 
   /* ---------- render ---------- */
   var html = "";
@@ -700,13 +748,15 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   });
   document.getElementById("phases").innerHTML = html;
 
-  var barsHost = document.getElementById("bars");
-  barsHost.innerHTML = ALL.map(function(o){
-    return '<div class="bar" data-w="' + o.w.n + '" style="background:' + o.c
-      + ';opacity:' + (o.w.rec ? ".45" : "1") + '"><span></span></div>';
+  document.getElementById("bars").innerHTML = ALL.map(function(o){
+    return '<div class="bar' + (o.w.rec ? ' rec' : '') + '" data-w="' + o.w.n
+      + '" style="--bc:' + o.bc + ';--rc:' + o.rc + '"><b></b></div>';
   }).join("");
   document.getElementById("barx").innerHTML = ALL.map(function(o,i){
     return '<div>' + ((i % 3 === 0 || i === ALL.length-1) ? o.w.n : '') + '</div>';
+  }).join("");
+  document.getElementById("phaseband").innerHTML = PHASES.map(function(ph){
+    return '<div style="--pc:' + ph.bc + ';flex:' + ph.weeks.length + '">' + ph.name + '</div>';
   }).join("");
 
   /* ---------- 再計算 ---------- */
@@ -745,12 +795,26 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     Array.prototype.forEach.call(document.querySelectorAll(".wk-km"), function(el){
       el.innerHTML = totals[el.getAttribute("data-w")] + '<i>km</i>';
     });
+    /* 目盛りは20km刻みで、最大値の上に必ず余白が残るように切り上げる */
+    var scale = Math.ceil(max/20)*20;
+    if(max/scale > 0.985) scale += 20;   /* ラベル用に16pxの余白があるので切り上げは最小限 */
+    document.getElementById("yax").innerHTML =
+      [1,.75,.5,.25,0].map(function(f){ return '<span>' + Math.round(scale*f) + '</span>'; }).join("");
+    document.getElementById("gridlines").innerHTML =
+      [0,25,50,75,100].map(function(t){
+        return '<i class="' + (t===100?'base':'') + '" style="top:' + t + '%"></i>';
+      }).join("");
+
+    var last = ALL[ALL.length-1].w.n;
     Array.prototype.forEach.call(document.querySelectorAll(".bar"), function(el){
-      var k = totals[el.getAttribute("data-w")];
-      el.style.height = Math.max(4, k/max*100).toFixed(1) + "%";
-      el.title = "W" + el.getAttribute("data-w") + " — " + k + "km";
-      el.firstChild.textContent = (k === max ? String(max) : "");
+      var n = el.getAttribute("data-w"), k = totals[n];
+      el.style.height = Math.max(3, k/scale*100).toFixed(1) + "%";
+      el.title = "W" + n + "　" + k + "km";
+      el.classList.toggle("peak", k === max);
+      el.firstChild.textContent = k;
     });
+    document.getElementById("chartRange").textContent =
+      "W1 " + totals[1] + "km → ピーク " + max + "km → レース週 " + totals[last] + "km";
     document.getElementById("statPeak").textContent = max;
     document.getElementById("statTotal").textContent = (sum + 42).toLocaleString();
   }
