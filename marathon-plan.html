@@ -222,6 +222,10 @@ strong{font-weight:700;color:var(--ink)}
 .phase-hd .ph-w{font-family:var(--cond);font-size:13px;font-weight:600;color:var(--ink-3);
   font-variant-numeric:tabular-nums;white-space:nowrap}
 .phase-aim{margin-top:11px;font-size:13.5px;color:var(--ink-2);max-width:64ch}
+.wk.now{background:var(--indigo-soft);box-shadow:inset 3px 0 0 var(--indigo)}
+.nowchip{font-style:normal;font-family:var(--cond);font-size:10px;font-weight:700;
+  letter-spacing:.1em;color:var(--paper);background:var(--indigo);
+  border-radius:3px;padding:1px 5px;margin-left:8px;vertical-align:1px}
 
 details.wk{border-bottom:1px solid var(--rule);background:var(--surface)}
 details.wk:first-of-type{border-top:1px solid var(--rule)}
@@ -263,6 +267,14 @@ details.wk[open]{background:var(--surface-2)}
   white-space:nowrap;font-size:14.5px}
 .p-E{color:var(--easy)} .p-M{color:var(--mp)} .p-T{color:var(--thr)}
 .p-I{color:var(--intv)} .p-R{color:var(--intv)}
+.kit{display:block;margin-top:7px;padding:7px 10px 4px;border-radius:3px;
+  background:var(--surface-2);border-left:2px solid var(--rule-strong);font-size:12px}
+.kit b{font-family:var(--cond);font-size:10px;font-weight:700;letter-spacing:.12em;
+  color:var(--ink-3);margin-right:7px;display:inline-block;vertical-align:1px}
+.kit i{font-style:normal;display:inline-block;background:var(--paper);
+  border:1px solid var(--rule-strong);border-radius:3px;padding:1px 7px;
+  margin:0 4px 3px 0;color:var(--ink-2);white-space:nowrap;
+  font-variant-numeric:tabular-nums}
 .milestone{margin-top:10px;font-size:13px;padding:9px 12px;border-radius:3px;
   background:var(--indigo-soft);color:var(--ink-2);border-left:3px solid var(--indigo)}
 
@@ -273,6 +285,106 @@ details.wk[open]{background:var(--surface-2)}
 .card{background:var(--surface);padding:18px}
 .card h4{margin:0 0 8px;font-size:14px;font-weight:700}
 .card ul{margin:0;padding-left:17px;font-size:13.5px;color:var(--ink-2);line-height:1.7}
+.pagelink{font-weight:700;color:var(--indigo);text-decoration:none;
+  border-bottom:1px solid var(--indigo);padding-bottom:1px}
+.pagelink:hover{color:var(--ink)}
+.pagelink-sub{font-size:13px;color:var(--ink-3)}
+
+/* ===== タブ ===== */
+.tabs{display:flex;gap:2px;margin-top:30px;border-bottom:1px solid var(--rule-strong)}
+.tab{appearance:none;background:none;border:0;border-bottom:2px solid transparent;
+  margin-bottom:-1px;padding:10px 16px;cursor:pointer;font-family:var(--sans);
+  font-size:14.5px;font-weight:700;color:var(--ink-3);transition:color .12s}
+.tab:hover{color:var(--ink-2)}
+.tab.is-on{color:var(--ink);border-bottom-color:var(--indigo)}
+.tabpane[hidden]{display:none}
+.tabpane > section:first-child{margin-top:34px}
+/* 部位ごとの色。強度を示す色とは役割が違うので別の色相を使う */
+:root{--glute:#3987E5;--calf:#199E70;--power:#C98500;--core:#8249CC;--no:#D95926}
+/* ---- 優先順位 ---- */
+.rank{margin-top:22px;border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.rank-row{display:grid;grid-template-columns:38px 1fr;gap:14px;padding:13px 16px;
+  background:var(--surface);align-items:start}
+.rank-row + .rank-row{border-top:1px solid var(--rule)}
+.rank-row b{font-family:var(--cond);font-size:22px;font-weight:700;color:var(--indigo);
+  line-height:1.1}
+.rank-row .t{font-weight:700;font-size:14.5px}
+.rank-row .d{font-size:13px;color:var(--ink-2);margin-top:3px;line-height:1.65}
+
+/* ---- 週表 ---- */
+.wk-table{margin-top:22px;width:100%;border-collapse:collapse;font-size:13.5px}
+.wk-table th{font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.1em;
+  color:var(--ink-3);text-align:left;padding:0 10px 8px;border-bottom:1px solid var(--rule-strong)}
+.wk-table td{padding:10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.wk-table tr.key td{background:var(--indigo-soft)}
+.wk-table .d{font-family:var(--cond);font-size:15px;font-weight:700;color:var(--ink-2);width:38px}
+.wk-table .m{color:var(--ink-2)}
+.wk-table .s{font-weight:700;white-space:nowrap}
+.wk-table .s.off{color:var(--ink-3);font-weight:400}
+
+/* ---- 種目 ---- */
+.grp{margin-top:34px}
+.grp-hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;
+  padding-bottom:10px;border-bottom:2px solid var(--gc)}
+.grp-hd .tag{font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--gc)}
+.grp-hd h3{font-size:17px;font-weight:700}
+.grp-hd .why{margin-left:auto;font-size:12.5px;color:var(--ink-3)}
+.grp-aim{margin-top:11px;font-size:13.5px;color:var(--ink-2);max-width:64ch}
+
+.ex{border-bottom:1px solid var(--rule)}
+.ex:first-of-type{border-top:1px solid var(--rule-strong);margin-top:16px}
+.ex > summary{list-style:none;cursor:pointer;padding:14px 0;display:grid;
+  grid-template-columns:1fr auto 18px;gap:12px;align-items:center}
+.ex > summary::-webkit-details-marker{display:none}
+.ex > summary:hover .nm{color:var(--indigo)}
+.ex .nm{font-weight:700;font-size:15px;transition:color .12s}
+.ex .goal{display:block;font-size:12.5px;font-weight:400;color:var(--ink-3);margin-top:2px}
+.ex .dose{font-family:var(--cond);font-size:14px;font-weight:700;color:var(--ink-2);
+  font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.ex .chev{width:18px;height:18px;position:relative}
+.ex .chev::before,.ex .chev::after{content:"";position:absolute;top:8px;left:3px;width:12px;
+  height:1.5px;background:var(--ink-3);transition:transform .18s}
+.ex .chev::after{transform:rotate(90deg)}
+.ex[open] .chev::after{transform:rotate(0)}
+.ex-body{padding:2px 0 22px;display:grid;gap:18px}
+@media (min-width:620px){ .ex-body{grid-template-columns:1fr 1fr} .ex-body .full{grid-column:1/-1} }
+
+.blk h5{margin:0 0 7px;font-family:var(--cond);font-size:11px;font-weight:700;
+  letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase}
+.blk ol,.blk ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.8}
+.blk li + li{margin-top:2px}
+.blk ol{counter-reset:none}
+.check{background:var(--surface);border-left:2px solid var(--calf);border-radius:3px;
+  padding:11px 14px}
+.check h5{color:var(--calf)}
+.miss{background:var(--surface);border-left:2px solid var(--no);border-radius:3px;
+  padding:11px 14px}
+.miss h5{color:var(--no)}
+.prog{background:var(--surface-2);border-radius:3px;padding:11px 14px;font-size:13px;
+  color:var(--ink-2)}
+.prog h5{color:var(--ink-3)}
+
+/* ---- 禁止 ---- */
+.dont{margin-top:22px;border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.dont-row{padding:14px 16px;background:var(--surface);border-left:3px solid var(--no)}
+.dont-row + .dont-row{border-top:1px solid var(--rule)}
+.dont-row b{display:block;font-size:14.5px;font-weight:700}
+.dont-row p{margin-top:4px;font-size:13px;color:var(--ink-2);line-height:1.7}
+
+/* ---- 小さい表 ---- */
+.mini{margin-top:18px;width:100%;border-collapse:collapse;font-size:13.5px}
+.mini th{font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.1em;
+  color:var(--ink-3);text-align:left;padding:0 10px 8px;border-bottom:1px solid var(--rule-strong)}
+.mini td{padding:9px 10px;border-bottom:1px solid var(--rule);color:var(--ink-2)}
+.mini td:first-child{color:var(--ink);font-weight:700;white-space:nowrap}
+.mini td.num{font-family:var(--cond);font-variant-numeric:tabular-nums;font-weight:700;
+  color:var(--ink);white-space:nowrap}
+
+footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
+  font-size:12.5px;color:var(--ink-3)}
+
+
 .card li + li{margin-top:3px}
 
 .risk{margin-top:22px;border:1px solid var(--rule);border-radius:4px;overflow:hidden}
@@ -286,6 +398,11 @@ details.wk[open]{background:var(--surface-2)}
 footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   font-size:12.5px;color:var(--ink-3)}
 @media (max-width:560px){
+  .rank-row{grid-template-columns:28px 1fr;gap:11px;padding:12px 13px}
+  .ex > summary{grid-template-columns:1fr auto;row-gap:2px}
+  .ex .chev{display:none}
+  .grp-hd .why{margin-left:0;width:100%}
+  .wk-table td,.mini td{padding:9px 7px}
   .zone{border-right:none}
   .tmpl-row{grid-template-columns:44px 1fr;gap:10px;padding:11px 14px}
   .dayrow{grid-template-columns:28px 42px 1fr;gap:8px}
@@ -300,15 +417,22 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 
 <header>
   <div class="eyebrow">熊本城マラソン 2027 ／ 2月21日(日)</div>
-  <h1>スタートラインまで、22週</h1>
+  <h1 id="hdrTitle">スタートラインまで、22週</h1>
   <p class="sub">サブ3:15を目指す22週間のトレーニング計画　—　2026年9月 作成</p>
   <div class="hdr-stats">
-    <div class="hstat"><b class="num">22</b><span>Weeks</span></div>
-    <div class="hstat"><b class="num">153</b><span>Days</span></div>
+    <div class="hstat"><b class="num" id="statWeeks">—</b><span>Weeks</span></div>
+    <div class="hstat"><b class="num" id="statDays">—</b><span>Days</span></div>
     <div class="hstat"><b class="num" id="statPeak">—</b><span>Peak km / wk</span></div>
     <div class="hstat"><b class="num" id="statTotal">—</b><span>Total km</span></div>
   </div>
 </header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab is-on" data-tab="plan" type="button">22週の計画</button>
+  <button class="tab" data-tab="str" type="button">補強メニュー</button>
+</nav>
+
+<div class="tabpane" id="tab-plan">
 
 <section>
   <h2><span class="n">01</span>現在地</h2>
@@ -432,7 +556,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 
 <section>
   <h2><span class="n">05</span>補強と故障予防</h2>
-  <p class="lede">22週で週間距離をほぼ倍まで引き上げる計画です。<strong>この伸ばし方で故障するとしたら股関節まわりが最初なので、補強は「余裕があればやる」ではなく必須メニュー</strong>として月曜と水曜に固定します。</p>
+  <p class="lede">22週で週間距離をほぼ倍まで引き上げる計画です。<strong>補強は「余裕があればやる」ではなく必須メニュー</strong>として月曜と木曜に固定します。</p><p class="lede"><a class="pagelink" href="#str" data-goto="str">補強トレーニングのページ →</a><br><span class="pagelink-sub">種目ごとの手順・回数・よくある間違い・進め方を詳しく載せています</span></p>
 
   <div class="cards">
     <div class="card"><h4>腸腰筋（最優先）</h4><ul>
@@ -451,7 +575,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       <li>ヒップリフト 20回×3</li>
       <li>片脚ヒップリフト 左右12回</li>
       <li>ランジ 左右12回×2</li>
-      <li>カーフレイズ 20回×3</li>
+      <li>カーフレイズ 2種（膝伸ばし／膝曲げ）各12〜15回×2〜3</li>
     </ul></div>
     <div class="card"><h4>姿勢（上半身）</h4><ul>
       <li>胸椎伸展ストレッチ 60秒</li>
@@ -478,6 +602,141 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 <footer>
   ペース換算はRiegel式（距離比の1.06乗）、E/T/I/Rは10kmペースに対する係数（×1.28〜1.40 / ×1.03 / ×0.96 / ×0.90）で算出。W1のTT結果を入れ直すと全ページが再計算されます。
 </footer>
+</div>
+
+<div class="tabpane" id="tab-str" hidden>
+<section>
+  <h2><span class="n">01</span>なぜ補強を優先するのか</h2>
+  <p class="lede">故障予防というと柔軟性の話になりがちですが、<strong>静的ストレッチに故障を減らす効果があるという一貫した証拠はありません。</strong>ランナーを対象にした複数のレビューで、予防効果は確認されていません。</p>
+  <p class="lede">一方、<strong>筋力トレーニングには予防効果の証拠があります。</strong>限られた時間をどちらに使うかと言えば、答えははっきりしています。</p>
+
+  <div class="rank">
+    <div class="rank-row"><b>1</b><div>
+      <div class="t">中臀筋</div>
+      <div class="d">骨盤を横から支える筋肉。ここが弱いと片脚接地で骨盤が落ち、大腿骨が内に倒れる。膝の外側の痛み、膝が内外にブレる癖、ランニング中の左右のふらつきは、ほぼここに行き着く。</div>
+    </div></div>
+    <div class="rank-row"><b>2</b><div>
+      <div class="t">ヒラメ筋・腓腹筋</div>
+      <div class="d">接地のたびにアキレス腱へ体重の6〜8倍の力がかかり、その主因はヒラメ筋。腱は伸ばしても強くならず、重い負荷をかけたときだけ耐えられる量が増える。</div>
+    </div></div>
+    <div class="rank-row"><b>3</b><div>
+      <div class="t">大臀筋・ハムストリングス</div>
+      <div class="d">推進力そのもの。ふくらはぎ主導の走りから股関節主導へ移すには、この2つが仕事を引き受けられる状態になっている必要がある。</div>
+    </div></div>
+    <div class="rank-row"><b>4</b><div>
+      <div class="t">体幹・腸腰筋</div>
+      <div class="d">長時間座る生活で股関節の前が縮むと、股関節を後ろに伸ばせなくなる。結果として臀筋が使えず、推進がふくらはぎに戻る。デスクワークが毎日これを進行させる。</div>
+    </div></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">02</span>週のどこに置くか</h2>
+  <p class="lede"><strong>走る前には絶対にやりません。</strong>筋肉を疲れさせてから走ると、衝撃を吸収する能力が落ちた状態で走ることになり、フォームも崩れます。走った後か、走らない日に置きます。</p>
+  <p class="lede">腱は筋肉より適応が遅いため、<strong>毎日はやりません。</strong>間に1〜2日空けて週2回が適量です。</p>
+
+  <table class="wk-table">
+    <thead><tr><th>曜日</th><th>ランニング</th><th>補強</th></tr></thead>
+    <tbody>
+      <tr class="key"><td class="d">月</td><td class="m">完全休養</td><td class="s">メイン 20分（全種目）</td></tr>
+      <tr><td class="d">火</td><td class="m">ポイント練習</td><td class="s off">なし</td></tr>
+      <tr><td class="d">水</td><td class="m">Eジョグ</td><td class="s off">なし</td></tr>
+      <tr class="key"><td class="d">木</td><td class="m">Eジョグ</td><td class="s">走った後 10分（短縮版）</td></tr>
+      <tr><td class="d">金</td><td class="m">休養</td><td class="s off">なし</td></tr>
+      <tr><td class="d">土</td><td class="m">Eジョグ＋流し</td><td class="s off">なし</td></tr>
+      <tr><td class="d">日</td><td class="m">ロング走</td><td class="s off">なし</td></tr>
+    </tbody>
+  </table>
+  <p class="lede">月曜と木曜で3日ずつ間隔が空きます。<strong>短縮版はカーフレイズ2種とサイドプランクだけ</strong>で構いません。</p>
+</section>
+
+<section>
+  <h2><span class="n">03</span>種目</h2>
+  <div id="groups"></div>
+</section>
+
+<section>
+  <h2><span class="n">04</span>走る前の3分</h2>
+  <p class="lede">走る前は<strong>動的な準備だけ</strong>です。静的ストレッチは直後に出力が落ちることが分かっているので、走る前にはやりません。</p>
+  <table class="mini">
+    <thead><tr><th>種目</th><th>回数</th><th>狙い</th></tr></thead>
+    <tbody>
+      <tr><td>レッグスイング 前後</td><td class="num">左右10回</td><td>股関節の可動域を出す</td></tr>
+      <tr><td>レッグスイング 左右</td><td class="num">左右10回</td><td>内転筋を目覚めさせる</td></tr>
+      <tr><td>サイドステップ</td><td class="num">10歩×2</td><td>中臀筋を目覚めさせる</td></tr>
+      <tr><td>ヒップサークル</td><td class="num">左右5回</td><td>股関節を回す</td></tr>
+    </tbody>
+  </table>
+  <p class="lede"><strong>どれも「効いてる感」が出る手前で止めます。</strong>焼けるような感覚が出たら、それは準備ではなく筋トレになっています。</p>
+  <p class="lede">内転筋と臀筋の意識付けに最も効くのは、実はこれらの種目ではなく<strong>ジョグの最初の10分そのもの</strong>です。歩幅を詰めて、足を体の真下に置いて、股関節を後ろに伸ばす。動作パターンは、その動作をやることでしか定着しません。</p>
+</section>
+
+<section>
+  <h2><span class="n">05</span>走った後・寝る前のストレッチ</h2>
+  <p class="lede">予防効果は期待できませんが、<strong>デスクワークで縮んだ部分を戻す</strong>という目的なら意味があります。特に1種目めが重要です。</p>
+  <table class="mini">
+    <thead><tr><th>種目</th><th>時間</th><th>注意</th></tr></thead>
+    <tbody>
+      <tr><td>腸腰筋</td><td class="num">左右60秒</td><td>最優先。お尻を締めて骨盤を立てる。腰が反ると効かない</td></tr>
+      <tr><td>大臀筋（数字の4）</td><td class="num">左右60秒</td><td>仰向けで足首を反対の膝に乗せ、手前に引く</td></tr>
+      <tr><td>ハムストリングス</td><td class="num">左右60秒</td><td>膝を軽く緩めて、背中を丸めない</td></tr>
+      <tr><td>ふくらはぎ</td><td class="num">左右45秒</td><td><strong>かかとの骨に張りが出る手前で止める</strong></td></tr>
+      <tr><td>内転筋</td><td class="num">左右30秒</td><td>軽く。付け根が痛むならやらない</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">06</span>やってはいけないこと</h2>
+  <div class="dont">
+    <div class="dont-row">
+      <b>段差でかかとを落とすカーフレイズ</b>
+      <p>よく紹介される方法ですが、これは<strong>アキレス腱の中ほどの問題に対する運動</strong>です。かかと寄り（付着部）に問題がある場合、深く背屈させると腱がかかとの骨に押し付けられて悪化します。床の上でやってください。</p>
+    </div>
+    <div class="dont-row">
+      <b>走る前のランジ・スクワット</b>
+      <p>ランジは沈み込むときに筋肉が引き伸ばされながら力を出す種目で、筋損傷を最も確実に起こす負荷のかけ方です。走る前にやると、傷んだ筋肉のまま走り続けることになります。月曜に回してください。</p>
+    </div>
+    <div class="dont-row">
+      <b>走る前の静的ストレッチ</b>
+      <p>伸ばした直後は一時的に出力が落ちます。走る前は動的な準備だけにしてください。</p>
+    </div>
+    <div class="dont-row">
+      <b>腸脛靭帯そのものへのフォームローラー</b>
+      <p>腸脛靭帯は非常に強靭な組織で、ローラーで長さが変わることは示されていません。当てるなら靭帯を引っ張っている筋肉——腿の外側と、お尻の外側です。膝の外側の出っぱり付近は、症状があるとき押すと悪化します。</p>
+    </div>
+    <div class="dont-row">
+      <b>深くしゃがんだ姿勢の保持</b>
+      <p>足首を深く曲げた状態はアキレス腱の付着部を圧迫します。ストレッチとして意図的に保持するのは避けてください。</p>
+    </div>
+    <div class="dont-row">
+      <b>痛みを我慢したフォームローラー</b>
+      <p>ローラーが効くのは筋の緊張を神経的に下げるからで、組織を潰しているからではありません。激痛を伴う圧が中程度の圧より優れるという結果は出ていません。特に内ももの中ほどには血管と神経の通り道があり、痺れや電気が走る感覚が出たらすぐ外してください。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">07</span>重さの増やし方</h2>
+  <p class="lede"><strong>腱と筋肉は、重い負荷でしか強くなりません。</strong>回数を20回、30回と増やしても、ある時点から頭打ちになります。楽になったら回数ではなく重さを足してください。</p>
+  <table class="mini">
+    <thead><tr><th>段階</th><th>目安</th><th>次へ進む条件</th></tr></thead>
+    <tbody>
+      <tr><td>第1段階</td><td>両脚・自重</td><td class="num">フォームが安定する</td></tr>
+      <tr><td>第2段階</td><td>両脚・リュックに2〜3kg</td><td class="num">15回×3が余裕</td></tr>
+      <tr><td>第3段階</td><td>片脚・自重</td><td class="num">15回×3が余裕</td></tr>
+      <tr><td>第4段階</td><td>片脚・リュックに加重</td><td class="num">以降は重さを足していく</td></tr>
+    </tbody>
+  </table>
+  <p class="lede">リュックに水を入れたペットボトルを入れるのが一番手軽です。2Lで約2kgなので、本数で調整できます。</p>
+</section>
+
+<footer>
+  補強は「余裕があればやる」ではなく、走る量を増やすための前提条件です。月曜20分・木曜10分、週30分。これが22週続けば、走れる脚になります。
+</footer>
+
+</div>
+
 
 </div>
 
@@ -629,7 +888,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["木","E","E","Eジョグ 10km"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
-              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="30"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半30分をMペース</strong> <span class="p p-M" data-p="M"></span><em>初めての150分走。補給の練習も兼ねる</em>']] },
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="30"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半30分をMペース</strong> <span class="p p-M" data-p="M"></span><em>初めての150分走。<strong>本題は補給を試すこと</strong>で、タイムは二の次。ジェルは60分と110分あたりで入れ、胃が受け付けるかを確かめる。水は最初の60分からこまめに。午前中に出て、午後は完全休養に充てる</em><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 2個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
       { n:12, d:"12/7 – 12/13", fx:50, lr:null, t:"ハーフTTで目標確定", rec:true,
         key:"12/13(日) ハーフマラソンTT — ここで最終目標（サブ3:15 / 3:20 / 3:30）を決める",
         days:[["月","休","rest","完全休養＋補強20分"],
@@ -650,7 +909,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["木","E","E","Eジョグ 10km"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
-              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="115" data-m="35"></span>　前半115分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半35分をMペース</strong> <span class="p p-M" data-p="M"></span>']] },
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="115" data-m="35"></span>　前半115分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半35分をMペース</strong> <span class="p p-M" data-p="M"></span><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 2個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
       { n:14, d:"12/21 – 12/27", fx:48, lr:{e:120,m:40}, t:"160分へ",
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 14km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計17km）'],
@@ -658,7 +917,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["木","E","E","Eジョグ 10km"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
-              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="40"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半40分をMペース</strong> <span class="p p-M" data-p="M"></span>']] },
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="40"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半40分をMペース</strong> <span class="p p-M" data-p="M"></span><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 2個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
       { n:15, d:"12/28 – 1/3", fx:50, lr:{e:120,m:45}, t:"165分・後半45分M",
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 16km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計19km）'],
@@ -666,7 +925,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["木","E","E","Eジョグ 10km"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
-              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="45"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半45分をMペース</strong> <span class="p p-M" data-p="M"></span><em>この計画で最も重要な練習形式。年末年始で潰れたらW16と入れ替える</em>']] },
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="45"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半45分をMペース</strong> <span class="p p-M" data-p="M"></span><em>この計画で最も重要な練習形式。年末年始で潰れたらW16と入れ替える</em><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 3個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
       { n:16, d:"1/4 – 1/10", fx:34, lr:{e:150}, t:"回復週", rec:true,
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","E","E","Eジョグ 10km"],
@@ -674,7 +933,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["木","休","rest","休養"],
               ["金","E","E",'Eジョグ 7km ＋ 流し100m×4'],
               ["土","E","E","Eジョグ 8km"],
-              ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="150"></span> <span class="p p-E" data-p="E"></span><em>回復週なのでMペースは入れない。年末年始が潰れたらW15と入れ替え</em>']] }
+              ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="150"></span> <span class="p p-E" data-p="E"></span><em>回復週なのでMペースは入れない。年末年始が潰れたらW15と入れ替え</em><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 2個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] }
     ]},
     { n:"Phase 5", name:"仕上げ", c:"#A78BCC", bc:"#8249CC", rc:"#593C7E", wk:"W17–W19 ／ 1月11日 – 1月31日",
       aim:"最大の負荷をかける3週間。W18の180分走（後半60分がMペース）がこの計画の上限で、これ以上は伸ばさない。ここを越えたら、あとは疲労を抜くだけ。",
@@ -686,7 +945,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["木","E","E","Eジョグ 10km"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
-              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="115" data-m="55"></span>　前半115分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半55分をMペース</strong> <span class="p p-M" data-p="M"></span>']] },
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="115" data-m="55"></span>　前半115分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半55分をMペース</strong> <span class="p p-M" data-p="M"></span><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 3個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
       { n:18, d:"1/18 – 1/24", fx:45, lr:{e:120,m:60}, t:"最長のロング走",
         key:"1/24(日) 180分走 — 本番4週前、この計画の山場。3時間を超えたら距離が残っていても打ち切る",
         days:[["月","休","rest","完全休養＋補強20分"],
@@ -695,7 +954,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["木","E","E","Eジョグ 9km"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 9km ＋ 流し100m×6'],
-              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="60"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半60分をMペース</strong> <span class="p p-M" data-p="M"></span><em>本番当日と同じ時間・同じ朝食・同じシューズ・同じ補給で走る</em>']] },
+              ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="60"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半60分をMペース</strong> <span class="p p-M" data-p="M"></span><em>本番当日と同じ時間・同じ朝食・同じシューズ・同じ補給で走る</em><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 3個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
       { n:19, d:"1/25 – 1/31", fx:42, lr:{e:100,m:30}, t:"負荷を下げ始める",
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 12km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計15km）'],
@@ -738,6 +997,24 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   var ALL = [];
   PHASES.forEach(function(ph){ ph.weeks.forEach(function(w){ ALL.push({w:w, bc:ph.bc, rc:ph.rc}); }); });
 
+  /* ---------- 今日の日付から残り日数と現在週を出す ---------- */
+  var RACE  = new Date(2027, 1, 21);   /* 2027年2月21日(日) 熊本城マラソン */
+  var START = new Date(2026, 8, 21);   /* W1初日 2026年9月21日(月) */
+  function dayDiff(a, b){              /* 時刻とDSTの影響を避けるため日付だけで引く */
+    return Math.round((Date.UTC(b.getFullYear(), b.getMonth(), b.getDate())
+                     - Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())) / 86400000);
+  }
+  var LEFT = dayDiff(new Date(), RACE);
+  var WLEFT = Math.max(0, Math.ceil(LEFT / 7));
+  var CURW = Math.min(22, Math.max(1, Math.floor(dayDiff(START, new Date()) / 7) + 1));
+
+  document.getElementById("statDays").textContent  = Math.max(0, LEFT);
+  document.getElementById("statWeeks").textContent = WLEFT;
+  document.getElementById("hdrTitle").textContent =
+      LEFT >  0 ? "スタートラインまで、" + WLEFT + "週"
+    : LEFT === 0 ? "今日が本番です"
+    :              "熊本城マラソン2027 完走";
+
   /* ---------- render ---------- */
   var html = "";
   PHASES.forEach(function(ph){
@@ -747,9 +1024,11 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       + '<span class="ph-w">' + ph.wk + '</span></div>'
       + '<p class="phase-aim">' + ph.aim + '</p>';
     ph.weeks.forEach(function(w){
-      html += '<details class="wk"><summary>'
+      var isNow = (w.n === CURW && LEFT >= 0);
+      html += '<details class="wk' + (isNow ? ' now" open' : '"') + '><summary>'
         + '<span class="wk-n">' + w.n + '</span>'
-        + '<span class="wk-mid"><span class="wk-t">' + w.t + '</span><br>'
+        + '<span class="wk-mid"><span class="wk-t">' + w.t
+        + (isNow ? '<i class="nowchip">今週</i>' : '') + '</span><br>'
         + '<span class="wk-d">' + w.d + '</span></span>'
         + '<span class="wk-km" data-w="' + w.n + '">—</span></summary>'
         + '<div class="wk-body">';
@@ -849,6 +1128,161 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   }
   input.addEventListener("input", render);
   render();
+})();
+
+/* ---------- タブと補強メニュー ---------- */
+var GROUPS = [
+{ tag:"Priority 1", name:"中臀筋", color:"var(--glute)", why:"膝の軌道・骨盤の安定",
+  aim:"片脚で立った瞬間に骨盤が横に落ちるのを止める筋肉です。ここが働くと大腿骨がまっすぐ前に出て、膝が内外にブレなくなります。膝の外側の痛みの予防は、ほぼこのグループに集約されます。",
+  ex:[
+  { nm:"サイドプランク（膝の開閉）", goal:"中臀筋＋体幹側面を同時に", dose:"左右10回×2",
+    how:["横向きに寝て、肘と膝を床につける（前腕は床、上体は一直線）",
+         "腰を持ち上げて、肩から膝までを一直線にする",
+         "その姿勢を保ったまま、上側の膝をゆっくり開く",
+         "同じ速度で閉じる。腰の高さは変えない",
+         "10回終えたら腰を下ろし、反対側へ"],
+    chk:["お尻の外側の上あたりに効いている","腰の高さが最初から最後まで変わらない","体が後ろに倒れていない"],
+    mis:["腰が落ちる → 体幹が保てていない。回数を減らす","膝を開くときに体が後ろへ回る → 骨盤を立て直す","反動で開閉する → 3秒かけて開き、3秒で閉じる"],
+    prg:"楽になったら、膝ではなく足首を床につけて（脚を伸ばして）同じことをする。難度が一段上がる。" },
+
+  { nm:"ヒップアブダクション（横向き）", goal:"中臀筋を単独で", dose:"左右15回×2",
+    how:["横向きに寝て、下の脚は軽く曲げ、上の脚はまっすぐ伸ばす",
+         "つま先をわずかに下に向ける（内側に回す）",
+         "上の脚をゆっくり真上に上げる。40〜45度まで",
+         "同じ速度で下ろす。床にはつけず、寸前で止めて次へ"],
+    chk:["お尻の外側が焼ける感じ","腰や腿の前ではなく、お尻に効いている","体が後ろに倒れていない"],
+    mis:["つま先が上（天井側）を向く → 大腿筋膜張筋に逃げる。つま先はやや下","脚を高く上げすぎる → 45度で十分。それ以上は腰が代償する","体が後ろに倒れる → 壁に背中をつけてやると分かる"],
+    prg:"チューブを膝上に巻くと負荷が上がる。ゴムバンドは数百円で買える。" },
+
+  { nm:"サイドステップ", goal:"立位で中臀筋を使う練習", dose:"10歩×左右2往復",
+    how:["軽く膝を曲げ、腰を落とした姿勢を作る",
+         "その高さを保ったまま、横に10歩進む",
+         "上体を起こさず、同じ高さのまま戻る"],
+    chk:["お尻の外側が働いている","上下に弾んでいない","つま先と膝が同じ方向を向いている"],
+    mis:["歩くたびに上下する → 高さを固定する","膝が内に入る → ここが直したい癖そのもの"],
+    prg:"膝上にチューブを巻く。走る前の準備としても使える（その場合は軽く）。" }
+]},
+
+{ tag:"Priority 2", name:"ヒラメ筋・腓腹筋", color:"var(--calf)", why:"アキレス腱を守る",
+  aim:"接地のたびにアキレス腱には体重の6〜8倍の力がかかります。腱は伸ばしても強くならず、重い負荷をゆっくりかけたときだけ耐えられる量が増えます。膝を伸ばす版と曲げる版の両方が必要です。",
+  ex:[
+  { nm:"カーフレイズ｜膝を伸ばす", goal:"腓腹筋", dose:"12〜15回×2〜3",
+    how:["腰幅に立つ。つま先はまっすぐ前",
+         "壁か椅子に指先を触れる（体重は預けない）",
+         "膝を伸ばしたまま固定し、3秒かけてかかとを上げる",
+         "3秒かけて下ろす。<strong>足裏が床についたところで止める</strong>",
+         "床より下にかかとを落とさない"],
+    chk:["一番上で足の指がリラックスしている","母指球に圧を感じる","かかとが真上に上がり、外に逃げない","膝の角度が最初から最後まで変わらない"],
+    mis:["前ももが張る → どこかで膝が曲げ伸ばしされている。膝を固定する","一番上で指が床を掴む → 上げすぎ。支点が指に移っている","かかとが外に逃げる → 回外。母指球に乗せ直す","反動を使う → 3秒かければ反動は使えない"],
+    prg:"15回×3が余裕になったらリュックに2〜3kg。その後は片脚へ。" },
+
+  { nm:"カーフレイズ｜膝を曲げる", goal:"ヒラメ筋（長距離で最重要）", dose:"12〜15回×2〜3",
+    how:["腰幅に立ち、膝を20〜30度曲げる",
+         "<strong>その角度を保ったまま</strong>、3秒かけてかかとを上げる",
+         "3秒かけて下ろす。床で止める",
+         "動作中、膝の角度は一切変えない"],
+    chk:["ふくらはぎの下の方（深い層）に効いている","膝の角度が動いていない","前ももが張っていない"],
+    mis:["曲げ伸ばしの動作をしてしまう → これはスクワットになる。曲げた「姿勢」を保つだけ","角度が浅い → 20度以上曲げないとヒラメ筋に入らない"],
+    prg:"こちらの方が地味だが、長距離では膝を伸ばす版より重要。省略しない。" }
+]},
+
+{ tag:"Priority 3", name:"大臀筋・ハムストリングス", color:"var(--power)", why:"推進力",
+  aim:"股関節を後ろに伸ばす力が、そのまま前に進む力になります。ふくらはぎ主導から股関節主導へ移すには、ここが仕事を引き受けられる状態が必要です。",
+  ex:[
+  { nm:"シングルレッグ・ヒップリフト", goal:"大臀筋・ハムストリングス", dose:"左右10回×2",
+    how:["仰向けに寝て、片膝を立てる。もう片脚は伸ばすか軽く浮かせる",
+         "立てた脚のかかとで床を押し、お尻を持ち上げる",
+         "一番上で1秒止める。肩から膝まで一直線",
+         "ゆっくり下ろす。床につく寸前で止めて次へ"],
+    chk:["お尻に効いている","腰が反っていない","骨盤が左右に傾いていない"],
+    mis:["腰が張る → お尻ではなく腰で持ち上げている。肋骨を締めて骨盤を立てる","ハムだけが攣りそうになる → お尻を先に締めてから上げる","骨盤が浮いている側に落ちる → 中臀筋の弱さ。Priority 1 に戻る"],
+    prg:"両脚のヒップリフトから始めて、安定したら片脚へ。さらに進めるなら足を台に乗せる。" },
+
+  { nm:"ランジ", goal:"内転筋・臀筋・大腿四頭筋", dose:"左右10回×2",
+    how:["足を前後に開き、後ろ脚の膝を床に近づける",
+         "上体はまっすぐ。前の膝はつま先より前に出しすぎない",
+         "前脚のかかとで床を押して戻る"],
+    chk:["前脚のお尻と内ももに効いている","膝が内に入っていない"],
+    mis:["<strong>走る前にやる</strong> → 最大の間違い。筋損傷を起こしてから走ることになる","膝が内に倒れる → 中臀筋が効いていない"],
+    prg:"月曜専用。翌日は火曜のポイント練習なので、回復時間が取れる配置になっている。" }
+]},
+
+{ tag:"Priority 4", name:"体幹・腸腰筋", color:"var(--core)", why:"座る時間への対抗",
+  aim:"長時間座ると股関節の前が縮み、股関節を後ろに伸ばせなくなります。走りの推進力そのものが削られるので、デスクワークがある限り毎週の対処が必要です。",
+  ex:[
+  { nm:"デッドバグ", goal:"体幹を固める（腰を反らせない）", dose:"左右10回×2",
+    how:["仰向けで、腕を天井に伸ばし、膝と股関節を90度に曲げる",
+         "腰と床の隙間をなくす（肋骨を締める）",
+         "その状態を保ったまま、対角の手と脚をゆっくり伸ばす",
+         "床につく寸前で戻す。反対側へ"],
+    chk:["腰が床から浮かない","お腹の深いところが働いている","呼吸が止まっていない"],
+    mis:["腰が浮く → 脚を伸ばす範囲を小さくする","息を止める → 吐きながら伸ばす"],
+    prg:"腰を浮かせずに完全に伸ばせるようになったら、伸ばした位置で2秒止める。" },
+
+  { nm:"レッグレイズ", goal:"腸腰筋", dose:"12〜15回×2",
+    how:["仰向けで両脚を伸ばす。手はお尻の下か体側",
+         "腰を床に押しつけたまま、両脚を揃えてゆっくり上げる",
+         "45〜60度まで上げたら、ゆっくり下ろす",
+         "床につく寸前で止めて次へ"],
+    chk:["腰が浮かない","股関節の前側に効いている"],
+    mis:["腰が反る → 膝を曲げた状態から始める","勢いで振り上げる → ゆっくり"],
+    prg:"腰が浮くなら片脚ずつ。楽になったら脚を伸ばしたまま、下ろす範囲を広げる。" },
+
+  { nm:"プランク", goal:"体幹全体", dose:"45〜60秒×2",
+    how:["肘とつま先で体を支える","頭からかかとまで一直線","お尻を締め、肋骨を締める"],
+    chk:["お尻が上がっても下がってもいない","肩がすくんでいない"],
+    mis:["時間を伸ばすことが目的になる → 形が崩れたら終了。90秒より、45秒を正しく"],
+    prg:"時間を伸ばすより、片脚を浮かせるなど不安定要素を足す方が効く。" }
+]}
+];
+
+(function(){
+  var html = "";
+  GROUPS.forEach(function(g){
+    html += '<div class="grp" style="--gc:' + g.color + '">'
+      + '<div class="grp-hd"><span class="tag">' + g.tag + '</span>'
+      + '<h3>' + g.name + '</h3><span class="why">' + g.why + '</span></div>'
+      + '<p class="grp-aim">' + g.aim + '</p>';
+    g.ex.forEach(function(e){
+      html += '<details class="ex"><summary>'
+        + '<span class="nm">' + e.nm + '<em class="goal">' + e.goal + '</em></span>'
+        + '<span class="dose">' + e.dose + '</span><span class="chev"></span></summary>'
+        + '<div class="ex-body">'
+        + '<div class="blk full"><h5>手順</h5><ol>'
+        + e.how.map(function(x){ return '<li>' + x + '</li>'; }).join("") + '</ol></div>'
+        + '<div class="blk check"><h5>できている合図</h5><ul>'
+        + e.chk.map(function(x){ return '<li>' + x + '</li>'; }).join("") + '</ul></div>'
+        + '<div class="blk miss"><h5>よくある間違い</h5><ul>'
+        + e.mis.map(function(x){ return '<li>' + x + '</li>'; }).join("") + '</ul></div>'
+        + '<div class="blk prog full"><h5>進め方</h5><p>' + e.prg + '</p></div>'
+        + '</div></details>';
+    });
+    html += '</div>';
+  });
+  document.getElementById("groups").innerHTML = html;
+
+  function show(k, scroll){
+    k = (k === "str") ? "str" : "plan";
+    document.getElementById("tab-plan").hidden = (k !== "plan");
+    document.getElementById("tab-str").hidden  = (k !== "str");
+    Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(b){
+      b.classList.toggle("is-on", b.getAttribute("data-tab") === k);
+    });
+    /* srcdoc の iframe 内では replaceState が SecurityError を投げる。
+       URL が更新できないだけでタブ切り替え自体は成立するので、握りつぶす */
+    try{ if(history.replaceState) history.replaceState(null, "", "#" + k); }catch(e){}
+    if(scroll) window.scrollTo(0, 0);
+  }
+  document.getElementById("tabs").addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest(".tab") : null;
+    if(b) show(b.getAttribute("data-tab"), true);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-goto]"), function(a){
+    a.addEventListener("click", function(e){ e.preventDefault(); show(a.getAttribute("data-goto"), true); });
+  });
+  function hash(){ try{ return (location.hash || "").replace("#",""); }catch(e){ return ""; } }
+  window.addEventListener("hashchange", function(){ show(hash(), true); });
+  show(hash(), false);   /* 再読み込みでタブが保持される */
 })();
 </script>
 </body>
