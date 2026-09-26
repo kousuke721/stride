@@ -630,7 +630,13 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       <li>ランジ 左右10回×2（走る前は不可）</li>
       <li>カーフレイズ 2種（膝伸ばし／膝曲げ）各12〜15回×2〜3</li>
     </ul></div>
-    <div class="card"><h4>姿勢（上半身）</h4><ul>
+    <div class="card"><h4>やらないこと</h4><ul>
+<li>走る前のランジ・スクワット（筋損傷を作ってから走ることになる）</li>
+<li>走る前の静的ストレッチ（直後は出力が落ちる）</li>
+<li>段差でかかとを落とすカーフレイズ（アキレス腱の付着部を圧迫する）</li>
+<li>腸脛靭帯そのものへのフォームローラー（この組織は伸びない）</li>
+</ul></div>
+<div class="card"><h4>姿勢（上半身）</h4><ul>
       <li>胸椎伸展ストレッチ 60秒</li>
       <li>肩甲骨の寄せ 15回×2</li>
       <li>壁に背をつけたバンザイ 10回</li>
@@ -639,7 +645,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   </div>
 </section>
 
-<section>
+<section id="secStop">
   <h2><span class="n">06</span>止めどき・下げどき</h2>
   <p class="lede">計画通りに進まない週が必ず出ます。<strong>そのとき何を削って何を守るかを、先に決めておきます。</strong></p>
 
@@ -1136,7 +1142,8 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     });
     /* 期ではないので、区切りを入れて見分けられるようにする */
     hd += '<span class="sep"></span>'
-        + '<button type="button" class="sup" data-ph="secSupport">補強と故障予防</button>';
+        + '<button type="button" class="sup" data-ph="secSupport">補強と故障予防</button>'
+        + '<button type="button" class="sup" data-ph="secStop">止めどき・下げどき</button>';
     j.innerHTML = hd;
     j.addEventListener("click", function(e){
       var b = e.target && e.target.closest ? e.target.closest("button[data-ph]") : null;
