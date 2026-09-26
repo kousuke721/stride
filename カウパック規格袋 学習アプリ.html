@@ -1532,7 +1532,8 @@ const WKQ=[
        :`${p.n} は冷凍<b>非対応</b>。${FRZNG().length}製品しかない少数派です。`,tag:p.area};}},
  {g:"バリア",make(){const p=rnd(P);const a=p.bar?"持つ":"持たない";
    return {q:`${p.n} はガスバリア性を持つ？`,a,o:["持つ","持たない"],
-     e:`${p.matS[0][1]}<br>${p.bar?"バリア層あり（バリアONY・アルミ箔・蒸着のいずれか）":"ONY＋LLDPEだけなのでバリアなし"}`,
+     e:`${p.matS[0][1]}<br>${p.bar?"<b>バリアONY・アルミ箔・蒸着</b>のいずれかが入っている＝バリアあり"
+       :"<b>バリアONY・アルミ箔・蒸着のどれも入っていない</b>＝バリアなし"}`,
      tag:p.area};}},
  {g:"バリア",make(){const p=rnd(P);const a=p.bar?"使える":"使えない";
    return {q:`${p.n} に脱酸素剤は使える？`,a,o:["使える","使えない"],
@@ -1553,19 +1554,25 @@ const WKQ=[
      tag:`${esc(r.cat)}／${vs.length}択`};}},
  {g:"見た目",make(){const p=rnd(P);const a=NOTCH(p);
    return {q:`${p.n} のノッチは？`,a,o:shuf(["頭から25mm","頭から30mm","注ぎ口付き","ノッチなし"]),
-     e:p.area==="夢パック"?`夢パックは注ぎ口があるのでノッチなし。`
-       :`${p.notch||"記載なし"}<br>三方シール袋は25mm、スタンド袋は30mmが標準。`,
+     e:p.area==="夢パック"?`夢パックは注ぎ口があるのでノッチなし。34製品すべてに記載がありません。`
+       :`${p.notch||"記載なし"}<br><b>三方シール袋は25mm、スタンド袋は30mm</b>が標準。
+       例外は3つ。<b>GPZ</b>は三方なのに30mm、<b>TP-R</b>はレーザー加工、<b>GZ</b>はノッチなし。`,
      tag:p.area};}},
  {g:"見た目",make(){const c=P.filter(x=>/^(5|8|10)mm$/.test(x.seal));if(!c.length)return null;
    const p=rnd(c);const a=p.seal;
    const pool=[...new Set(c.map(x=>x.seal))];
    return {q:`${p.n} のサイドシール幅は？`,a,
      o:shuf([a,...shuf(pool.filter(x=>x!==a)).slice(0,3)]),
-     e:`${p.n}　${p.seal}<br>三方シール袋の標準は10mm。5mmはNPU2だけです。`,tag:p.area};}},
- {g:"見た目",make(){const p=rnd(P.filter(x=>x.cc));
-   const a=/4カ所/.test(p.cc)?"4カ所":(/3カ所/.test(p.cc)?"3カ所":"記載なし");
+     e:`${p.n}　${p.seal}<br><b>三方シール袋は10mm、スタンド袋は5mm</b>で標準が逆。
+       例外はNPU2（三方なのに5mm）とTP-H（スタンドなのに8mm）の2つだけ。ガゼット袋のGZは10mm。`,tag:p.area};}},
+ {g:"見た目",make(){const c=P.filter(x=>x.cc||/下2カ所/.test(x.notch));const p=rnd(c);
+   const src=p.cc||p.notch;
+   const a=/4カ所/.test(src)?"4カ所":(/下2カ所/.test(src)?"下2カ所":(/3カ所/.test(src)?"3カ所":"記載なし"));
+   const n3=P.filter(x=>/3カ所/.test(x.cc)).length,n4=P.filter(x=>/4カ所/.test(x.cc)).length,
+     n2=P.filter(x=>/下2カ所/.test(x.notch)).length;
    return {q:`${p.n} のコーナーカットは何カ所？`,a,o:["4カ所","3カ所","下2カ所","記載なし"],
-     e:`${p.n}　${esc(p.cc)}<br>注ぎ口がある側は切らないので、1ピースや-Cは3カ所になります。`,tag:p.area};}},
+     e:`${p.n}　${esc(src)}<br><b>4カ所が標準</b>（${n4}製品）。注ぎ口の側は切らないため
+       <b>3カ所</b>になるものが${n3}製品、スタンド袋は底側の<b>下2カ所</b>が${n2}製品。`,tag:p.area};}},
 ];
 function wkDrill(h){
   const pool=wkSet==="全部"?WKQ:WKQ.filter(x=>x.g===wkSet);

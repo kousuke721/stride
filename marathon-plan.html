@@ -223,6 +223,33 @@ strong{font-weight:700;color:var(--ink)}
   font-variant-numeric:tabular-nums;white-space:nowrap}
 .phase-aim{margin-top:11px;font-size:13.5px;color:var(--ink-2);max-width:64ch}
 .wk.now{background:var(--indigo-soft);box-shadow:inset 3px 0 0 var(--indigo)}
+/* ===== 今日のメニュー ＋ 期へのジャンプ ===== */
+.today{margin-top:26px;background:var(--surface);border:1px solid var(--rule-strong);
+  border-left:3px solid var(--indigo);border-radius:4px;padding:15px 18px}
+.today-hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;
+  font-family:var(--cond);font-size:12px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3)}
+.today-hd b{color:var(--indigo);font-size:14px;letter-spacing:.08em}
+.today-hd .wkname{margin-left:auto;letter-spacing:.04em;text-transform:none;font-size:12.5px}
+.today-menu{display:grid;grid-template-columns:46px 1fr;gap:11px;align-items:baseline;
+  margin-top:11px;font-size:14.5px;line-height:1.7}
+.today-menu em{font-style:normal;color:var(--ink-3);font-size:12.5px;display:block;margin-top:2px}
+.today-go{appearance:none;background:none;border:0;padding:8px 0 0;cursor:pointer;
+  font-family:var(--sans);font-size:13px;font-weight:700;color:var(--indigo)}
+.today-go:hover{color:var(--ink)}
+.jump{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;align-items:center}
+.jump .lbl{font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.12em;
+  color:var(--ink-3);text-transform:uppercase;margin-right:2px}
+.jump button{appearance:none;background:var(--surface);cursor:pointer;
+  border:1px solid var(--rule-strong);border-left:2px solid var(--jc,var(--rule-strong));
+  border-radius:3px;padding:5px 10px;font-family:var(--sans);font-size:12.5px;
+  font-weight:700;color:var(--ink-2);transition:color .12s,border-color .12s}
+.jump button:hover{color:var(--ink);border-color:var(--ink-3);border-left-color:var(--jc)}
+@media (max-width:560px){
+  .today{padding:13px 14px}
+  .today-menu{grid-template-columns:40px 1fr;gap:9px;font-size:14px}
+  .today-hd .wkname{margin-left:0;width:100%}
+}
 /* 開いている週を枠で示す。タッチでも出るので端末を選ばない */
 .wk[open]{outline:1.5px solid #5E4780;outline-offset:-1.5px;border-radius:3px}
 .wk.now[open]{outline:2px solid var(--indigo);outline-offset:-2px}
@@ -254,6 +281,12 @@ details.wk[open]{background:var(--surface-2)}
 .dayrow{display:grid;grid-template-columns:34px 46px 1fr;gap:10px;align-items:baseline;
   padding:7px 0;border-top:1px dashed var(--rule)}
 .dayrow:first-child{border-top:1px solid var(--rule-strong)}
+/* 当日の行。背景は期ごとの色を暗く落としたもの */
+.dayrow.today{background:var(--tc);box-shadow:inset 3px 0 0 var(--pc);
+  margin-inline:-11px;padding-inline:11px;border-radius:3px;
+  border-top-color:transparent}
+.dayrow.today + .dayrow{border-top-color:transparent}
+.dayrow.today .d{color:var(--pc)}
 .dayrow .d{font-family:var(--cond);font-size:14px;font-weight:700;color:var(--ink-2)}
 .chip{font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.08em;
   text-transform:uppercase;padding:2px 0;border-radius:3px;text-align:center;
@@ -440,6 +473,9 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 </nav>
 
 <div class="tabpane" id="tab-plan">
+
+<div id="todayBox"></div>
+<div class="jump" id="jump"></div>
 
 <section>
   <h2><span class="n">01</span>現在地</h2>
@@ -796,7 +832,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   /* ---------- 22週データ ----------
      fx = ロング走以外の固定距離(km) / lr = ロング走の時間(分) {e:Eペース, m:Mペース} */
   var PHASES = [
-    { n:"Phase 1", name:"基礎再構築", c:"#339C77", bc:"#199E70", rc:"#1E624B", wk:"W1–W4 ／ 9月21日 – 10月18日",
+    { n:"Phase 1", name:"基礎再構築", c:"#339C77", bc:"#199E70", tc:"#102F25", rc:"#1E624B", wk:"W1–W4 ／ 9月21日 – 10月18日",
       aim:"週間距離を戻しながら、Tペースの刺激に体を慣らす。ここで無理に速く走る必要はまったくない。W1のTTが全ての基準になる。",
       weeks:[
       { n:1, d:"9/21 – 9/27", fx:30, lr:{e:90}, t:"現在地の測定",
@@ -833,7 +869,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["土","休","rest","休養"],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="100"></span> <span class="p p-E" data-p="E"></span><em>回復週。落とすことに罪悪感を持たない</em>']] }
     ]},
-    { n:"Phase 2", name:"LT構築", c:"#D9724A", bc:"#D95926", rc:"#87452C", wk:"W5–W8 ／ 10月19日 – 11月15日",
+    { n:"Phase 2", name:"LT構築", c:"#D9724A", bc:"#D95926", tc:"#412317", rc:"#87452C", wk:"W5–W8 ／ 10月19日 – 11月15日",
       aim:"火曜のクルーズインターバルで閾値の滞在時間を伸ばす。マラソンのタイムを最も直接的に決めるのがこの能力。ロング走は130分まで、全てEペース。",
       weeks:[
       { n:5, d:"10/19 – 10/25", fx:32, lr:{e:115}, t:"クルーズインターバル開始",
@@ -869,7 +905,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["土","E","E",'Eジョグ 5km ＋ 流し100m×4'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="100"></span> <span class="p p-E" data-p="E"></span>']] }
     ]},
-    { n:"Phase 3", name:"Mペース導入", c:"#5B98E3", bc:"#3987E5", rc:"#375E8E", wk:"W9–W12 ／ 11月16日 – 12月13日",
+    { n:"Phase 3", name:"Mペース導入", c:"#5B98E3", bc:"#3987E5", tc:"#1C2F45", rc:"#375E8E", wk:"W9–W12 ／ 11月16日 – 12月13日",
       aim:"ロング走の後半にMペースを入れ始める。週の強度は火曜のT走と日曜のロング走の2本に集約し、土曜は完全に回復に回す。W12のハーフTTで最終目標を確定する。",
       weeks:[
       { n:9, d:"11/16 – 11/22", fx:42, lr:{e:115}, t:"ロング走に質を入れ始める",
@@ -906,7 +942,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["土","E","E","Eジョグ 4km（脚の確認だけ）"],
               ["日","TT","key",'<strong>ハーフTT 21.1km</strong>　W/U 2km ＋ 本番 ＋ C/D 2km（計25km）<em>レースにエントリーできればなお良い。ハーフタイム×2＋10分がフル予想</em>']] }
     ]},
-    { n:"Phase 4", name:"マラソン特異期", c:"#C79128", bc:"#C98500", rc:"#7D5A16", wk:"W13–W16 ／ 12月14日 – 1月10日",
+    { n:"Phase 4", name:"マラソン特異期", c:"#C79128", bc:"#C98500", tc:"#3C2C0D", rc:"#7D5A16", wk:"W13–W16 ／ 12月14日 – 1月10日",
       aim:"レースペースを体に覚えさせる。ロング走の後半にMペースを組み込み、「疲れた脚でレースペースを刻む」感覚をつくる。この期が本番の結果を決める。",
       weeks:[
       { n:13, d:"12/14 – 12/20", fx:46, lr:{e:115,m:35}, t:"Mペース走を開始",
@@ -942,7 +978,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["土","E","E","Eジョグ 8km"],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="150"></span> <span class="p p-E" data-p="E"></span><em>回復週なのでMペースは入れない。年末年始が潰れたらW15と入れ替え</em><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 2個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] }
     ]},
-    { n:"Phase 5", name:"仕上げ", c:"#A78BCC", bc:"#8249CC", rc:"#593C7E", wk:"W17–W19 ／ 1月11日 – 1月31日",
+    { n:"Phase 5", name:"仕上げ", c:"#A78BCC", bc:"#8249CC", tc:"#2C1F3D", rc:"#593C7E", wk:"W17–W19 ／ 1月11日 – 1月31日",
       aim:"最大の負荷をかける3週間。W18の180分走（後半60分がMペース）がこの計画の上限で、これ以上は伸ばさない。ここを越えたら、あとは疲労を抜くだけ。",
       weeks:[
       { n:17, d:"1/11 – 1/17", fx:50, lr:{e:115,m:55}, t:"距離のピーク",
@@ -971,7 +1007,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["土","E","E",'Eジョグ 8km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="100" data-m="30"></span>　前半100分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半30分をMペース</strong> <span class="p p-M" data-p="M"></span>']] }
     ]},
-    { n:"Taper", name:"調整", c:"#8A898F", bc:"#6E6B78", rc:"#45444A", wk:"W20–W22 ／ 2月1日 – 2月21日",
+    { n:"Taper", name:"調整", c:"#8A898F", bc:"#6E6B78", tc:"#222124", rc:"#45444A", wk:"W20–W22 ／ 2月1日 – 2月21日",
       aim:"距離だけを落とし、強度は最後まで残す。走らないと不安になるが、ここで走りすぎると本番で脚が残らない。「物足りない」が正解。",
       weeks:[
       { n:20, d:"2/1 – 2/7", fx:35, lr:{e:75,m:20}, t:"テーパー開始（量−35%）",
@@ -1014,6 +1050,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   var LEFT = dayDiff(new Date(), RACE);
   var WLEFT = Math.max(0, Math.ceil(LEFT / 7));
   var CURW = Math.min(22, Math.max(1, Math.floor(dayDiff(START, new Date()) / 7) + 1));
+  var TODAY_I = ((dayDiff(START, new Date()) % 7) + 7) % 7;   /* 0=月 … 6=日 */
 
   document.getElementById("statDays").textContent  = Math.max(0, LEFT);
   document.getElementById("statWeeks").textContent = WLEFT;
@@ -1025,7 +1062,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   /* ---------- render ---------- */
   var html = "";
   PHASES.forEach(function(ph){
-    html += '<div class="phase" style="--pc:' + ph.c + '">'
+    html += '<div class="phase" style="--pc:' + ph.c + ';--tc:' + ph.tc + '">'
       + '<div class="phase-hd"><span class="ph-n">' + ph.n + '</span><h3>' + ph.name + '</h3>'
       + '<span class="ph-km" data-ph="' + PHASES.indexOf(ph) + '"></span>'
       + '<span class="ph-w">' + ph.wk + '</span></div>'
@@ -1039,8 +1076,10 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         + '<span class="wk-d">' + w.d + '</span></span>'
         + '<span class="wk-km" data-w="' + w.n + '">—</span></summary>'
         + '<div class="wk-body">';
-      w.days.forEach(function(d){
-        html += '<div class="dayrow"><span class="d">' + d[0] + '</span>'
+      w.days.forEach(function(d, dix){
+        var isToday = (w.n === CURW && dix === TODAY_I && LEFT >= 0);
+        html += '<div class="dayrow' + (isToday ? ' today' : '') + '">'
+          + '<span class="d">' + d[0] + '</span>'
           + '<span class="chip c-' + d[2] + '">' + d[1] + '</span>'
           + '<span class="m">' + d[3] + '</span></div>';
       });
@@ -1050,6 +1089,49 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     html += '</div>';
   });
   document.getElementById("phases").innerHTML = html;
+
+  /* ---------- 今日のメニュー ---------- */
+  (function(){
+    var box = document.getElementById("todayBox");
+    if(LEFT < 0){ box.innerHTML = ""; return; }           /* レース後は出さない */
+    var di = TODAY_I;
+    var wk = null;
+    PHASES.forEach(function(ph){ ph.weeks.forEach(function(w){ if(w.n === CURW) wk = w; }); });
+    if(!wk || !wk.days[di]){ box.innerHTML = ""; return; }
+    var d = wk.days[di];
+    var now = new Date();
+    box.innerHTML = '<div class="today"><div class="today-hd">'
+      + '<b>今日</b><span>' + (now.getMonth()+1) + '月' + now.getDate() + '日(' + d[0] + ')</span>'
+      + '<span class="wkname">W' + wk.n + '　' + wk.t + '</span></div>'
+      + '<div class="today-menu"><span class="chip c-' + d[2] + '">' + d[1] + '</span>'
+      + '<span>' + d[3] + '</span></div>'
+      + '<button class="today-go" type="button" id="goWeek">今週の詳細へ ↓</button></div>';
+    document.getElementById("goWeek").addEventListener("click", function(){
+      var el = document.querySelector(".wk.now");
+      if(!el) return;
+      el.open = true;
+      el.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  })();
+
+  /* ---------- 期へのジャンプ ---------- */
+  (function(){
+    var j = document.getElementById("jump");
+    var hd = '<span class="lbl">期へ移動</span>';
+    document.querySelectorAll("#phases .phase").forEach(function(el, i){
+      el.id = "ph" + i;
+      var ph = PHASES[i];
+      hd += '<button type="button" data-ph="ph' + i + '" style="--jc:' + ph.bc + '">'
+          + ph.name + '</button>';
+    });
+    j.innerHTML = hd;
+    j.addEventListener("click", function(e){
+      var b = e.target && e.target.closest ? e.target.closest("button[data-ph]") : null;
+      if(!b) return;
+      var t = document.getElementById(b.getAttribute("data-ph"));
+      if(t) t.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  })();
 
   document.getElementById("bars").innerHTML = ALL.map(function(o){
     return '<div class="bar' + (o.w.rec ? ' rec' : '') + '" data-w="' + o.w.n
