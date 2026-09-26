@@ -23,7 +23,7 @@ img{max-width:100%}
   --rule:#2C2936; --rule-strong:#3E3A4D;
   --indigo:#A26BEE; --indigo-soft:#251C36;
   --bar:#5E5972; --bar-rec:#332F41;
-  --rest:#8B8794; --easy:#6FBF97; --mp:#E0B152; --thr:#E68A63; --intv:#E0708B;
+  --rest:#918D9B; --easy:#6FBF97; --mp:#E0B152; --thr:#E68A63; --intv:#E0708B;
   --rest-bg:#26242F; --easy-bg:#1B2E26; --mp-bg:#31281B; --thr-bg:#33231B; --intv-bg:#331D24;
   --shadow:0 1px 2px rgba(0,0,0,.45), 0 8px 24px -12px rgba(0,0,0,.65);
   --sans:"Zen Kaku Gothic New",-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
@@ -43,6 +43,9 @@ header{padding-block:44px 30px;border-bottom:2px solid var(--ink)}
 .eyebrow{font-family:var(--cond);font-size:14px;font-weight:600;letter-spacing:.16em;
   text-transform:uppercase;color:var(--indigo);margin-bottom:12px}
 h1{font-size:clamp(30px,7vw,46px);font-weight:900;letter-spacing:-.01em}
+h1 span{display:inline-block}
+/* 320px級では30pxだと「スタートラインまで、」が1行に収まらない */
+@media (max-width:360px){ h1{font-size:25px} }
 .sub{margin-top:14px;color:var(--ink-2);font-size:15px}
 .hdr-stats{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:22px;align-items:flex-end}
 .hstat{display:flex;flex-direction:column;gap:1px}
@@ -234,22 +237,27 @@ strong{font-weight:700;color:var(--ink)}
 .today-menu{display:grid;grid-template-columns:46px 1fr;gap:11px;align-items:baseline;
   margin-top:11px;font-size:14.5px;line-height:1.7}
 .today-menu em{font-style:normal;color:var(--ink-3);font-size:12.5px;display:block;margin-top:2px}
-.today-go{appearance:none;background:none;border:0;padding:8px 0 0;cursor:pointer;
-  font-family:var(--sans);font-size:13px;font-weight:700;color:var(--indigo)}
-.today-go:hover{color:var(--ink)}
+/* 毎日押すボタンなので、文字だけ(26px)ではなく枠のあるタップ領域にする */
+.today-go{appearance:none;background:none;cursor:pointer;display:block;width:100%;
+  margin-top:13px;min-height:40px;padding:10px 12px;
+  border:1px solid var(--rule-strong);border-radius:4px;
+  font-family:var(--sans);font-size:13.5px;font-weight:700;color:var(--indigo);
+  transition:border-color .12s,background .12s}
+.today-go:hover{border-color:var(--indigo);background:var(--indigo-soft)}
+.today-go:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
 .jump{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;align-items:center}
-.jump .sep{width:1px;height:18px;background:var(--rule-strong);margin:0 4px}
-.jump button.sup{border-left-color:var(--indigo);color:var(--ink)}
+/* 縦線ではなく改行として使う。折り返しで行末に取り残されないし、
+   期(6つ)と節(2つ)が別の行に分かれるので、枠の色が近くても group が読める */
+.jump .sep{flex-basis:100%;height:0;margin:0}
+.jump button.sup{border-left-color:var(--indigo)}
 .jump button.sup:hover{border-left-color:var(--indigo)}
 .jump button{appearance:none;background:var(--surface);cursor:pointer;
   border:1px solid var(--rule-strong);border-left:2px solid var(--jc,var(--rule-strong));
   border-radius:3px;padding:5px 10px;font-family:var(--sans);font-size:12.5px;
-  font-weight:700;color:var(--ink-2);transition:color .12s,border-color .12s}
+  font-weight:700;color:var(--ink);transition:color .12s,border-color .12s}
 .jump button:hover{color:var(--ink);border-color:var(--ink-3);border-left-color:var(--jc)}
 @media (max-width:560px){
   /* 折り返すと区切り線が行末に取り残されるので隠す。紫の縁で見分けはつく */
-  .jump .sep{display:none}
-  .jump button.sup{margin-top:2px}
   .today{padding:13px 14px}
   .today-menu{grid-template-columns:40px 1fr;gap:9px;font-size:14px}
   .today-hd .wkname{margin-left:0;width:100%}
@@ -290,7 +298,9 @@ details.wk[open]{background:var(--surface-2)}
   margin-inline:-11px;padding-inline:11px;border-radius:3px;
   border-top-color:transparent}
 .dayrow.today + .dayrow{border-top-color:transparent}
-.dayrow.today .d{color:var(--pc)}
+/* 期の色は背景と左の罫が持つ。曜日の文字までフェーズ色にすると
+   基礎再構築 4.2:1・LT構築 4.4:1 で AA に届かない */
+.dayrow.today .d{color:var(--ink)}
 .dayrow .d{font-family:var(--cond);font-size:14px;font-weight:700;color:var(--ink-2)}
 .chip{font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.08em;
   text-transform:uppercase;padding:2px 0;border-radius:3px;text-align:center;
@@ -327,7 +337,13 @@ details.wk[open]{background:var(--surface-2)}
   background:var(--rule);border:1px solid var(--rule);border-radius:4px;
   overflow:hidden;margin-top:22px}
 .card{background:var(--surface);padding:18px}
-.card h4{margin:0 0 8px;font-size:14px;font-weight:700}
+.card h4{margin:0 0 8px;font-size:14px;font-weight:700;
+  display:flex;align-items:baseline;gap:7px}
+/* ①〜④は補強ページの優先順位と同じ番号。姿勢とやらないことは順位の外なので番号なし。
+   色は帯で持たせる。数字そのものを色にすると --core(#8249CC) が10pxで3.1:1しか出ない */
+.card h4 i{flex:none;font-style:normal;font-family:var(--cond);font-size:15px;
+  font-weight:700;color:var(--ink);line-height:1;min-width:9px}
+.card.kc{box-shadow:inset 3px 0 0 var(--kc)}
 .card ul{margin:0;padding-left:17px;font-size:13.5px;color:var(--ink-2);line-height:1.7}
 .pagelink{font-weight:700;color:var(--indigo);text-decoration:none;
   border-bottom:1px solid var(--indigo);padding-bottom:1px}
@@ -344,7 +360,7 @@ details.wk[open]{background:var(--surface-2)}
 .tabpane[hidden]{display:none}
 .tabpane > section:first-child{margin-top:34px}
 /* 部位ごとの色。強度を示す色とは役割が違うので別の色相を使う */
-:root{--glute:#3987E5;--calf:#199E70;--power:#C98500;--core:#8249CC;--no:#D95926}
+:root{--glute:#3987E5;--calf:#199E70;--power:#C98500;--core:#8249CC;--no:#E06430}
 /* ---- 優先順位 ---- */
 .rank{margin-top:22px;border:1px solid var(--rule);border-radius:4px;overflow:hidden}
 .rank-row{display:grid;grid-template-columns:38px 1fr;gap:14px;padding:13px 16px;
@@ -370,8 +386,10 @@ details.wk[open]{background:var(--surface-2)}
 .grp{margin-top:34px}
 .grp-hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;
   padding-bottom:10px;border-bottom:2px solid var(--gc)}
+/* 色は見出し下の2px罫が持つ。11.5pxの文字に系列色を使うと
+   --core(#8249CC) が 3.3:1 しか出ず読めない */
 .grp-hd .tag{font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--gc)}
+  text-transform:uppercase;color:var(--ink-2)}
 .grp-hd h3{font-size:17px;font-weight:700}
 .grp-hd .why{margin-left:auto;font-size:12.5px;color:var(--ink-3)}
 .grp-aim{margin-top:11px;font-size:13.5px;color:var(--ink-2);max-width:64ch}
@@ -603,44 +621,44 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 
 <section id="secSupport">
   <h2><span class="n">05</span>補強と故障予防</h2>
-  <p class="lede">22週で週間距離をほぼ倍まで引き上げる計画です。<strong>補強は「余裕があればやる」ではなく必須メニュー</strong>として月曜と木曜に固定します。</p><p class="lede"><a class="pagelink" href="#str" data-goto="str">補強トレーニングのページ →</a><br><span class="pagelink-sub">種目ごとの手順・回数・よくある間違い・進め方を詳しく載せています</span></p>
+  <p class="lede">22週で週間距離をほぼ倍まで引き上げる計画です。<strong>補強は「余裕があればやる」ではなく必須メニュー</strong>として月曜と木曜に固定します。</p><p class="lede"><a class="pagelink" href="#str" data-goto="str">補強トレーニングのページ →</a><br><span class="pagelink-sub">種目ごとの手順・回数・よくある間違い・進め方を詳しく載せています。下のカードは①〜④が優先順位で、補強ページと同じ並びです</span></p>
 
   <div class="cards">
-    <div class="card"><h4>中臀筋（最優先）</h4><ul>
-<li>サイドプランク（膝の開閉）左右10回×2</li>
-<li>ヒップアブダクション（横向き）左右15回×2</li>
-<li>サイドステップ 10歩×左右2往復</li>
-<li>膝の外側の痛み・膝のブレはここに行き着く</li>
-</ul></div>
-<div class="card"><h4>腸腰筋（デスクワーク対策）</h4><ul>
-      <li>レッグレイズ 12〜15回×2</li>
-      <li>ニーアップ（立位・左右30秒×2）</li>
-      <li>腸腰筋ストレッチ 左右60秒</li>
-      <li>走る前のスイング動作 左右10回</li>
-    </ul></div>
-    <div class="card"><h4>体幹・呼吸</h4><ul>
-      <li>プランク 45〜60秒×2</li>
+    <div class="card kc" style="--kc:var(--glute)"><h4><i>1</i>中臀筋</h4><ul>
       <li>サイドプランク（膝の開閉）左右10回×2</li>
-      <li>デッドバグ 左右10回×2</li>
-      <li>息を吐き切って肋骨を締める呼吸 10回</li>
+      <li>ヒップアブダクション（横向き）左右15回×2</li>
+      <li>サイドステップ 10歩×左右2往復</li>
+      <li>膝の外側の痛み・膝のブレはここに行き着く</li>
     </ul></div>
-    <div class="card"><h4>臀筋・ハムストリング</h4><ul>
+    <div class="card kc" style="--kc:var(--calf)"><h4><i>2</i>ヒラメ筋・腓腹筋</h4><ul>
+      <li>カーフレイズ｜膝を伸ばす 12〜15回×2〜3</li>
+      <li>カーフレイズ｜膝を曲げる 12〜15回×2〜3</li>
+      <li>どちらも3秒上げ・3秒下げ。床より下には落とさない</li>
+      <li>アキレス腱には接地のたび体重の6〜8倍がかかる</li>
+    </ul></div>
+    <div class="card kc" style="--kc:var(--power)"><h4><i>3</i>大臀筋・ハムストリングス</h4><ul>
       <li>ヒップリフト 20回×2（片脚版へ進む前の段階）</li>
       <li>シングルレッグ・ヒップリフト 左右10回×2</li>
       <li>ランジ 左右10回×2（走る前は不可）</li>
-      <li>カーフレイズ 2種（膝伸ばし／膝曲げ）各12〜15回×2〜3</li>
+      <li>後半のペース維持はここの持久力で決まる</li>
     </ul></div>
-    <div class="card"><h4>やらないこと</h4><ul>
-<li>走る前のランジ・スクワット（筋損傷を作ってから走ることになる）</li>
-<li>走る前の静的ストレッチ（直後は出力が落ちる）</li>
-<li>段差でかかとを落とすカーフレイズ（アキレス腱の付着部を圧迫する）</li>
-<li>腸脛靭帯そのものへのフォームローラー（この組織は伸びない）</li>
-</ul></div>
-<div class="card"><h4>姿勢（上半身）</h4><ul>
+    <div class="card kc" style="--kc:var(--core)"><h4><i>4</i>体幹・腸腰筋</h4><ul>
+      <li>プランク 45〜60秒×2</li>
+      <li>デッドバグ 左右10回×2</li>
+      <li>レッグレイズ 12〜15回×2</li>
+      <li>腸腰筋ストレッチ 左右60秒（走った後）</li>
+    </ul></div>
+    <div class="card"><h4>姿勢（上半身）</h4><ul>
       <li>胸椎伸展ストレッチ 60秒</li>
       <li>肩甲骨の寄せ 15回×2</li>
       <li>壁に背をつけたバンザイ 10回</li>
       <li>走行中は肩を落として肩甲骨で腕を振る</li>
+    </ul></div>
+    <div class="card kc" style="--kc:var(--no)"><h4>やらないこと</h4><ul>
+      <li>走る前のランジ・スクワット（筋損傷を作ってから走ることになる）</li>
+      <li>走る前の静的ストレッチ（直後は出力が落ちる）</li>
+      <li>段差でかかとを落とすカーフレイズ（アキレス腱の付着部を圧迫する）</li>
+      <li>腸脛靭帯そのものへのフォームローラー（この組織は伸びない）</li>
     </ul></div>
   </div>
 </section>
@@ -791,7 +809,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 </section>
 
 <footer>
-  補強は「余裕があればやる」ではなく、走る量を増やすための前提条件です。月曜20分・木曜10分、週30分。これが22週続けば、走れる脚になります。
+  補強は「余裕があればやる」ではなく、走る量を増やすための前提条件です。月曜20分・木曜10分、週30分。これをテーパー前（W20）まで続ければ、走れる脚になります。
 </footer>
 
 </div>
@@ -856,7 +874,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","E","E",'Eジョグ 5km ＋ 流し100m×4（TT前日。脚を起こすだけ）'],
               ["水","TT","key",'<strong>10km TT</strong>　W/U 2km ＋ 本番10km ＋ C/D 2km<em>早朝に走る。日中は31℃予報で、昼に走ると結果が4分以上遅く出る</em>'],
-              ["木","E","E",'Eジョグ 5km（完全に回復のため）'],
+              ["木","E","E",'Eジョグ 5km＋補強10分（完全に回復のため）'],
               ["金","休","rest","完全休養"],
               ["土","E","E",'Eジョグ 6km ＋ 流し100m×4'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="90"></span> <span class="p p-E" data-p="E"></span>']] },
@@ -864,15 +882,15 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","T","T",'W/U 2km → <strong>T走 20分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計8km）'],
               ["水","E","E",'Eジョグ 8km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 7km"],
-              ["金","休","rest","休養 or 補強のみ"],
+              ["木","E","E","Eジョグ 7km＋補強10分"],
+              ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 5km ＋ 流し100m×4'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="100"></span> <span class="p p-E" data-p="E"></span><em>全部Eペース。後半ペースが落ちなければ成功</em>']] },
       { n:3, d:"10/5 – 10/11", fx:30, lr:{e:110}, t:"時間を伸ばす",
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","T","T",'W/U 2km → <strong>T走 25分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計9km）'],
               ["水","E","E",'Eジョグ 7km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 7km"],
+              ["木","E","E","Eジョグ 7km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 7km ＋ 流し100m×4'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="110"></span> <span class="p p-E" data-p="E"></span>']] },
@@ -880,7 +898,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","E","E","Eジョグ 8km（ポイント練習なし）"],
               ["水","E","E","Eジョグ 7km"],
-              ["木","休","rest","休養"],
+              ["木","休","rest","休養＋補強10分"],
               ["金","E","E",'Eジョグ 5km ＋ 流し100m×4'],
               ["土","休","rest","休養"],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="100"></span> <span class="p p-E" data-p="E"></span><em>回復週。落とすことに罪悪感を持たない</em>']] }
@@ -892,7 +910,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","T","T",'W/U 2km → <strong>T 8分×3</strong>（つなぎ90秒ジョグ）<span class="p p-T" data-p="T"></span> → C/D 2km（計10km）'],
               ["水","E","E",'Eジョグ 8km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 8km"],
+              ["木","E","E","Eジョグ 8km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 6km ＋ 流し100m×4'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="115"></span> <span class="p p-E" data-p="E"></span>']] },
@@ -900,7 +918,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","T","T",'W/U 2km → <strong>T 10分×3</strong>（つなぎ2分ジョグ）<span class="p p-T" data-p="T"></span> → C/D 2km（計11km）'],
               ["水","E","E",'Eジョグ 9km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 8km"],
+              ["木","E","E","Eジョグ 8km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 6km ＋ 流し100m×4'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="125"></span> <span class="p p-E" data-p="E"></span>']] },
@@ -908,7 +926,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","T","T",'W/U 2km → <strong>T走 30分 連続</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計11km）<em>分割せず一本で押せるかがPhase 2の到達点</em>'],
               ["水","E","E",'Eジョグ 10km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 9km"],
+              ["木","E","E","Eジョグ 9km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 6km ＋ 流し100m×4'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="130"></span> <span class="p p-E" data-p="E"></span>']] },
@@ -916,7 +934,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","T","T",'W/U 2km → <strong>T走 20分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計8km）'],
               ["水","E","E","Eジョグ 8km"],
-              ["木","E","E","Eジョグ 7km"],
+              ["木","E","E","Eジョグ 7km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 5km ＋ 流し100m×4'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="100"></span> <span class="p p-E" data-p="E"></span>']] }
@@ -928,7 +946,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","T","T",'W/U 2km → <strong>T走 35分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計12km）'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km"],
+              ["木","E","E","Eジョグ 10km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 9km ＋ <strong>流し100m×6</strong><em>土曜は完全にEペース。日曜のロング走に脚を残す</em>'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="115"></span> <span class="p p-E" data-p="E"></span><em>最後の20分だけ自然に上げる（ビルドアップ）。時計は見ない</em>']] },
@@ -936,7 +954,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","T","T",'W/U 2km → <strong>T走 40分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計13km）'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km"],
+              ["木","E","E","Eジョグ 10km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 9km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="105" data-m="25"></span>　前半105分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半25分をMペース</strong> <span class="p p-M" data-p="M"></span>']] },
@@ -944,7 +962,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","T","T",'W/U 2km → <strong>T走 40分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計13km）'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km"],
+              ["木","E","E","Eジョグ 10km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="30"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半30分をMペース</strong> <span class="p p-M" data-p="M"></span><em>初めての150分走。<strong>本題は補給を試すこと</strong>で、タイムは二の次。ジェルは60分と110分あたりで入れ、胃が受け付けるかを確かめる。水は最初の60分からこまめに。午前中に出て、午後は完全休養に充てる</em><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 2個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
@@ -953,7 +971,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","E","E","Eジョグ 8km"],
               ["水","E","E","Eジョグ 8km"],
-              ["木","休","rest","休養"],
+              ["木","休","rest","休養＋補強10分"],
               ["金","E","E",'Eジョグ 5km ＋ 流し100m×4'],
               ["土","E","E","Eジョグ 4km（脚の確認だけ）"],
               ["日","TT","key",'<strong>ハーフTT 21.1km</strong>　W/U 2km ＋ 本番 ＋ C/D 2km（計25km）<em>レースにエントリーできればなお良い。ハーフタイム×2＋10分がフル予想</em>']] }
@@ -965,7 +983,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 12km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計15km）<em>一定ペースなので夜でも可。時計を見ずに体感で刻む練習</em>'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km"],
+              ["木","E","E","Eジョグ 10km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="115" data-m="35"></span>　前半115分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半35分をMペース</strong> <span class="p p-M" data-p="M"></span><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 2個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
@@ -973,7 +991,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 14km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計17km）'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km"],
+              ["木","E","E","Eジョグ 10km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="40"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半40分をMペース</strong> <span class="p p-M" data-p="M"></span><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 2個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
@@ -981,7 +999,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 16km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計19km）'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km"],
+              ["木","E","E","Eジョグ 10km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="45"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半45分をMペース</strong> <span class="p p-M" data-p="M"></span><em>この計画で最も重要な練習形式。年末年始で潰れたらW16と入れ替える</em><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 3個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
@@ -989,7 +1007,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","E","E","Eジョグ 10km"],
               ["水","E","E","Eジョグ 9km"],
-              ["木","休","rest","休養"],
+              ["木","休","rest","休養＋補強10分"],
               ["金","E","E",'Eジョグ 7km ＋ 流し100m×4'],
               ["土","E","E","Eジョグ 8km"],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="150"></span> <span class="p p-E" data-p="E"></span><em>回復週なのでMペースは入れない。年末年始が潰れたらW15と入れ替え</em><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 2個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] }
@@ -1001,7 +1019,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 16km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計19km）'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km"],
+              ["木","E","E","Eジョグ 10km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="115" data-m="55"></span>　前半115分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半55分をMペース</strong> <span class="p p-M" data-p="M"></span><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 3個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
@@ -1010,7 +1028,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 14km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計17km）'],
               ["水","E","E",'Eジョグ 10km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 9km"],
+              ["木","E","E","Eジョグ 9km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 9km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="60"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半60分をMペース</strong> <span class="p p-M" data-p="M"></span><em>本番当日と同じ時間・同じ朝食・同じシューズ・同じ補給で走る</em><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 3個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
@@ -1018,7 +1036,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強20分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 12km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計15km）'],
               ["水","E","E",'Eジョグ 10km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 9km"],
+              ["木","E","E","Eジョグ 9km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 8km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="100" data-m="30"></span>　前半100分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半30分をMペース</strong> <span class="p p-M" data-p="M"></span>']] }
@@ -1030,7 +1048,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         days:[["月","休","rest","完全休養＋補強15分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 10km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計13km）'],
               ["水","E","E","Eジョグ 8km"],
-              ["木","E","E","Eジョグ 7km"],
+              ["木","E","E","Eジョグ 7km＋補強10分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 7km ＋ 流し100m×4'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="75" data-m="20"></span>　前半75分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半20分をMペース</strong> <span class="p p-M" data-p="M"></span>']] },
@@ -1067,13 +1085,16 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   var WLEFT = Math.max(0, Math.ceil(LEFT / 7));
   var CURW = Math.min(22, Math.max(1, Math.floor(dayDiff(START, new Date()) / 7) + 1));
   var TODAY_I = ((dayDiff(START, new Date()) % 7) + 7) % 7;   /* 0=月 … 6=日 */
+  var BEGUN  = dayDiff(START, new Date()) >= 0;                /* 計画が始まっているか */
 
   document.getElementById("statDays").textContent  = Math.max(0, LEFT);
   document.getElementById("statWeeks").textContent = WLEFT;
-  document.getElementById("hdrTitle").textContent =
-      LEFT >  0 ? "スタートラインまで、" + WLEFT + "週"
-    : LEFT === 0 ? "今日が本番です"
-    :              "熊本城マラソン2027 完走";
+  /* 狭い画面でカタカナの語中で改行されるため、意味のまとまりを
+     inline-block で包んで、そこでしか折り返さないようにする */
+  document.getElementById("hdrTitle").innerHTML =
+      LEFT >  0 ? "<span>スタートラインまで、</span><span>" + WLEFT + "週</span>"
+    : LEFT === 0 ? "<span>今日が本番です</span>"
+    :              "<span>熊本城マラソン2027</span> <span>完走</span>";
 
   /* ---------- render ---------- */
   var html = "";
@@ -1093,7 +1114,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         + '<span class="wk-km" data-w="' + w.n + '">—</span></summary>'
         + '<div class="wk-body">';
       w.days.forEach(function(d, dix){
-        var isToday = (w.n === CURW && dix === TODAY_I && LEFT >= 0);
+        var isToday = (w.n === CURW && dix === TODAY_I && LEFT >= 0 && BEGUN);
         html += '<div class="dayrow' + (isToday ? ' today' : '') + '">'
           + '<span class="d">' + d[0] + '</span>'
           + '<span class="chip c-' + d[2] + '">' + d[1] + '</span>'
@@ -1109,7 +1130,9 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   /* ---------- 今日のメニュー ---------- */
   (function(){
     var box = document.getElementById("todayBox");
-    if(LEFT < 0){ box.innerHTML = ""; return; }           /* レース後は出さない */
+    /* レース後だけでなく、計画開始前も「今日」は無い。
+       開始前は CURW が Math.max(1,…) で1に丸められ、W1月曜が誤って今日になる */
+    if(LEFT < 0 || dayDiff(START, new Date()) < 0){ box.innerHTML = ""; return; }           /* レース後は出さない */
     var di = TODAY_I;
     var wk = null;
     PHASES.forEach(function(ph){ ph.weeks.forEach(function(w){ if(w.n === CURW) wk = w; }); });
@@ -1340,7 +1363,9 @@ var GROUPS = [
   { nm:"プランク", goal:"体幹全体", dose:"45〜60秒×2",
     how:["肘とつま先で体を支える","頭からかかとまで一直線","お尻を締め、肋骨を締める"],
     chk:["お尻が上がっても下がってもいない","肩がすくんでいない"],
-    mis:["時間を伸ばすことが目的になる → 形が崩れたら終了。90秒より、45秒を正しく"],
+    mis:["時間を伸ばすことが目的になる → 形が崩れたら終了。90秒より、45秒を正しく",
+         "腰が反って反り腰になる → 恥骨を上に向けるイメージで骨盤を立てる",
+         "肩の真下から肘がずれる → 肘は肩の真下。前に出すと肩と首で支えることになる"],
     prg:"時間を伸ばすより、片脚を浮かせるなど不安定要素を足す方が効く。" }
 ]}
 ];
