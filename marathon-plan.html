@@ -238,14 +238,18 @@ strong{font-weight:700;color:var(--ink)}
   font-family:var(--sans);font-size:13px;font-weight:700;color:var(--indigo)}
 .today-go:hover{color:var(--ink)}
 .jump{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;align-items:center}
-.jump .lbl{font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.12em;
-  color:var(--ink-3);text-transform:uppercase;margin-right:2px}
+.jump .sep{width:1px;height:18px;background:var(--rule-strong);margin:0 4px}
+.jump button.sup{border-left-color:var(--indigo);color:var(--ink)}
+.jump button.sup:hover{border-left-color:var(--indigo)}
 .jump button{appearance:none;background:var(--surface);cursor:pointer;
   border:1px solid var(--rule-strong);border-left:2px solid var(--jc,var(--rule-strong));
   border-radius:3px;padding:5px 10px;font-family:var(--sans);font-size:12.5px;
   font-weight:700;color:var(--ink-2);transition:color .12s,border-color .12s}
 .jump button:hover{color:var(--ink);border-color:var(--ink-3);border-left-color:var(--jc)}
 @media (max-width:560px){
+  /* 折り返すと区切り線が行末に取り残されるので隠す。紫の縁で見分けはつく */
+  .jump .sep{display:none}
+  .jump button.sup{margin-top:2px}
   .today{padding:13px 14px}
   .today-menu{grid-template-columns:40px 1fr;gap:9px;font-size:14px}
   .today-hd .wkname{margin-left:0;width:100%}
@@ -597,7 +601,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   <div id="phases"></div>
 </section>
 
-<section>
+<section id="secSupport">
   <h2><span class="n">05</span>補強と故障予防</h2>
   <p class="lede">22週で週間距離をほぼ倍まで引き上げる計画です。<strong>補強は「余裕があればやる」ではなく必須メニュー</strong>として月曜と木曜に固定します。</p><p class="lede"><a class="pagelink" href="#str" data-goto="str">補強トレーニングのページ →</a><br><span class="pagelink-sub">種目ごとの手順・回数・よくある間違い・進め方を詳しく載せています</span></p>
 
@@ -1123,13 +1127,16 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   /* ---------- 期へのジャンプ ---------- */
   (function(){
     var j = document.getElementById("jump");
-    var hd = '<span class="lbl">期へ移動</span>';
+    var hd = "";
     document.querySelectorAll("#phases .phase").forEach(function(el, i){
       el.id = "ph" + i;
       var ph = PHASES[i];
       hd += '<button type="button" data-ph="ph' + i + '" style="--jc:' + ph.bc + '">'
           + ph.name + '</button>';
     });
+    /* 期ではないので、区切りを入れて見分けられるようにする */
+    hd += '<span class="sep"></span>'
+        + '<button type="button" class="sup" data-ph="secSupport">補強と故障予防</button>';
     j.innerHTML = hd;
     j.addEventListener("click", function(e){
       var b = e.target && e.target.closest ? e.target.closest("button[data-ph]") : null;
