@@ -223,6 +223,13 @@ strong{font-weight:700;color:var(--ink)}
   font-variant-numeric:tabular-nums;white-space:nowrap}
 .phase-aim{margin-top:11px;font-size:13.5px;color:var(--ink-2);max-width:64ch}
 .wk.now{background:var(--indigo-soft);box-shadow:inset 3px 0 0 var(--indigo)}
+/* 開いている週を枠で示す。タッチでも出るので端末を選ばない */
+.wk[open]{outline:1.5px solid #5E4780;outline-offset:-1.5px;border-radius:3px}
+.wk.now[open]{outline:2px solid var(--indigo);outline-offset:-2px}
+/* キーボード操作時のフォーカス表示も、同じ紫で揃える */
+.wk > summary:focus-visible,.ex > summary:focus-visible,.tab:focus-visible{
+  outline:2px solid var(--indigo);outline-offset:-2px;border-radius:3px}
+.ex[open]{outline:1.5px solid #5E4780;outline-offset:-1.5px;border-radius:3px}
 .nowchip{font-style:normal;font-family:var(--cond);font-size:10px;font-weight:700;
   letter-spacing:.1em;color:var(--paper);background:var(--indigo);
   border-radius:3px;padding:1px 5px;margin-left:8px;vertical-align:1px}
