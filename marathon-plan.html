@@ -246,6 +246,7 @@ strong{font-weight:700;color:var(--ink)}
 .today-go:hover{border-color:var(--indigo);background:var(--indigo-soft)}
 .today-go:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
 .jump{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;align-items:center}
+#jumpStr{margin-bottom:8px}
 /* 縦線ではなく改行として使う。折り返しで行末に取り残されないし、
    期(6つ)と節(2つ)が別の行に分かれるので、枠の色が近くても group が読める */
 .jump .sep{flex-basis:100%;height:0;margin:0}
@@ -301,6 +302,8 @@ details.wk[open]{background:var(--surface-2)}
 /* 期の色は背景と左の罫が持つ。曜日の文字までフェーズ色にすると
    基礎再構築 4.2:1・LT構築 4.4:1 で AA に届かない */
 .dayrow.today .d{color:var(--ink)}
+/* 当日は背景が期の色になるぶん明るい。注記の --ink-3 だと 4.1:1 まで落ちる */
+.dayrow.today .m em{color:var(--ink-2)}   /* .dayrow .m em と同詳細度だと後勝ちで負ける */
 .dayrow .d{font-family:var(--cond);font-size:14px;font-weight:700;color:var(--ink-2)}
 .chip{font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.08em;
   text-transform:uppercase;padding:2px 0;border-radius:3px;text-align:center;
@@ -682,7 +685,8 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 </div>
 
 <div class="tabpane" id="tab-str" hidden>
-<section>
+<div class="jump" id="jumpStr"></div>
+<section data-nav="考え方">
   <h2><span class="n">01</span>なぜ補強を優先するのか</h2>
   <p class="lede">故障予防というと柔軟性の話になりがちですが、<strong>静的ストレッチに故障を減らす効果があるという一貫した証拠はありません。</strong>ランナーを対象にした複数のレビューで、予防効果は確認されていません。</p>
   <p class="lede">一方、<strong>筋力トレーニングには予防効果の証拠があります。</strong>限られた時間をどちらに使うかと言えば、答えははっきりしています。</p>
@@ -707,7 +711,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   </div>
 </section>
 
-<section>
+<section data-nav="週の配置">
   <h2><span class="n">02</span>週のどこに置くか</h2>
   <p class="lede"><strong>走る前には絶対にやりません。</strong>筋肉を疲れさせてから走ると、衝撃を吸収する能力が落ちた状態で走ることになり、フォームも崩れます。走った後か、走らない日に置きます。</p>
   <p class="lede">腱は筋肉より適応が遅いため、<strong>毎日はやりません。</strong>間に1〜2日空けて週2回が適量です。</p>
@@ -727,12 +731,12 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   <p class="lede">月曜と木曜で3日ずつ間隔が空きます。<strong>短縮版はカーフレイズ2種とサイドプランクだけ</strong>で構いません。</p>
 </section>
 
-<section>
+<section data-nav="種目">
   <h2><span class="n">03</span>種目</h2>
   <div id="groups"></div>
 </section>
 
-<section>
+<section data-nav="走る前">
   <h2><span class="n">04</span>走る前の3分</h2>
   <p class="lede">走る前は<strong>動的な準備だけ</strong>です。静的ストレッチは直後に出力が落ちることが分かっているので、走る前にはやりません。</p>
   <p class="lede"><strong>振って戻して1回</strong>と数えます。横のレッグスイングなら、外に振る→体の前を横切らせる、で1回です。「片脚10回」は右10往復＋左10往復で、合計20往復。<br>
@@ -753,9 +757,10 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   <p class="lede">内転筋と臀筋の意識付けに最も効くのは、実はこれらの種目ではなく<strong>ジョグの最初の10分そのもの</strong>です。歩幅を詰めて、足を体の真下に置いて、股関節を後ろに伸ばす。動作パターンは、その動作をやることでしか定着しません。</p>
 </section>
 
-<section>
+<section data-nav="流し">
   <h2><span class="n">05</span>流しの狙いとやり方</h2>
   <p class="lede">水曜と土曜、ジョグの最後に入れる100m×4です。<strong>速く走る練習ではなく、速く走れる状態を失わないための練習</strong>です。Eペースばかり積むと、体は「ゆっくりしか走れない体」へ最適化されていきます。それを週2回だけ引き戻します。</p>
+  <p class="lede">効いてくるのは本番です。<strong>レースで走るペースは、Eジョグより1分以上速い。</strong>そして練習の大半はEペースで積みます。つまり速い動きに触れる機会は、<strong>火曜のポイント練習と、この流ししかありません。</strong>週2回の100mは、その数少ない機会のひとつです。</p>
   <table class="mini">
     <thead><tr><th>狙い</th><th>中身</th></tr></thead>
     <tbody>
@@ -806,7 +811,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   <p class="lede">休み明けや違和感からの復帰では、<strong>2本 → 3本 → 4本</strong> と3週かけて戻します。本数より、平坦であることと加速の仕方のほうが大事です。</p>
 </section>
 
-<section>
+<section data-nav="走った後">
   <h2><span class="n">06</span>走った後・寝る前のストレッチ</h2>
   <p class="lede">予防効果は期待できませんが、<strong>デスクワークで縮んだ部分を戻す</strong>という目的なら意味があります。特に1種目めが重要です。</p>
   <table class="mini">
@@ -824,7 +829,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   <p class="lede">張りが「伸ばすと硬い」ではなく<strong>「何もしていないのに張っている」</strong>なら、それは短いのではなく守るために縮んでいる状態です。伸ばしても取れません。温めて、軽く動かして、触らずに置いておくほうが早く戻ります。</p>
 </section>
 
-<section>
+<section data-nav="やらないこと">
   <h2><span class="n">07</span>やってはいけないこと</h2>
   <div class="dont">
     <div class="dont-row">
@@ -855,7 +860,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   </div>
 </section>
 
-<section>
+<section data-nav="進め方">
   <h2><span class="n">08</span>重さの増やし方</h2>
   <p class="lede"><strong>腱と筋肉は、重い負荷でしか強くなりません。</strong>回数を20回、30回と増やしても、ある時点から頭打ちになります。楽になったら回数ではなく重さを足してください。</p>
   <table class="mini">
@@ -1230,6 +1235,25 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     hd += '<span class="sep"></span>'
         + '<button type="button" class="sup" data-ph="secSupport">補強と故障予防</button>'
         + '<button type="button" class="sup" data-ph="secStop">止めどき・下げどき</button>';
+    j.innerHTML = hd;
+    j.addEventListener("click", function(e){
+      var b = e.target && e.target.closest ? e.target.closest("button[data-ph]") : null;
+      if(!b) return;
+      var t = document.getElementById(b.getAttribute("data-ph"));
+      if(t) t.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  })();
+
+  /* ---------- 補強タブ内のジャンプ。全長1万pxあるので無いと探せない ---------- */
+  (function(){
+    var j = document.getElementById("jumpStr");
+    if(!j) return;
+    var hd = "";
+    document.querySelectorAll("#tab-str section[data-nav]").forEach(function(el, i){
+      el.id = "st" + i;
+      hd += '<button type="button" class="sup" data-ph="st' + i + '">'
+          + el.getAttribute("data-nav") + '</button>';
+    });
     j.innerHTML = hd;
     j.addEventListener("click", function(e){
       var b = e.target && e.target.closest ? e.target.closest("button[data-ph]") : null;
