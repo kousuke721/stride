@@ -67,6 +67,9 @@ strong{font-weight:700;color:var(--ink)}
 .reality{margin-top:22px;border:1px solid var(--rule);border-left:3px solid var(--indigo);
   background:var(--surface);border-radius:3px;padding:20px 22px}
 .reality h3{font-size:15px;font-weight:700;margin-bottom:10px}
+/* 狭い画面で語中に改行が入るため、意味のまとまりを inline-block で包んで
+   そこでしか折り返さないようにする。h1 と同じ手当て */
+.reality h3 span{display:inline-block}
 .reality p{color:var(--ink-2);font-size:14.5px}
 .reality p + p{margin-top:10px}
 
@@ -360,8 +363,35 @@ details.wk[open]{background:var(--surface-2)}
   font-size:14.5px;font-weight:700;color:var(--ink-3);transition:color .12s}
 .tab:hover{color:var(--ink-2)}
 .tab.is-on{color:var(--ink);border-bottom-color:var(--indigo)}
+/* タブが3つになったので、320px級では既定の padding だとはみ出す。
+   3つ合計で約246px に収めて、280px の本文幅に入れる */
+@media (max-width:400px){ .tab{padding:9px 10px;font-size:13px} }
 .tabpane[hidden]{display:none}
 .tabpane > section:first-child{margin-top:34px}
+
+/* ===== 食事タブ ===== */
+/* 数字を大きく見せる箱。目標値と、1食あたりの量に使う */
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+  margin-top:22px;background:var(--rule);border:1px solid var(--rule);border-radius:4px;
+  overflow:hidden}
+.fig{background:var(--surface);padding:16px 18px}
+.fig b{display:block;font-family:var(--cond);font-size:30px;font-weight:700;
+  line-height:1;color:var(--ink)}
+.fig .u{font-size:15px;font-weight:700;color:var(--ink-2);margin-left:2px}
+.fig .l{margin-top:7px;font-size:12.5px;font-weight:700;color:var(--ink-2)}
+.fig .s{margin-top:4px;font-size:12px;color:var(--ink-3);line-height:1.6}
+/* 手順。補強カードの中の ol と同じ見た目を、カード外でも使えるようにする */
+.howto{margin-top:20px;padding:16px 18px 16px 16px;background:var(--surface);
+  border:1px solid var(--rule);border-radius:4px}
+.howto ol{margin:0;padding-left:20px;font-size:13.5px;color:var(--ink-2);line-height:1.8}
+.howto li + li{margin-top:5px}
+.howto .why{margin:11px 0 0;font-size:12.5px;color:var(--ink-3);line-height:1.7}
+/* .note-in は flex の中で使う前提で margin:0 なので、表の下に単体で置くぶんだけ足す */
+#tab-eat .note-in{margin-top:9px}
+/* 食品表。左列が品名、右が狙い */
+.eat-table .f{font-weight:700;color:var(--ink);white-space:nowrap}
+.eat-table .v{font-family:var(--cond);font-size:15px;font-weight:700;
+  color:var(--ink-2);white-space:nowrap;width:78px}
 /* 部位ごとの色。強度を示す色とは役割が違うので別の色相を使う */
 :root{--glute:#3987E5;--calf:#199E70;--power:#C98500;--core:#8249CC;--no:#E06430}
 /* ---- 優先順位 ---- */
@@ -403,8 +433,17 @@ details.wk[open]{background:var(--surface-2)}
   grid-template-columns:1fr auto 18px;gap:12px;align-items:center}
 .ex > summary::-webkit-details-marker{display:none}
 .ex > summary:hover .nm{color:var(--indigo)}
-.ex .nm{font-weight:700;font-size:15px;transition:color .12s}
+.ex .nm{font-weight:700;font-size:15px;transition:color .12s;text-wrap:balance}
 .ex .goal{display:block;font-size:12.5px;font-weight:400;color:var(--ink-3);margin-top:2px}
+/* 曜日バッジ。カードを開かずに月曜だけか月木両方かが分かるようにする。
+   色は枠が持つ。11pxの文字を系列色にすると小さすぎて読めない（案2と同じ方針） */
+.ex .day{display:inline-block;font-style:normal;font-family:var(--cond);font-size:11px;
+  font-weight:700;letter-spacing:.04em;line-height:1;padding:4px 5px 3px;margin-right:7px;
+  border-radius:3px;vertical-align:2px;white-space:nowrap;
+  color:var(--ink-3);border:1px solid var(--rule-strong)}
+.ex .day.d2{color:var(--ink);background:var(--indigo-soft);border-color:var(--indigo)}
+.ex > summary:hover .day{color:var(--ink-3)}
+.ex > summary:hover .day.d2{color:var(--ink)}
 .ex .dose{font-family:var(--cond);font-size:14px;font-weight:700;color:var(--ink-2);
   font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
 .ex .chev{width:18px;height:18px;position:relative}
@@ -470,6 +509,8 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   .ex .chev{display:none}
   .grp-hd .why{margin-left:0;width:100%}
   .wk-table td,.mini td{padding:9px 7px}
+  /* 320px級では「レッグスイング（前後）」が1行に収まらず、nowrap のままだと表が横に溢れる */
+  .mini td:first-child{white-space:normal}
   .zone{border-right:none}
   .tmpl-row{grid-template-columns:44px 1fr;gap:10px;padding:11px 14px}
   .dayrow{grid-template-columns:28px 42px 1fr;gap:8px}
@@ -497,6 +538,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 <nav class="tabs" id="tabs">
   <button class="tab is-on" data-tab="plan" type="button">22週の計画</button>
   <button class="tab" data-tab="str" type="button">補強メニュー</button>
+  <button class="tab" data-tab="eat" type="button">食事</button>
 </nav>
 
 <div class="tabpane" id="tab-plan">
@@ -589,7 +631,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   </div>
 
   <div class="reality">
-    <h3>インターバルを入れていない理由</h3>
+    <h3><span>インターバルを</span><span>入れていない理由</span></h3>
     <p>VO2maxを上げるインターバル（1000m×5など）は、マラソンの練習の中では<strong>優先度が最も低い部類</strong>です。マラソンのタイムを決めるのは、順に「週間走行距離 → ロング走 → 閾値走 → Mペース走」で、インターバルはその後に来ます。</p>
     <p>加えて、短い距離が相対的に強いタイプの走者は<strong>スピード側にすでに余裕があり、足りないのは有酸素側</strong>です。限られた練習枠をインターバルに使うより、Eペースの距離とロング走に回した方が、同じ時間で得られるものが大きくなります。</p>
     <p>週2回の流し（100m×4〜6）で神経系の刺激は維持できます。インターバルが必要になるのは、マラソン後にトラック種目へ移行する段階です。</p>
@@ -601,7 +643,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   <p class="lede">週間走行距離は3週上げて1週落とす。落とす週を先に決めておくのが、距離を大きく伸ばす期間に故障を避ける一番確実な方法です。</p>
 
   <div class="reality">
-    <h3>ロング走は「距離」ではなく「時間」で指定しています</h3>
+    <h3><span>ロング走は</span><span>「距離」ではなく</span><span>「時間」で</span><span>指定しています</span></h3>
     <p>距離で決めると、走力によって所要時間が大きく変わります。仮に32kmと指定した場合、10kmが55分の走力なら<strong>3時間39分</strong>かかる一方、45分の走力なら3時間ちょうど。同じメニューのはずが、負荷はまったく別物になります。</p>
     <p>ロング走で故障を招くのは距離ではなく<strong>地面に足を着き続けた時間</strong>です。そこでこの計画では時間で上限を切り、距離は結果として決まる形にしました。Phase 1〜2は130分まで、Phase 3〜4は150〜160分、最長でもW18の<strong>180分で打ち切り</strong>。走力が上がれば同じ時間で距離が伸びるので、常に適正な負荷が保たれます。</p>
     <p>上のTTタイムを変えると、各週のロング走の想定距離と週間走行距離も一緒に計算し直されます。</p>
@@ -631,7 +673,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   <div class="cards">
     <div class="card kc" style="--kc:var(--glute)"><h4><i>1</i>中臀筋</h4><ul>
       <li>サイドプランク（膝の開閉）左右10回×2</li>
-      <li>ヒップアブダクション（横向き）左右15回×2</li>
+      <li>ヒップアブダクション（横向き） 左右15回×2</li>
       <li>サイドステップ 10歩×左右2往復</li>
       <li>膝の外側の痛み・膝のブレはここに行き着く</li>
     </ul></div>
@@ -730,7 +772,17 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       <tr><td class="d">日</td><td class="m">ロング走</td><td class="s off">なし</td></tr>
     </tbody>
   </table>
-  <p class="lede">月曜と木曜で3日ずつ間隔が空きます。<strong>短縮版はカーフレイズ2種とサイドプランクだけ</strong>で構いません。</p>
+  <p class="lede">月曜と木曜で3日ずつ間隔が空きます。<strong>下の種目一覧には、それぞれ曜日のバッジが付いています。</strong>「月」はメインだけ、「月木」は両方です。</p>
+
+  <table class="mini">
+    <thead><tr><th>日</th><th>やる種目</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr class="key"><td class="num">月</td><td><strong>全12種目（20分）</strong></td><td>完全休養日なので追い込める。鍛える日</td></tr>
+      <tr class="key"><td class="num">木</td><td><strong>カーフレイズ2種 ＋ サイドプランク（10分）</strong></td><td>走った後なので刺激を入れ直すだけ。つなぐ日</td></tr>
+    </tbody>
+  </table>
+
+  <p class="lede">木曜に残す3つは、理由があって選んであります。<strong>カーフレイズ2種は、腱が筋肉より適応が遅く、週2回の刺激が要るから。</strong>週1回では足りません。<strong>サイドプランクは、中臀筋が最優先だから。</strong>ただし中臀筋の種目は1つだけにします。同じ部位に2種目入れても10分の枠では重複になりますし、日曜のロング走まで疲れを残したくないためです。</p>
 </section>
 
 <section data-nav="種目">
@@ -783,7 +835,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       <tr><td class="num">70〜100m</td><td>力を抜いて自然に落とす</td></tr>
     </tbody>
   </table>
-  <p class="lede">走る場所は<strong>平坦だけ</strong>。坂は上りも下りも使いません。上りは膝を普段より高く上げる必要があるため、股関節の前側への負荷が跳ね上がります。</p>
+  <p class="lede">走る場所は<strong>平坦だけ</strong>。坂は上りも下りも使いません。上りは膝を普段より高く上げる必要があるため、股関節の前側への負荷が跳ね上がります。<strong>「上り坂をハイペースで走る」は腸腰筋膜炎の代表的な原因</strong>として挙げられているものです。</p>
 
   <table class="mini">
     <thead><tr><th>意識すること</th><th>理由</th></tr></thead>
@@ -806,14 +858,14 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       <p>100mは呼吸が追いつく前に終わります。息が上がっているなら、本数が多いか、間の歩きが足りていません。</p>
     </div>
     <div class="dont-row">
-      <b>流しをやった日に股関節の前側を伸ばす</b>
-      <p>流しは腸腰筋と大腿直筋を最大速度で使う練習です。その直後、温まった状態で深く伸ばすと行き過ぎやすい。<strong>流しの日は、下の3つを全部やりません。</strong></p>
+      <b>速く走った日に股関節の前側を伸ばす</b>
+      <p>流しは腸腰筋と大腿直筋を最大速度で使う練習です。その直後、温まった状態で深く伸ばすと行き過ぎやすい。<strong>流しの日と、T走・Mペース走をやった日は、下の3つを全部やりません。</strong>Eジョグより速く走った日は全部、と覚えてください。</p>
       <ul>
         <li><strong>ニーリングランジ</strong>（後ろ膝を床につけて前に押す）→ 腸腰筋</li>
         <li><strong>立って踵をお尻に近づける</strong>（骨盤を後傾させる）→ 大腿直筋</li>
         <li><strong>ニーリングランジ＋後ろ足を手で持つ</strong> → 両方。一番深いので最も注意</li>
       </ul>
-      <p><strong>流しをやらない日は、この中から1つだけ</strong>（片側60秒）。3つとも同じ筋肉なので、同時にはやりません。</p>
+      <p><strong>速く走らなかった日に、この中から1つだけ</strong>（片側60秒）。月・木・金・日が該当します。3つとも同じ筋肉なので、同時にはやりません。</p>
       <p>ふくらはぎ・臀筋・もも裏のストレッチは流しの日も普通に続けて構いません。<strong>股関節の前側だけを翌日に回す</strong>、という運用です。</p>
     </div>
   </div>
@@ -822,8 +874,8 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 </section>
 
 <section data-nav="走った後">
-  <h2><span class="n">06</span>走った後・寝る前のストレッチ</h2>
-  <p class="lede">予防効果は期待できませんが、<strong>デスクワークで縮んだ部分を戻す</strong>という目的なら意味があります。特に1種目めが重要です。</p>
+  <h2><span class="n">06</span>走った後のストレッチ</h2>
+  <p class="lede">走った後か寝る前に置きます。<strong>予防効果は期待できません</strong>が、<strong>デスクワークで縮んだ部分を戻す</strong>という目的なら意味があります。特に1種目めが重要です。</p>
   <table class="mini">
     <thead><tr><th>種目</th><th>時間</th><th>注意</th></tr></thead>
     <tbody>
@@ -835,7 +887,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     </tbody>
   </table>
   <div id="stretches"></div>
-  <p class="lede"><strong>流しをやった日は、1種目めの腸腰筋を飛ばして2〜5だけやります。</strong>足りない分を他で補う必要はありません。引くだけです。理由は<a class="pagelink" href="#str" data-goto="str">05 流しの狙いとやり方</a>に書いています。</p>
+  <p class="lede"><strong>流しやT走など、Eジョグより速く走った日は、1種目めの腸腰筋を飛ばして2〜5だけやります。</strong>足りない分を他で補う必要はありません。引くだけです。理由は<a class="pagelink" href="#str" data-goto="str">05 流しの狙いとやり方</a>に書いています。</p>
   <p class="lede"><strong>1部位につき1種類、片側60秒まで。</strong>同じ部位のストレッチを何種類も重ねないでください。種類を増やしても柔らかくはならず、痛める確率だけが上がります。新しい種目を足すときは1つずつ、数日空けて。</p>
   <p class="lede"><strong>流しをやった日は、腸腰筋と大腿直筋のストレッチを入れません。</strong>その2つを最大速度で使った直後に、温まった状態で深く伸ばすことになるからです。</p>
   <p class="lede">張りが「伸ばすと硬い」ではなく<strong>「何もしていないのに張っている」</strong>なら、それは短いのではなく守るために縮んでいる状態です。伸ばしても取れません。温めて、軽く動かして、触らずに置いておくほうが早く戻ります。</p>
@@ -852,6 +904,11 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       <b>走る前の、負荷をかけたランジ・スクワット</b>
       <p>ランジは沈み込むときに筋肉が引き伸ばされながら力を出す種目で、筋損傷を最も確実に起こす負荷のかけ方です。走る前にやると、傷んだ筋肉のまま走り続けることになります。月曜に回してください。</p>
       <p><strong>可動域ドリルとしてのランジウォークは別物で、走る前にやって構いません。</strong>見分け方は「前膝を深く曲げて耐えるか、後ろ膝を後ろへ送るか」です。後者なら前脚に伸張性の負荷がかからないので、ここで言う筋損傷は起きません。走る前のドリル表に入れてあります。</p>
+    </div>
+    <div class="dont-row">
+      <b>上り坂での流し</b>
+      <p>平地より股関節を大きく曲げ、蹴り出しも強くなるため、<strong>腸腰筋への負荷が跳ね上がります。</strong>「上り坂をハイペースで走る」は腸腰筋膜炎の代表的な原因として挙げられているものです。</p>
+      <p>流しは<strong>平坦な場所でだけ</strong>やってください。コースに坂しかない日は、流しを飛ばします。</p>
     </div>
     <div class="dont-row">
       <b>走る前の静的ストレッチ</b>
@@ -887,12 +944,273 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   <p class="lede">リュックに水を入れたペットボトルを入れるのが一番手軽です。2Lで約2kgなので、本数で調整できます。</p>
 </section>
 
+<section data-nav="いま直す">
+  <h2><span class="n">09</span>いま直していること</h2>
+  <p class="lede">ここだけは<strong>固定の知識ではなく、進むにつれて書き換わる節</strong>です。今わかっていることと、それに対して何をしているかを置いてあります。</p>
+
+  <div class="reality">
+    <h3><span>左右差 —&nbsp;</span><span>情報が全部、</span><span>右側を指している</span></h3>
+    <p>別々の日に、別々のきっかけで出てきた5つが、すべて同じ側を指しています。偶然ではありません。</p>
+  </div>
+
+  <table class="mini">
+    <thead><tr><th>気づいたこと</th><th>意味していること</th></tr></thead>
+    <tbody>
+      <tr><td>サイドプランクで右の臀部が強く効く</td><td>右の中臀筋のほうが余力が少ない</td></tr>
+      <tr><td>右の内転筋が長く張っている</td><td>中臀筋の仕事を内転筋が肩代わりしている</td></tr>
+      <tr><td>右シューズの甲の内側に接触痕</td><td>左足が右のくるぶしに当たっている</td></tr>
+      <tr><td>右シューズの靴底、土踏まず側が減る</td><td>右足のほうが内側に深く転がっている</td></tr>
+      <tr><td>右アキレス腱の付着部に反応が出たことがある</td><td>かかとの骨が内に倒れ、腱がねじられる</td></tr>
+    </tbody>
+  </table>
+
+  <p class="lede"><strong>症状が出るのは左、原因は右です。</strong>右の骨盤を支えきれないぶんを、左の内転筋と腸腰筋が余分に働いて埋めています。だから<strong>左をいくらケアしても、右が支えられるようになるまで繰り返します。</strong></p>
+  <p class="lede">実行することは1つだけ。<strong>補強は必ず右から始めて、左は右と同じ回数で止める。</strong>強い側に合わせると差が開くだけです。回数を足さないのは、弱い側が限界を越えた瞬間に別の筋肉へ仕事を渡してしまうからで、それは直したい動きそのものです。</p>
+
+  <div class="reality">
+    <h3><span>クロスオーバー —&nbsp;</span><span>足が中心線に寄っている</span></h3>
+    <p>走行中、左足のつま先が右足の内くるぶしに当たります。<strong>両足が体の中心線寄りに着地している状態</strong>で、クロスオーバー走法と呼ばれます。放置すると腸脛靭帯炎・シンスプリント・股関節の障害に向かいます。</p>
+  </div>
+
+  <div class="rank">
+    <div class="rank-row"><b>1</b><div>
+      <div class="t">中臀筋が支えきれていない</div>
+      <div class="d">片脚接地で骨盤が落ち、支えている側の脚が内に倒れる。反対の脚が通るときにぶつかる。上の左右差と同じ話。</div>
+    </div></div>
+    <div class="rank-row"><b>2</b><div>
+      <div class="t">「母趾球で抜ける」を意識していた</div>
+      <div class="d">母趾球を感じようとすると、足を体の中心寄りに置くことになる。感覚は出るが、そのぶん足が内に寄る。<strong>母趾球は狙う場所ではなく、放っておいても最後に必ず通る場所。</strong></div>
+    </div></div>
+  </div>
+
+  <p class="lede">直し方は<strong>足を置く場所</strong>だけです。接地の仕方・膝の向き・回内の量は、着地の0.1秒のあいだに起きることなので意識では操作できません。狙えば回外に振れて、かえって悪くなります。</p>
+
+  <table class="mini">
+    <thead><tr><th>やること</th><th>中身</th></tr></thead>
+    <tbody>
+      <tr><td>歩幅を少し詰める</td><td><strong>操作するのはここだけ。</strong>詰めれば足は自然と体の真下に来て、ピッチも上がり、股関節が内に倒れる量も減る</td></tr>
+      <tr><td>2本のレールの上に置く</td><td>綱渡りではなく線路。拳1個ぶん離れた2本の線の上に、左足は左、右足は右</td></tr>
+      <tr><td>母趾球は意識しない</td><td>狙うと足が中心に寄る。意識から外すこと自体が修正になる</td></tr>
+    </tbody>
+  </table>
+
+  <p class="lede"><strong>意識するのは走り出しの10分だけ。</strong>残りは体に任せます。走りながらずっと考える種類のものではありません。確認したいときは、濡れた路面や砂地を20m走って<strong>足跡が2本の線になっているか</strong>を見ます。下を見ながら走るより確実です。</p>
+
+  <div class="reality">
+    <h3><span>腸腰筋膜炎 —&nbsp;</span><span>いま一番近い故障</span></h3>
+    <p>股関節の付け根の<strong>内側</strong>に出る痛み。地面を蹴った足が後ろに流れると腸腰筋が引き伸ばされ、腱に負荷がかかって起きます。走る量が多い競技でよく見られ、<strong>再発率が高いため予防が中心</strong>になります。原因として挙げられているものと、現状の対応はこうです。</p>
+  </div>
+
+  <table class="mini">
+    <thead><tr><th>原因</th><th>現状</th></tr></thead>
+    <tbody>
+      <tr><td>上り坂をハイペースで走る</td><td>流しは平坦のみ。やってはいけないことに追加済み</td></tr>
+      <tr><td>蹴り足が後ろに大きく流れる</td><td>接地時間は適正の範囲。今のところ該当なし</td></tr>
+      <tr><td>フォームが後傾している</td><td><strong>未確認。</strong>後ろからの動画で見る</td></tr>
+      <tr><td>股関節周辺のウォーミングアップ不足</td><td>走る前のドリルで対応済み</td></tr>
+      <tr><td>ハムストリングスの柔軟性不足</td><td>該当あり。走った後のストレッチで対応</td></tr>
+      <tr><td>大腿四頭筋の筋力不足</td><td>該当の可能性あり</td></tr>
+    </tbody>
+  </table>
+
+  <p class="lede"><strong>筋肉痛との見分け方。</strong>走り始めて5〜10分で<strong>軽くなる</strong>なら筋肉痛です。温まれば引きます。走っても消えない、あるいは<strong>走るほど強くなる</strong>なら別物で、その場で走るのをやめます。距離は無視して構いません。</p>
+</section>
+
 <footer>
   補強は「余裕があればやる」ではなく、走る量を増やすための前提条件です。月曜20分・木曜10分、週30分。これをテーパー前（W20）まで続ければ、走れる脚になります。
 </footer>
 
 </div>
 
+<div class="tabpane" id="tab-eat" hidden>
+<div class="jump" id="jumpEat"></div>
+
+<section data-nav="考え方">
+  <h2><span class="n">01</span>補強は器、食事は材料</h2>
+  <p class="lede">補強は走る量を受け止める<strong>器</strong>を作ります。食事はその器に入れる<strong>材料</strong>です。どちらが欠けても、練習は身になりません。</p>
+  <p class="lede">追いかける数字は2つだけで足ります。</p>
+
+  <div class="figs">
+    <div class="fig"><b>300<span class="u">〜350g</span></b>
+      <div class="l">糖質 ／ 1日</div>
+      <div class="s">週の距離が増える時期は350〜400g。走るためのエネルギーはほぼ全部ここから来る</div></div>
+    <div class="fig"><b>70<span class="u">〜80g</span></b>
+      <div class="l">たんぱく質 ／ 1日</div>
+      <div class="s">1食に20〜30gずつ分けて取る。1食にまとめても使い切れない</div></div>
+  </div>
+
+  <p class="lede">毎日測るためのものではありません。<strong>一度「この食べ方なら足りる」と分かれば、あとは感覚で構いません。</strong>下の枠はその形を1つ決めたものです。</p>
+  <p class="lede">量が足りないまま距離だけ増える状態が、この計画で一番避けたいことです。骨は毎日壊されて作り直されている組織で、<strong>材料が足りないと作り直しのほうが追いつかなくなります。</strong>走る量が増える時期ほど、食べる量も増やします。</p>
+</section>
+
+<section data-nav="1日の枠">
+  <h2><span class="n">02</span>1日の枠</h2>
+  <p class="lede">仕事終わりに走る場合の形です。時刻は目安で、前後してかまいません。</p>
+
+  <table class="wk-table">
+    <thead><tr><th>時刻</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td class="d">朝</td><td class="m">バナナ1本 ＋ おにぎり1個</td></tr>
+      <tr><td class="d">12:00</td><td class="m">昼食（主食をしっかり）</td></tr>
+      <tr><td class="d">13:30</td><td class="m">コーヒー。食事から1時間以上あける</td></tr>
+      <tr class="key"><td class="d">16:30</td><td class="m"><strong>補食：おにぎり1個</strong>　走る2時間前が理想</td></tr>
+      <tr><td class="d">18:30</td><td class="m">練習</td></tr>
+      <tr class="key"><td class="d">直後</td><td class="m"><strong>牛乳 200〜300ml</strong>　帰ってすぐ飲めるようにしておく</td></tr>
+      <tr><td class="d">20:00</td><td class="m">夕食</td></tr>
+    </tbody>
+  </table>
+
+  <p class="lede">見慣れない行は<strong>16:30の補食</strong>だけだと思います。これが一番効きます。</p>
+  <p class="lede">昼12時に食べて夕方に走ると、<strong>6時間以上あきます。</strong>筋肉に貯めた糖はそこまで減りませんが、肝臓に貯めた糖は6時間でかなり減ります。<strong>ポイント練習の入りでペースが上がらない原因の1つがこれです。</strong>おにぎり1個で埋まります。</p>
+  <p class="lede">走る2時間前が理想です。仕事の都合で15:30にしか取れないなら、それでも構いません。その場合は<strong>走る1時間前にバナナを1本</strong>足してください。</p>
+  <p class="lede">夕食が20時を回るので、<strong>練習直後の牛乳が食事までのつなぎ</strong>になります。帰ってから準備すると30分遅れます。出かける前に出しておいてください。</p>
+</section>
+
+<section data-nav="昼と夜">
+  <h2><span class="n">03</span>昼と夜の主食</h2>
+  <p class="lede"><strong>昼は白米、夜は雑穀米や もち麦。</strong>これは夕方に走る人にとって正しい分け方です。</p>
+  <p class="lede">白米は消化が速く、夕方の練習までにエネルギーになります。雑穀は食物繊維が多いぶん消化がゆっくりで、<strong>走らない時間帯に向いています。</strong>夜に食物繊維とミネラルを入れておけるのも利点です。</p>
+  <p class="lede">例外が1つ。<strong>ポイント練習をやった日の夜は白米にします。</strong>使い切った糖を早く戻したいので、この日だけは消化の速さを優先します。</p>
+
+  <div class="figs">
+    <div class="fig"><b>250<span class="u">g</span></b>
+      <div class="l">ごはん ／ 1食</div>
+      <div class="s">糖質にして約90g。朝のバナナとおにぎり、夕方の補食と合わせて1日300gに届く</div></div>
+    <div class="fig"><b>23<span class="u">g</span></b>
+      <div class="l">たんぱく質 ／ 鶏むね100g</div>
+      <div class="s">皮なし。1食120gで28g。ここに卵1個か納豆1パックを足すと1食35g前後</div></div>
+  </div>
+
+  <p class="lede">主菜は<strong>昼を肉、夜を魚</strong>にすると、後ろの2つの節がそのまま当てはまります。副菜は野菜と味噌汁、それに卵か納豆を毎食どこかに入れてください。</p>
+</section>
+
+<section data-nav="魚">
+  <h2><span class="n">04</span>魚を週3回</h2>
+  <p class="lede">理由はビタミンDです。<strong>日本人が冬に最も不足しやすい栄養素で、骨を作るときにカルシウムを吸収させる役をしています。</strong>カルシウムだけ取ってもビタミンDがないと入りません。</p>
+  <p class="lede">そして<strong>ビタミンDは、ほぼ魚からしか取れません。</strong>目安量は1日8.5μgですが、鮭1切れで3倍入ります。週3回で足ります。</p>
+
+  <p class="lede">忙しい日の保険として、まず1つ挙げるならこれです。</p>
+
+  <div class="figs">
+    <div class="fig"><b>サバ<span class="u">水煮缶</span></b>
+      <div class="l">1缶（190g）でこれだけ入る</div>
+      <div class="s">カルシウム約500mg ／ ビタミンD約20μg ／ たんぱく質約40g</div></div>
+    <div class="fig"><b>骨<span class="u">ごと</span></b>
+      <div class="l">缶詰だけの利点</div>
+      <div class="s">骨が柔らかくなっているので丸ごと食べられる。カルシウムはここから来る。調理不要・常温保存</div></div>
+  </div>
+
+  <table class="wk-table eat-table">
+    <thead><tr><th>魚</th><th>目安</th><th>狙い</th></tr></thead>
+    <tbody>
+      <tr><td class="f">鮭</td><td class="v">32μg</td><td class="m">ビタミンD。1切れで目安量の3倍</td></tr>
+      <tr><td class="f">いわし</td><td class="v">32μg</td><td class="m">ビタミンD最上位。缶なら骨ごと</td></tr>
+      <tr><td class="f">さんま</td><td class="v">16μg</td><td class="m">ビタミンD。秋が旬</td></tr>
+      <tr><td class="f">ぶり</td><td class="v">8μg</td><td class="m">ビタミンD。冬が旬</td></tr>
+      <tr><td class="f">しらす</td><td class="v">—</td><td class="m">ごはんにかけるだけ。カルシウムとビタミンDを同時に</td></tr>
+      <tr class="key"><td class="f">かつお</td><td class="v">1.9mg</td><td class="m"><strong>鉄。</strong>μgではなく鉄の量</td></tr>
+      <tr class="key"><td class="f">まぐろ赤身</td><td class="v">1.1mg</td><td class="m"><strong>鉄。</strong>μgではなく鉄の量</td></tr>
+    </tbody>
+  </table>
+  <p class="note-in">数値は可食部100gあたり。上の5つはビタミンD、下の2つは鉄。</p>
+
+  <p class="lede"><strong>週3回のうち1回は、下の鉄の組にしてください。</strong>走る量が増えると鉄は失われやすくなります。赤身の牛肉でも代わりになります。</p>
+</section>
+
+<section data-nav="鶏むね">
+  <h2><span class="n">05</span>鶏むね肉の扱い</h2>
+  <p class="lede">100gでたんぱく質23g、脂質はほぼありません。まとめ買いして冷凍しておくと、1日のたんぱく質がほぼ解決します。</p>
+  <p class="lede"><strong>買った日に1枚ずつ包んで冷凍。</strong>冷蔵に置くのは2〜3日分だけにします。</p>
+
+  <div class="howto">
+    <ol>
+      <li>鍋に水1.5L、<strong>塩 大さじ1・砂糖 大さじ1</strong>を入れて沸騰させる</li>
+      <li><strong>火を止めてから</strong>、皮を取ったむね肉を入れる</li>
+      <li>蓋をして<strong>30〜40分そのまま置く</strong>（火はつけない）</li>
+      <li>冷めたら茹で汁ごと容器へ。冷蔵で3〜4日もつ</li>
+    </ol>
+    <p class="why">火にかけ続けると筋繊維が縮んで水分が抜け、パサつきます。余熱だけで火を通せば縮みません。塩と砂糖は下味ではなく、肉に水分を抱えさせるために入れます。茹で汁はスープに使えます。</p>
+  </div>
+
+  <p class="lede"><strong>ただし鶏むねだけでは鉄が足りません。</strong>鶏むねの鉄は100gあたり0.3mg、牛もも肉は2.5mgで、8倍の差があります。前の節の鉄の組を週1〜2回入れてください。</p>
+</section>
+
+<section data-nav="飲み物">
+  <h2><span class="n">06</span>牛乳、豆乳、コーヒー</h2>
+  <p class="lede">練習後に飲むなら<strong>牛乳です。</strong>豆乳と迷うところですが、カルシウムで差がつきます。</p>
+
+  <table class="wk-table eat-table">
+    <thead><tr><th></th><th>牛乳</th><th>無調整豆乳</th></tr></thead>
+    <tbody>
+      <tr class="key"><td class="f">カルシウム</td><td class="v">約220mg</td><td class="v">約30mg</td></tr>
+      <tr><td class="f">たんぱく質</td><td class="v">約6.6g</td><td class="v">約7.2g</td></tr>
+      <tr><td class="f">糖質</td><td class="v">約9.6g</td><td class="v">約6.2g</td></tr>
+      <tr><td class="f">鉄</td><td class="v">ほぼ0</td><td class="v">約2.4mg</td></tr>
+    </tbody>
+  </table>
+  <p class="note-in">いずれも200mlあたり。</p>
+
+  <p class="lede"><strong>7倍違います。</strong>しかも牛乳のカルシウムは吸収率が約40%と食品の中で最高クラスで、乳糖とカゼイン由来のペプチドが吸収を助けます。糖質が多いのも、走った直後には利点です。</p>
+  <p class="lede">豆乳に替える理由は2つだけ。<strong>牛乳でお腹を壊す場合</strong>と、<strong>鉄が欲しい場合</strong>です。</p>
+
+  <p class="lede"><strong>コーヒーはやめなくて構いません。</strong>毎日飲んでいてもレース当日のカフェインの効果は残りますし、急にやめると頭痛と倦怠感が出ます。</p>
+  <p class="lede">気にするのはタイミングだけです。<strong>コーヒーのポリフェノールは、植物性の鉄の吸収を妨げます。</strong>食事から1時間ほどあければ影響しません。昼食が12時なら13時半以降。牛乳とカルシウムのサプリも同じ理屈なので、<strong>赤身肉や鉄の多い魚を食べる食事とはずらしてください。</strong></p>
+</section>
+
+<section data-nav="サプリ">
+  <h2><span class="n">07</span>サプリの優先順位</h2>
+  <p class="lede">食事が土台で、サプリは埋めきれなかった分の穴埋めです。順番はこうなります。</p>
+
+  <div class="rank">
+    <div class="rank-row"><b>1</b><div>
+      <div class="t">ビタミンD</div>
+      <div class="d">1粒25μg（1000IU）のものが1日十数円。冬場と屋内中心の生活では食事だけで足りないことが多く、骨に直結する。ただし<strong>魚を週3回食べていれば必要性は下がる</strong>ので、食事が先。</div>
+    </div></div>
+    <div class="rank-row"><b>2</b><div>
+      <div class="t">カルシウム・マグネシウム・亜鉛</div>
+      <div class="d">1日3粒でカルシウム500mg、マグネシウム250mg、亜鉛7mg。この3つはいずれも日本人の平均摂取量が推奨量に届いていない。月800円程度。夕食と一緒に飲む。お腹が緩くなったらマグネシウムなので2粒に減らす。</div>
+    </div></div>
+    <div class="rank-row"><b>3</b><div>
+      <div class="t">鉄（血液検査のあとで）</div>
+      <div class="d">走る量が増えると不足しやすい一方、<strong>足りている人が飲むと過剰は害になる。</strong>自己判断で飲まない。週の距離が70kmを超える前にフェリチンを測って、結果を見てから決める。</div>
+    </div></div>
+    <div class="rank-row"><b>4</b><div>
+      <div class="t">カフェイン（レース用）</div>
+      <div class="d">持久走で効果が確認されている数少ないものの1つ。ただし<strong>日常的に飲むものではなく、本番用。</strong>初めて本番で使うのは危険なので、レースの1〜2か月前に練習で試しておく。</div>
+    </div></div>
+  </div>
+
+  <p class="lede">ここに載っていないものは、<strong>基本的に要りません。</strong>BCAA、グルタミン、回復系のブレンドは、食事が足りていれば上乗せの証拠が弱いものばかりです。クレアチンは筋力系には効きますが、水分で体重が1〜2kg増えるためフルマラソンでは不利に働きます。</p>
+</section>
+
+<section data-nav="やらないこと">
+  <h2><span class="n">08</span>やってはいけないこと</h2>
+
+  <div class="dont">
+    <div class="dont-row">
+      <b>練習量が増えているのに、食べる量を減らす</b>
+      <p>走り始めて体を絞りたくなる時期と、距離が増える時期はちょうど重なります。ここで食べる量を減らすのが一番危険です。エネルギーが足りない状態が続くと、骨の作り直しが追いつかず、<strong>骨そのものが弱くなります。</strong>ホルモンの働きも乱れます。絞るのはレースが終わってからです。</p>
+    </div>
+    <div class="dont-row">
+      <b>血液検査をせずに鉄のサプリを飲む</b>
+      <p>「ランナーは鉄が不足する」は半分正しく、半分危険です。足りていない人には効きますが、足りている人が飲み続けると体に溜まって害になります。<strong>鉄だけは必ず測ってから。</strong></p>
+    </div>
+    <div class="dont-row">
+      <b>抗酸化サプリを大量に飲む</b>
+      <p>ビタミンCやEの高用量サプリは「回復にいい」と売られていますが、複数の研究で<strong>トレーニングの効果そのものを鈍らせる可能性</strong>が示されています。運動で出る酸化ストレスは、体が適応するための信号でもあるためです。決着した話ではありませんが、わざわざ賭ける理由がありません。野菜と果物から取るぶんには問題ありません。</p>
+    </div>
+    <div class="dont-row">
+      <b>サプリで練習の不足を埋めようとする</b>
+      <p>順番が逆です。効く順に並べると、<strong>食べる量 → 睡眠 → 練習の中身 → サプリ</strong>で、サプリは一番最後です。上の3つが埋まっていない状態では、何を飲んでも変わりません。</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  食事で毎日考えることは3つだけです。<strong>夕食に魚（週3回）、練習後に牛乳、走る2時間前におにぎり1個。</strong>この3つが回っていれば、残りは自然に足ります。
+</footer>
+
+</div>
 
 </div>
 
@@ -958,13 +1276,13 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
               ["土","E","E",'Eジョグ 6km ＋ 流し100m×4'],
               ["日","休","rest",'<strong>中止</strong>　予定：ロング走 <span class="lr" data-e="90"></span><em>線状降水帯の警報と右股関節の違和感のため見送り。W1は実走30kmで終了</em>']] },
       { n:2, d:"9/28 – 10/4", fx:28, lr:{e:100}, t:"T走の導入",
-        key:"今週は調整中 — 火曜は股関節の違和感が残っていればEジョグ5kmに差し替え。補強からランジとレッグレイズを外す。腸腰筋・大腿直筋のストレッチは休止。流しは2本まで",
+        key:"今週は調整中 — 火曜のT走は実施（km4〜6は5\'10\"で設定どおり）。CD終盤に左股関節へ違和感。水曜は流しなし、土曜は消えていれば2本。補強からランジとレッグレイズを外す。腸腰筋・大腿直筋のストレッチは休止",
         days:[["月","休","rest","完全休養＋補強20分（ランジとレッグレイズを外す）"],
               ["火","T","T",'W/U 2km → <strong>T走 20分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計8km）'],
-              ["水","E","E",'Eジョグ 8km ＋ 流し100m×2<em>今週は2本まで。消えていなければ流しなし</em>'],
+              ["水","E","E",'Eジョグ 8km<em>今週は流しなし。9/29のT走のC/D終盤に左股関節へ違和感が出たため</em>'],
               ["木","E","E","Eジョグ 7km＋補強10分（同上）"],
               ["金","休","rest","休養"],
-              ["土","E","E",'Eジョグ 5km ＋ 流し100m×2'],
+              ["土","E","E",'Eジョグ 5km<em>違和感が消えていれば流し100m×2。残っていればジョグのみ</em>'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="100"></span> <span class="p p-E" data-p="E"></span><em>全部Eペース。後半ペースが落ちなければ成功</em>']] },
       { n:3, d:"10/5 – 10/11", fx:30, lr:{e:110}, t:"時間を伸ばす",
         days:[["月","休","rest","完全休養＋補強20分"],
@@ -1256,14 +1574,14 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     });
   })();
 
-  /* ---------- 補強タブ内のジャンプ。全長1万pxあるので無いと探せない ---------- */
-  (function(){
-    var j = document.getElementById("jumpStr");
+  /* ---------- 補強・食事タブ内のジャンプ。どちらも数千px あるので無いと探せない ---------- */
+  function buildJump(navId, paneId, prefix){
+    var j = document.getElementById(navId);
     if(!j) return;
     var hd = "";
-    document.querySelectorAll("#tab-str section[data-nav]").forEach(function(el, i){
-      el.id = "st" + i;
-      hd += '<button type="button" class="sup" data-ph="st' + i + '">'
+    document.querySelectorAll("#" + paneId + " section[data-nav]").forEach(function(el, i){
+      el.id = prefix + i;
+      hd += '<button type="button" class="sup" data-ph="' + prefix + i + '">'
           + el.getAttribute("data-nav") + '</button>';
     });
     j.innerHTML = hd;
@@ -1273,7 +1591,9 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       var t = document.getElementById(b.getAttribute("data-ph"));
       if(t) t.scrollIntoView({behavior:"smooth", block:"start"});
     });
-  })();
+  }
+  buildJump("jumpStr", "tab-str", "st");
+  buildJump("jumpEat", "tab-eat", "ea");
 
   document.getElementById("bars").innerHTML = ALL.map(function(o){
     return '<div class="bar' + (o.w.rec ? ' rec' : '') + '" data-w="' + o.w.n
@@ -1428,7 +1748,7 @@ var STRETCH = [
     chk:["付け根の前側が伸びている","腰に感じていない","上体が前に倒れていない"],
     mis:["腰に感じる → 骨盤が逃げている。2番からやり直す",
          "前に倒しすぎる → 骨盤さえ立てば、少し動かすだけで効く",
-         "<strong>流しをやった日はこれをやらない</strong>"] },
+         "<strong>速く走った日（流し・T走・Mペース走）はこれをやらない</strong>"] },
 
   { nm:"大臀筋（数字の4）", goal:"お尻の奥", dose:"左右60秒",
     how:["仰向けで両膝を立てる",
@@ -1470,7 +1790,7 @@ var GROUPS = [
 { tag:"Priority 1", name:"中臀筋", color:"var(--glute)", why:"膝の軌道・骨盤の安定",
   aim:"片脚で立った瞬間に骨盤が横に落ちるのを止める筋肉です。ここが働くと大腿骨がまっすぐ前に出て、膝が内外にブレなくなります。膝の外側の痛みの予防は、ほぼこのグループに集約されます。",
   ex:[
-  { nm:"サイドプランク（膝の開閉）", goal:"中臀筋＋体幹側面を同時に", dose:"左右10回×2",
+  { nm:"サイドプランク（膝の開閉）", day:"月木", goal:"中臀筋＋体幹側面を同時に", dose:"左右10回×2",
     how:["横向きに寝て、肘と膝を床につける（前腕は床、上体は一直線）",
          "腰を持ち上げて、肩から膝までを一直線にする",
          "その姿勢を保ったまま、上側の膝をゆっくり開く",
@@ -1480,7 +1800,7 @@ var GROUPS = [
     mis:["腰が落ちる → 体幹が保てていない。回数を減らす","膝を開くときに体が後ろへ回る → 骨盤を立て直す","反動で開閉する → 3秒かけて開き、3秒で閉じる"],
     prg:"楽になったら、膝ではなく足首を床につけて（脚を伸ばして）同じことをする。難度が一段上がる。" },
 
-  { nm:"ヒップアブダクション（横向き）", goal:"中臀筋を単独で", dose:"左右15回×2",
+  { nm:"ヒップアブダクション", day:"月", goal:"横向きで中臀筋を単独に", dose:"左右15回×2",
     how:["横向きに寝て、下の脚は軽く曲げ、上の脚はまっすぐ伸ばす",
          "つま先をわずかに下に向ける（内側に回す）",
          "上の脚をゆっくり真上に上げる。40〜45度まで",
@@ -1489,7 +1809,7 @@ var GROUPS = [
     mis:["つま先が上（天井側）を向く → 大腿筋膜張筋に逃げる。つま先はやや下","脚を高く上げすぎる → 45度で十分。それ以上は腰が代償する","体が後ろに倒れる → 壁に背中をつけてやると分かる"],
     prg:"チューブを膝上に巻くと負荷が上がる。ゴムバンドは数百円で買える。" },
 
-  { nm:"サイドステップ", goal:"立位で中臀筋を使う練習", dose:"10歩×左右2往復",
+  { nm:"サイドステップ", day:"月", goal:"立位で中臀筋を使う練習", dose:"10歩×左右2往復",
     how:["軽く膝を曲げ、腰を落とした姿勢を作る",
          "その高さを保ったまま、横に10歩進む",
          "上体を起こさず、同じ高さのまま戻る"],
@@ -1501,7 +1821,7 @@ var GROUPS = [
 { tag:"Priority 2", name:"ヒラメ筋・腓腹筋", color:"var(--calf)", why:"アキレス腱を守る",
   aim:"接地のたびにアキレス腱には体重の6〜8倍の力がかかります。腱は伸ばしても強くならず、重い負荷をゆっくりかけたときだけ耐えられる量が増えます。膝を伸ばす版と曲げる版の両方が必要です。",
   ex:[
-  { nm:"カーフレイズ｜膝を伸ばす", goal:"腓腹筋", dose:"12〜15回×2〜3",
+  { nm:"カーフレイズ｜膝を伸ばす", day:"月木", goal:"腓腹筋", dose:"12〜15回×2〜3",
     how:["腰幅に立つ。つま先はまっすぐ前",
          "壁か椅子に指先を触れる（体重は預けない）",
          "膝を伸ばしたまま固定し、3秒かけてかかとを上げる",
@@ -1511,7 +1831,7 @@ var GROUPS = [
     mis:["前ももが張る → どこかで膝が曲げ伸ばしされている。膝を固定する","一番上で指が床を掴む → 上げすぎ。支点が指に移っている","かかとが外に逃げる → 回外。母指球に乗せ直す","反動を使う → 3秒かければ反動は使えない"],
     prg:"15回×3が余裕になったらリュックに2〜3kg。その後は片脚へ。" },
 
-  { nm:"カーフレイズ｜膝を曲げる", goal:"ヒラメ筋（長距離で最重要）", dose:"12〜15回×2〜3",
+  { nm:"カーフレイズ｜膝を曲げる", day:"月木", goal:"ヒラメ筋（長距離で最重要）", dose:"12〜15回×2〜3",
     how:["腰幅に立ち、膝を20〜30度曲げる",
          "<strong>その角度を保ったまま</strong>、3秒かけてかかとを上げる",
          "3秒かけて下ろす。床で止める",
@@ -1524,7 +1844,7 @@ var GROUPS = [
 { tag:"Priority 3", name:"大臀筋・ハムストリングス", color:"var(--power)", why:"推進力",
   aim:"股関節を後ろに伸ばす力が、そのまま前に進む力になります。ふくらはぎ主導から股関節主導へ移すには、ここが仕事を引き受けられる状態が必要です。",
   ex:[
-  { nm:"シングルレッグ・ヒップリフト", goal:"大臀筋・ハムストリングス", dose:"左右10回×2",
+  { nm:"シングルレッグ・ヒップリフト", day:"月", goal:"大臀筋・ハムストリングス", dose:"左右10回×2",
     how:["仰向けに寝て、片膝を立てる。もう片脚は伸ばすか軽く浮かせる",
          "立てた脚のかかとで床を押し、お尻を持ち上げる",
          "一番上で1秒止める。肩から膝まで一直線",
@@ -1533,7 +1853,7 @@ var GROUPS = [
     mis:["腰が張る → お尻ではなく腰で持ち上げている。肋骨を締めて骨盤を立てる","ハムだけが攣りそうになる → お尻を先に締めてから上げる","骨盤が浮いている側に落ちる → 中臀筋の弱さ。Priority 1 に戻る"],
     prg:"両脚のヒップリフトから始めて、安定したら片脚へ。さらに進めるなら足を台に乗せる。" },
 
-  { nm:"ランジ", goal:"内転筋・臀筋・大腿四頭筋", dose:"左右10回×2",
+  { nm:"ランジ", day:"月", goal:"内転筋・臀筋・大腿四頭筋", dose:"左右10回×2",
     how:["足を前後に開き、後ろ脚の膝を床に近づける",
          "上体はまっすぐ。前の膝はつま先より前に出しすぎない",
          "前脚のかかとで床を押して戻る"],
@@ -1545,7 +1865,7 @@ var GROUPS = [
 { tag:"Priority 4", name:"体幹・腸腰筋", color:"var(--core)", why:"座る時間への対抗",
   aim:"長時間座ると股関節の前が縮み、股関節を後ろに伸ばせなくなります。走りの推進力そのものが削られるので、デスクワークがある限り毎週の対処が必要です。",
   ex:[
-  { nm:"座位ニーアップ", goal:"腸腰筋を単独で", dose:"左右10回×2",
+  { nm:"座位ニーアップ", day:"月", goal:"腸腰筋を単独で", dose:"左右10回×2",
     how:["椅子に浅めに座り、背筋を伸ばす",
          "片方の太ももを座面から浮かせる。5cmで十分",
          "3秒止める",
@@ -1556,7 +1876,7 @@ var GROUPS = [
          "反動で上げる → 3秒かけて上げ、3秒止める"],
     prg:"立位ニーアップより効きます。立った状態では負荷が軽すぎて、腸腰筋には刺激になりません。余裕が出たら足首に軽い重りを足す。" },
 
-  { nm:"デッドバグ", goal:"体幹を固める（腰を反らせない）", dose:"左右10回×2",
+  { nm:"デッドバグ", day:"月", goal:"体幹を固める（腰を反らせない）", dose:"左右10回×2",
     how:["仰向けで、腕を天井に伸ばし、膝と股関節を90度に曲げる",
          "腰と床の隙間をなくす（肋骨を締める）",
          "その状態を保ったまま、対角の手と脚をゆっくり伸ばす",
@@ -1565,7 +1885,7 @@ var GROUPS = [
     mis:["腰が浮く → 脚を伸ばす範囲を小さくする","息を止める → 吐きながら伸ばす"],
     prg:"腰を浮かせずに完全に伸ばせるようになったら、伸ばした位置で2秒止める。" },
 
-  { nm:"レッグレイズ", goal:"腸腰筋", dose:"12〜15回×2",
+  { nm:"レッグレイズ", day:"月", goal:"腸腰筋", dose:"12〜15回×2",
     how:["仰向けで両脚を伸ばす。手はお尻の下か体側",
          "腰を床に押しつけたまま、両脚を揃えてゆっくり上げる",
          "45〜60度まで上げたら、ゆっくり下ろす",
@@ -1574,19 +1894,21 @@ var GROUPS = [
     mis:["腰が反る → 膝を曲げた状態から始める","勢いで振り上げる → ゆっくり"],
     prg:"腰が浮くなら片脚ずつ。楽になったら脚を伸ばしたまま、下ろす範囲を広げる。" },
 
-  { nm:"肋骨を締める呼吸", goal:"反り腰・肋骨の開きを戻す", dose:"10回",
-    how:["仰向けに寝て、両膝を立てる",
-         "鼻から3秒で吸う。肩を上げない",
-         "口から6秒かけて吐く。<strong>普段止めるところから、さらに絞り出す</strong>",
-         "吐き切った瞬間に肋骨が下がり、腹が締まる。その位置を2秒保つ",
-         "力を抜かずに次の呼吸へ。10回"],
-    chk:["吐き切ったとき、肋骨の下端が下がる","腰と床の隙間が狭くなる","肩と首に力が入っていない"],
-    mis:["力で締めようとする → 吐き切れば自動的に締まる。腹筋に力を入れる種目ではない",
-         "吸うときに肩が上がる → 胸ではなく、脇腹とお腹を膨らませる",
-         "吐きが足りない → 最後の2割を絞り出すところが本番"],
-    prg:"寝てできたら、座って同じことをする。さらに立って。日中の姿勢に繋がる。" },
+  { nm:"肋骨を締める呼吸", day:"月", goal:"インナーユニットを使えるようにする", dose:"10回",
+    how:["仰向けに寝て、両膝を立てる。<strong>床でやる（ベッドは沈むので位置が分からない）</strong>",
+         "鼻から息を吸ってお腹を膨らませながら、<strong>腰を意識的に大きく反らせる</strong>",
+         "口から息を吐きながら、<strong>4秒かけて腰を押し下げていく</strong>",
+         "<strong>ナチュラルカーブまで来たら止める。</strong>床にはつけない",
+         "1回ごとに力を抜く。5回 → 休む → 5回"],
+    chk:["吐いた位置で、腰と床のあいだに<strong>手のひら1枚ぶんの隙間が残っている</strong>",
+         "お腹の表面（腹直筋）が硬くなっていない",
+         "肩と首に力が入っていない"],
+    mis:["<strong>腰を床に押し付ける → 行きすぎ。</strong>腰は本来わずかに反っていて、それがナチュラルカーブ。床につけると逆向きに曲がった状態で鍛えることになり、背中が痛くなる",
+         "力で締めようとする → 吐けば自動的に締まる。腹筋に力を入れる種目ではない",
+         "吸うときに肩が上がる → 胸ではなく、脇腹とお腹を膨らませる"],
+    prg:"慣れたら両手を頭の上に伸ばして同じことをする。さらに四つん這いで同じ呼吸をしてから、カーブを保ったまま対角の手と脚を伸ばす。" },
 
-  { nm:"プランク", goal:"体幹全体", dose:"45〜60秒×2",
+  { nm:"プランク", day:"月", goal:"体幹全体", dose:"45〜60秒×2",
     how:["肘とつま先で体を支える","頭からかかとまで一直線","お尻を締め、肋骨を締める"],
     chk:["お尻が上がっても下がってもいない","肩がすくんでいない"],
     mis:["時間を伸ばすことが目的になる → 形が崩れたら終了。90秒より、45秒を正しく",
@@ -1599,7 +1921,9 @@ var GROUPS = [
 /* 種目カード1枚ぶんのHTML。種目・ドリル・ストレッチで共通に使う */
 function exHTML(e){
   return '<details class="ex"><summary>'
-    + '<span class="nm">' + e.nm + '<em class="goal">' + e.goal + '</em></span>'
+    + '<span class="nm">'
+    + (e.day ? '<i class="day' + (e.day === "月木" ? " d2" : "") + '">' + e.day + '</i>' : "")
+    + e.nm + '<em class="goal">' + e.goal + '</em></span>'
     + '<span class="dose">' + e.dose + '</span><span class="chev"></span></summary>'
     + '<div class="ex-body">'
     + '<div class="blk full"><h5>手順</h5><ol>'
@@ -1630,10 +1954,12 @@ function exHTML(e){
   document.getElementById("stretches").innerHTML =
     STRETCH.map(exHTML).join("");
 
+  var PANES = ["plan", "str", "eat"];
   function show(k, scroll){
-    k = (k === "str") ? "str" : "plan";
-    document.getElementById("tab-plan").hidden = (k !== "plan");
-    document.getElementById("tab-str").hidden  = (k !== "str");
+    if(PANES.indexOf(k) < 0) k = "plan";
+    PANES.forEach(function(p){
+      document.getElementById("tab-" + p).hidden = (p !== k);
+    });
     Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(b){
       b.classList.toggle("is-on", b.getAttribute("data-tab") === k);
     });
