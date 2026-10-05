@@ -416,16 +416,43 @@ details.wk[open]{background:var(--surface-2)}
 .wk-table .s.off{color:var(--ink-3);font-weight:400}
 
 /* ---- 種目 ---- */
-.grp{margin-top:34px}
-.grp-hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;
-  padding-bottom:10px;border-bottom:2px solid var(--gc)}
+/* 曜日のタブ。上のタブ(.tabs)と見た目を変えて、別の階層だと分かるようにする */
+.daytabs{display:flex;gap:6px;margin-top:18px}
+.dtab{flex:1;appearance:none;cursor:pointer;font-family:var(--sans);text-align:center;
+  padding:10px 8px;border:1px solid var(--rule-strong);border-radius:5px;
+  background:var(--surface);color:var(--ink-3);font-size:14.5px;font-weight:700;
+  transition:color .12s,border-color .12s,background .12s}
+.dtab b{display:block;margin-top:3px;font-family:var(--cond);font-size:11.5px;
+  font-weight:400;letter-spacing:.03em;color:var(--ink-3)}
+.dtab:hover{color:var(--ink-2);border-color:var(--ink-3)}
+.dtab.is-on{color:var(--ink);background:var(--indigo-soft);border-color:var(--indigo)}
+.dtab.is-on b{color:var(--ink-2)}
+/* 姿勢の区切り。ここで体勢が変わる、という目印だけの見出し */
+.posh{margin:22px 0 0;padding-bottom:5px;font-family:var(--cond);font-size:11.5px;
+  font-weight:700;letter-spacing:.14em;color:var(--ink-3);border-bottom:1px solid var(--rule)}
+.posh + .ex{border-top:0;margin-top:0}
+.exlist .ex:first-of-type{border-top:0;margin-top:0}
+/* 系列のタグ。種目がどの狙いに属するかを、色の縦棒で示す */
+.ex .gt{display:inline-block;margin-top:5px;padding-left:7px;font-style:normal;
+  font-family:var(--cond);font-size:11.5px;font-weight:400;letter-spacing:.03em;
+  color:var(--ink-3);border-left:3px solid var(--gc)}
+/* 木曜タブでは全種目が木曜なので、「木」の印は出さない */
+.exlist.is-thu .day{display:none}
+.grpinfo-wrap{margin-top:26px;border-top:1px solid var(--rule-strong)}
+.grpinfo-wrap > summary{list-style:none;cursor:pointer;padding:14px 0;
+  font-weight:700;font-size:14px;color:var(--ink-2)}
+.grpinfo-wrap > summary::-webkit-details-marker{display:none}
+.grpinfo-wrap > summary:hover{color:var(--indigo)}
+.gi{margin-bottom:20px}
+.gi-hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;
+  padding-bottom:8px;border-bottom:2px solid var(--gc)}
 /* 色は見出し下の2px罫が持つ。11.5pxの文字に系列色を使うと
    --core(#8249CC) が 3.3:1 しか出ず読めない */
-.grp-hd .tag{font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.14em;
+.gi-hd .tag{font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.14em;
   text-transform:uppercase;color:var(--ink-2)}
-.grp-hd h3{font-size:17px;font-weight:700}
-.grp-hd .why{margin-left:auto;font-size:12.5px;color:var(--ink-3)}
-.grp-aim{margin-top:11px;font-size:13.5px;color:var(--ink-2);max-width:64ch}
+.gi-hd h4{font-size:15.5px;font-weight:700}
+.gi-hd .why{margin-left:auto;font-size:12.5px;color:var(--ink-3)}
+.gi p{margin-top:9px;font-size:13.5px;color:var(--ink-2);max-width:64ch}
 
 .ex{border-bottom:1px solid var(--rule)}
 .ex:first-of-type{border-top:1px solid var(--rule-strong);margin-top:16px}
@@ -435,17 +462,18 @@ details.wk[open]{background:var(--surface-2)}
 .ex > summary:hover .nm{color:var(--indigo)}
 .ex .nm{font-weight:700;font-size:15px;transition:color .12s;text-wrap:balance}
 .ex .goal{display:block;font-size:12.5px;font-weight:400;color:var(--ink-3);margin-top:2px}
-/* 曜日バッジ。カードを開かずに月曜だけか月木両方かが分かるようにする。
-   色は枠が持つ。11pxの文字を系列色にすると小さすぎて読めない（案2と同じ方針） */
+/* 木曜にもやる種目の印。月曜タブでだけ出す。
+   11pxの文字を系列色にすると小さすぎて読めないので、色は枠と地が持つ */
 .ex .day{display:inline-block;font-style:normal;font-family:var(--cond);font-size:11px;
   font-weight:700;letter-spacing:.04em;line-height:1;padding:4px 5px 3px;margin-right:7px;
   border-radius:3px;vertical-align:2px;white-space:nowrap;
-  color:var(--ink-3);border:1px solid var(--rule-strong)}
-.ex .day.d2{color:var(--ink);background:var(--indigo-soft);border-color:var(--indigo)}
-.ex > summary:hover .day{color:var(--ink-3)}
-.ex > summary:hover .day.d2{color:var(--ink)}
+  color:var(--ink);background:var(--indigo-soft);border:1px solid var(--indigo)}
+.ex > summary:hover .day{color:var(--ink)}
 .ex .dose{font-family:var(--cond);font-size:14px;font-weight:700;color:var(--ink-2);
   font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+/* 動作の速さ。回数の下に小さく置く。ここを守るかどうかで効き方が変わる */
+.ex .dose .tmp{display:block;margin-top:4px;font-family:var(--sans);font-size:11.5px;
+  font-weight:400;letter-spacing:0;color:var(--ink-3)}
 .ex .chev{width:18px;height:18px;position:relative}
 .ex .chev::before,.ex .chev::after{content:"";position:absolute;top:8px;left:3px;width:12px;
   height:1.5px;background:var(--ink-3);transition:transform .18s}
@@ -507,7 +535,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   .rank-row{grid-template-columns:28px 1fr;gap:11px;padding:12px 13px}
   .ex > summary{grid-template-columns:1fr auto;row-gap:2px}
   .ex .chev{display:none}
-  .grp-hd .why{margin-left:0;width:100%}
+  .gi-hd .why{margin-left:0;width:100%}
   .wk-table td,.mini td{padding:9px 7px}
   /* 320px級では「レッグスイング（前後）」が1行に収まらず、nowrap のままだと表が横に溢れる */
   .mini td:first-child{white-space:normal}
@@ -772,7 +800,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       <tr><td class="d">日</td><td class="m">ロング走</td><td class="s off">なし</td></tr>
     </tbody>
   </table>
-  <p class="lede">月曜と木曜で3日ずつ間隔が空きます。<strong>下の種目一覧には、それぞれ曜日のバッジが付いています。</strong>「月」はメインだけ、「月木」は両方です。</p>
+  <p class="lede">月曜と木曜で3日ずつ間隔が空きます。<strong>下の「種目」には曜日のタブがあります。</strong>その日のぶんだけが、やる順番に並びます。</p>
 
   <table class="mini">
     <thead><tr><th>日</th><th>やる種目</th><th>理由</th></tr></thead>
@@ -787,7 +815,14 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 
 <section data-nav="種目">
   <h2><span class="n">03</span>種目</h2>
-  <div id="groups"></div>
+  <p class="lede">タブで曜日を切り替えてください。<strong>上から順にやれば、そのまま終わります。</strong>仰向け → うつ伏せ → 横向き → 座位 → 立位の順に並べてあるので、途中で起き上がり直す必要がありません。</p>
+  <p class="lede"><strong>左右があるものは、必ず右から。</strong>左は右に合わせます。</p>
+  <div class="daytabs" id="daytabs" role="tablist">
+    <button type="button" class="dtab is-on" data-day="mon" role="tab" aria-selected="true">月曜<b>12種目・20分</b></button>
+    <button type="button" class="dtab" data-day="thu" role="tab" aria-selected="false">木曜<b>3種目・10分</b></button>
+  </div>
+  <div class="exlist" id="exlist"></div>
+  <details class="grpinfo-wrap"><summary>それぞれの狙い</summary><div id="grpinfo"></div></details>
 </section>
 
 <section data-nav="走る前">
@@ -1786,115 +1821,10 @@ var STRETCH = [
          "付け根が痛むときはやらない"] }
 ];
 
-var GROUPS = [
-{ tag:"Priority 1", name:"中臀筋", color:"var(--glute)", why:"膝の軌道・骨盤の安定",
-  aim:"片脚で立った瞬間に骨盤が横に落ちるのを止める筋肉です。ここが働くと大腿骨がまっすぐ前に出て、膝が内外にブレなくなります。膝の外側の痛みの予防は、ほぼこのグループに集約されます。",
-  ex:[
-  { nm:"サイドプランク（膝の開閉）", day:"月木", goal:"中臀筋＋体幹側面を同時に", dose:"左右10回×2",
-    how:["横向きに寝て、肘と膝を床につける（前腕は床、上体は一直線）",
-         "腰を持ち上げて、肩から膝までを一直線にする",
-         "その姿勢を保ったまま、上側の膝をゆっくり開く",
-         "同じ速度で閉じる。腰の高さは変えない",
-         "10回終えたら腰を下ろし、反対側へ"],
-    chk:["お尻の外側の上あたりに効いている","腰の高さが最初から最後まで変わらない","体が後ろに倒れていない"],
-    mis:["腰が落ちる → 体幹が保てていない。回数を減らす","膝を開くときに体が後ろへ回る → 骨盤を立て直す","反動で開閉する → 3秒かけて開き、3秒で閉じる"],
-    prg:"楽になったら、膝ではなく足首を床につけて（脚を伸ばして）同じことをする。難度が一段上がる。" },
-
-  { nm:"ヒップアブダクション", day:"月", goal:"横向きで中臀筋を単独に", dose:"左右15回×2",
-    how:["横向きに寝て、下の脚は軽く曲げ、上の脚はまっすぐ伸ばす",
-         "つま先をわずかに下に向ける（内側に回す）",
-         "上の脚をゆっくり真上に上げる。40〜45度まで",
-         "同じ速度で下ろす。床にはつけず、寸前で止めて次へ"],
-    chk:["お尻の外側が焼ける感じ","腰や腿の前ではなく、お尻に効いている","体が後ろに倒れていない"],
-    mis:["つま先が上（天井側）を向く → 大腿筋膜張筋に逃げる。つま先はやや下","脚を高く上げすぎる → 45度で十分。それ以上は腰が代償する","体が後ろに倒れる → 壁に背中をつけてやると分かる"],
-    prg:"チューブを膝上に巻くと負荷が上がる。ゴムバンドは数百円で買える。" },
-
-  { nm:"サイドステップ", day:"月", goal:"立位で中臀筋を使う練習", dose:"10歩×左右2往復",
-    how:["軽く膝を曲げ、腰を落とした姿勢を作る",
-         "その高さを保ったまま、横に10歩進む",
-         "上体を起こさず、同じ高さのまま戻る"],
-    chk:["お尻の外側が働いている","上下に弾んでいない","つま先と膝が同じ方向を向いている"],
-    mis:["歩くたびに上下する → 高さを固定する","膝が内に入る → ここが直したい癖そのもの"],
-    prg:"膝上にチューブを巻く。走る前の準備としても使える（その場合は軽く）。" }
-]},
-
-{ tag:"Priority 2", name:"ヒラメ筋・腓腹筋", color:"var(--calf)", why:"アキレス腱を守る",
-  aim:"接地のたびにアキレス腱には体重の6〜8倍の力がかかります。腱は伸ばしても強くならず、重い負荷をゆっくりかけたときだけ耐えられる量が増えます。膝を伸ばす版と曲げる版の両方が必要です。",
-  ex:[
-  { nm:"カーフレイズ｜膝を伸ばす", day:"月木", goal:"腓腹筋", dose:"12〜15回×2〜3",
-    how:["腰幅に立つ。つま先はまっすぐ前",
-         "壁か椅子に指先を触れる（体重は預けない）",
-         "膝を伸ばしたまま固定し、3秒かけてかかとを上げる",
-         "3秒かけて下ろす。<strong>足裏が床についたところで止める</strong>",
-         "床より下にかかとを落とさない"],
-    chk:["一番上で足の指がリラックスしている","母指球に圧を感じる","かかとが真上に上がり、外に逃げない","膝の角度が最初から最後まで変わらない"],
-    mis:["前ももが張る → どこかで膝が曲げ伸ばしされている。膝を固定する","一番上で指が床を掴む → 上げすぎ。支点が指に移っている","かかとが外に逃げる → 回外。母指球に乗せ直す","反動を使う → 3秒かければ反動は使えない"],
-    prg:"15回×3が余裕になったらリュックに2〜3kg。その後は片脚へ。" },
-
-  { nm:"カーフレイズ｜膝を曲げる", day:"月木", goal:"ヒラメ筋（長距離で最重要）", dose:"12〜15回×2〜3",
-    how:["腰幅に立ち、膝を20〜30度曲げる",
-         "<strong>その角度を保ったまま</strong>、3秒かけてかかとを上げる",
-         "3秒かけて下ろす。床で止める",
-         "動作中、膝の角度は一切変えない"],
-    chk:["ふくらはぎの下の方（深い層）に効いている","膝の角度が動いていない","前ももが張っていない"],
-    mis:["曲げ伸ばしの動作をしてしまう → これはスクワットになる。曲げた「姿勢」を保つだけ","角度が浅い → 20度以上曲げないとヒラメ筋に入らない"],
-    prg:"こちらの方が地味だが、長距離では膝を伸ばす版より重要。省略しない。" }
-]},
-
-{ tag:"Priority 3", name:"大臀筋・ハムストリングス", color:"var(--power)", why:"推進力",
-  aim:"股関節を後ろに伸ばす力が、そのまま前に進む力になります。ふくらはぎ主導から股関節主導へ移すには、ここが仕事を引き受けられる状態が必要です。",
-  ex:[
-  { nm:"シングルレッグ・ヒップリフト", day:"月", goal:"大臀筋・ハムストリングス", dose:"左右10回×2",
-    how:["仰向けに寝て、片膝を立てる。もう片脚は伸ばすか軽く浮かせる",
-         "立てた脚のかかとで床を押し、お尻を持ち上げる",
-         "一番上で1秒止める。肩から膝まで一直線",
-         "ゆっくり下ろす。床につく寸前で止めて次へ"],
-    chk:["お尻に効いている","腰が反っていない","骨盤が左右に傾いていない"],
-    mis:["腰が張る → お尻ではなく腰で持ち上げている。肋骨を締めて骨盤を立てる","ハムだけが攣りそうになる → お尻を先に締めてから上げる","骨盤が浮いている側に落ちる → 中臀筋の弱さ。Priority 1 に戻る"],
-    prg:"両脚のヒップリフトから始めて、安定したら片脚へ。さらに進めるなら足を台に乗せる。" },
-
-  { nm:"ランジ", day:"月", goal:"内転筋・臀筋・大腿四頭筋", dose:"左右10回×2",
-    how:["足を前後に開き、後ろ脚の膝を床に近づける",
-         "上体はまっすぐ。前の膝はつま先より前に出しすぎない",
-         "前脚のかかとで床を押して戻る"],
-    chk:["前脚のお尻と内ももに効いている","膝が内に入っていない"],
-    mis:["<strong>この補強のランジを走る前にやる</strong> → 最大の間違い。筋損傷を起こしてから走ることになる。走る前のランジウォークは沈まない別物なので可","膝が内に倒れる → 中臀筋が効いていない","前膝が深く曲がりすぎる → 重心を真下に落とす。前に踏み込まない"],
-    prg:"月曜専用。翌日は火曜のポイント練習なので、回復時間が取れる配置になっている。" }
-]},
-
-{ tag:"Priority 4", name:"体幹・腸腰筋", color:"var(--core)", why:"座る時間への対抗",
-  aim:"長時間座ると股関節の前が縮み、股関節を後ろに伸ばせなくなります。走りの推進力そのものが削られるので、デスクワークがある限り毎週の対処が必要です。",
-  ex:[
-  { nm:"座位ニーアップ", day:"月", goal:"腸腰筋を単独で", dose:"左右10回×2",
-    how:["椅子に浅めに座り、背筋を伸ばす",
-         "片方の太ももを座面から浮かせる。5cmで十分",
-         "3秒止める",
-         "ゆっくり下ろす。座面に触れる手前で止めて次へ"],
-    chk:["脚の付け根の奥に効いている","背中が丸まっていない","上体が後ろに倒れていない"],
-    mis:["前ももに効く → 大腿直筋が代わりに働いている。膝を曲げたまま、股関節から上げる",
-         "上体が後ろに倒れる → 腹筋で引き上げている。背もたれから離れて座る",
-         "反動で上げる → 3秒かけて上げ、3秒止める"],
-    prg:"立位ニーアップより効きます。立った状態では負荷が軽すぎて、腸腰筋には刺激になりません。余裕が出たら足首に軽い重りを足す。" },
-
-  { nm:"デッドバグ", day:"月", goal:"体幹を固める（腰を反らせない）", dose:"左右10回×2",
-    how:["仰向けで、腕を天井に伸ばし、膝と股関節を90度に曲げる",
-         "腰と床の隙間をなくす（肋骨を締める）",
-         "その状態を保ったまま、対角の手と脚をゆっくり伸ばす",
-         "床につく寸前で戻す。反対側へ"],
-    chk:["腰が床から浮かない","お腹の深いところが働いている","呼吸が止まっていない"],
-    mis:["腰が浮く → 脚を伸ばす範囲を小さくする","息を止める → 吐きながら伸ばす"],
-    prg:"腰を浮かせずに完全に伸ばせるようになったら、伸ばした位置で2秒止める。" },
-
-  { nm:"レッグレイズ", day:"月", goal:"腸腰筋", dose:"12〜15回×2",
-    how:["仰向けで両脚を伸ばす。手はお尻の下か体側",
-         "腰を床に押しつけたまま、両脚を揃えてゆっくり上げる",
-         "45〜60度まで上げたら、ゆっくり下ろす",
-         "床につく寸前で止めて次へ"],
-    chk:["腰が浮かない","股関節の前側に効いている"],
-    mis:["腰が反る → 膝を曲げた状態から始める","勢いで振り上げる → ゆっくり"],
-    prg:"腰が浮くなら片脚ずつ。楽になったら脚を伸ばしたまま、下ろす範囲を広げる。" },
-
-  { nm:"肋骨を締める呼吸", day:"月", goal:"インナーユニットを使えるようにする", dose:"10回",
+/* 種目は「やる順番」で並べる。寝た姿勢からはじめて、座位、立位へ移る。
+   途中で何度も起き上がらずに済むので、20分の枠が実際に20分で終わる */
+var EXS = [
+  { grp:"体幹・腸腰筋", gc:"var(--core)", pos:"仰向け", nm:"肋骨を締める呼吸", day:"月", goal:"インナーユニットを使えるようにする", dose:"10回", tempo:"吐く4秒",
     how:["仰向けに寝て、両膝を立てる。<strong>床でやる（ベッドは沈むので位置が分からない）</strong>",
          "鼻から息を吸ってお腹を膨らませながら、<strong>腰を意識的に大きく反らせる</strong>",
          "口から息を吐きながら、<strong>4秒かけて腰を押し下げていく</strong>",
@@ -1907,24 +1837,117 @@ var GROUPS = [
          "力で締めようとする → 吐けば自動的に締まる。腹筋に力を入れる種目ではない",
          "吸うときに肩が上がる → 胸ではなく、脇腹とお腹を膨らませる"],
     prg:"慣れたら両手を頭の上に伸ばして同じことをする。さらに四つん這いで同じ呼吸をしてから、カーブを保ったまま対角の手と脚を伸ばす。" },
-
-  { nm:"プランク", day:"月", goal:"体幹全体", dose:"45〜60秒×2",
+  { grp:"体幹・腸腰筋", gc:"var(--core)", pos:"仰向け", nm:"デッドバグ", day:"月", goal:"体幹を固める（腰を反らせない）", dose:"左右10回×2", tempo:"4秒ずつ",
+    how:["仰向けで、腕を天井に伸ばし、膝と股関節を90度に曲げる",
+         "腰と床の隙間を<strong>広げない</strong>（肋骨を締める）。床に押しつける必要はない",
+         "その状態を保ったまま、<strong>4秒かけて</strong>対角の手と脚を伸ばす",
+         "<strong>4秒かけて</strong>戻す。床につく寸前で止める。反対側へ"],
+    chk:["腰が床から浮かない","お腹の深いところが働いている","呼吸が止まっていない"],
+    mis:["腰が浮く → 脚を伸ばす範囲を小さくする","息を止める → 吐きながら伸ばす"],
+    prg:"腰を浮かせずに完全に伸ばせるようになったら、伸ばした位置で2秒止める。" },
+  { grp:"体幹・腸腰筋", gc:"var(--core)", pos:"仰向け", nm:"レッグレイズ", day:"月", goal:"腸腰筋", dose:"12〜15回×2", tempo:"3秒ずつ",
+    how:["仰向けで両脚を伸ばす。手はお尻の下か体側",
+         "腰と床の隙間を<strong>広げないまま</strong>、<strong>3秒かけて</strong>両脚を揃えて上げる",
+         "45〜60度まで上げたら、<strong>3秒かけて</strong>下ろす",
+         "床につく寸前で止めて次へ"],
+    chk:["腰が浮かない","股関節の前側に効いている"],
+    mis:["腰が反る → 膝を曲げた状態から始める","勢いで振り上げる → ゆっくり"],
+    prg:"腰が浮くなら片脚ずつ。楽になったら脚を伸ばしたまま、下ろす範囲を広げる。" },
+  { grp:"大臀筋・ハムストリングス", gc:"var(--power)", pos:"仰向け", nm:"シングルレッグ・ヒップリフト", day:"月", goal:"大臀筋・ハムストリングス", dose:"左右10回×2", tempo:"2-1-2秒",
+    how:["仰向けに寝て、片膝を立てる。もう片脚は伸ばすか軽く浮かせる",
+         "立てた脚のかかとで床を押し、<strong>2秒かけて</strong>お尻を持ち上げる",
+         "一番上で<strong>1秒止める</strong>。肩から膝まで一直線",
+         "<strong>2秒かけて</strong>下ろす。床につく寸前で止めて次へ"],
+    chk:["お尻に効いている","腰が反っていない","骨盤が左右に傾いていない"],
+    mis:["腰が張る → お尻ではなく腰で持ち上げている。肋骨を締めて骨盤を立てる","ハムだけが攣りそうになる → お尻を先に締めてから上げる","骨盤が浮いている側に落ちる → 中臀筋の弱さ。Priority 1 に戻る"],
+    prg:"両脚のヒップリフトから始めて、安定したら片脚へ。さらに進めるなら足を台に乗せる。" },
+  { grp:"体幹・腸腰筋", gc:"var(--core)", pos:"うつ伏せ", nm:"プランク", day:"月", goal:"体幹全体", dose:"45〜60秒×2",
     how:["肘とつま先で体を支える","頭からかかとまで一直線","お尻を締め、肋骨を締める"],
     chk:["お尻が上がっても下がってもいない","肩がすくんでいない"],
     mis:["時間を伸ばすことが目的になる → 形が崩れたら終了。90秒より、45秒を正しく",
          "腰が反って反り腰になる → 恥骨を上に向けるイメージで骨盤を立てる",
          "肩の真下から肘がずれる → 肘は肩の真下。前に出すと肩と首で支えることになる"],
-    prg:"時間を伸ばすより、片脚を浮かせるなど不安定要素を足す方が効く。" }
-]}
+    prg:"時間を伸ばすより、片脚を浮かせるなど不安定要素を足す方が効く。" },
+  { grp:"中臀筋", gc:"var(--glute)", pos:"横向き", nm:"サイドプランク（膝の開閉）", day:"月木", goal:"中臀筋＋体幹側面を同時に", dose:"左右10回×2", tempo:"3秒ずつ",
+    how:["横向きに寝て、肘と膝を床につける（前腕は床、上体は一直線）",
+         "腰を持ち上げて、肩から膝までを一直線にする",
+         "その姿勢を保ったまま、<strong>3秒かけて</strong>上側の膝を開く",
+         "<strong>3秒かけて</strong>閉じる。完全に重ねず、触れる寸前で次へ。腰の高さは変えない",
+         "10回終えたら腰を下ろし、反対側へ"],
+    chk:["お尻の外側の上あたりに効いている","腰の高さが最初から最後まで変わらない","体が後ろに倒れていない"],
+    mis:["腰が落ちる → 体幹が保てていない。回数を減らす","膝を開くときに体が後ろへ回る → 骨盤を立て直す","反動で開閉する → 3秒かけて開き、3秒で閉じる",
+         "開きながら膝が伸びる → 股関節ではなく脚全体を振る動きになる。<strong>膝の角度は90度のまま</strong>"],
+    prg:"楽になったら、膝ではなく足首を床につけて（脚を伸ばして）同じことをする。難度が一段上がる。" },
+  { grp:"中臀筋", gc:"var(--glute)", pos:"横向き", nm:"ヒップアブダクション", day:"月", goal:"横向きで中臀筋を単独に", dose:"左右15回×2", tempo:"3秒ずつ",
+    how:["横向きに寝て、下の脚は軽く曲げ、上の脚はまっすぐ伸ばす",
+         "つま先をわずかに下に向ける（内側に回す）",
+         "<strong>3秒かけて</strong>上の脚を真上に上げる。40〜45度まで",
+         "<strong>3秒かけて</strong>下ろす。床にはつけず、寸前で止めて次へ"],
+    chk:["お尻の外側が焼ける感じ","腰や腿の前ではなく、お尻に効いている","体が後ろに倒れていない"],
+    mis:["つま先が上（天井側）を向く → 大腿筋膜張筋に逃げる。つま先はやや下","脚を高く上げすぎる → 45度で十分。それ以上は腰が代償する","体が後ろに倒れる → 壁に背中をつけてやると分かる"],
+    prg:"チューブを膝上に巻くと負荷が上がる。ゴムバンドは数百円で買える。" },
+  { grp:"体幹・腸腰筋", gc:"var(--core)", pos:"座位", nm:"座位ニーアップ", day:"月", goal:"腸腰筋を単独で", dose:"左右10回×2", tempo:"3秒静止",
+    how:["椅子に浅めに座り、背筋を伸ばす",
+         "片方の太ももを座面から浮かせる。5cmで十分",
+         "<strong>3秒止める</strong>",
+         "3秒かけて下ろす。座面に触れる手前で止めて次へ"],
+    chk:["脚の付け根の奥に効いている","背中が丸まっていない","上体が後ろに倒れていない"],
+    mis:["前ももに効く → 大腿直筋が代わりに働いている。膝を曲げたまま、股関節から上げる",
+         "上体が後ろに倒れる → 腹筋で引き上げている。背もたれから離れて座る",
+         "反動で上げる → 3秒かけて上げ、3秒止める"],
+    prg:"立位ニーアップより効きます。立った状態では負荷が軽すぎて、腸腰筋には刺激になりません。余裕が出たら足首に軽い重りを足す。" },
+  { grp:"大臀筋・ハムストリングス", gc:"var(--power)", pos:"立位", nm:"ランジ", day:"月", goal:"内転筋・臀筋・大腿四頭筋", dose:"左右10回×2", tempo:"2秒ずつ",
+    how:["足を前後に開き、<strong>2秒かけて</strong>後ろ脚の膝を床に近づける",
+         "上体はまっすぐ。前の膝はつま先より前に出しすぎない",
+         "前脚のかかとで床を押し、<strong>2秒かけて</strong>戻る"],
+    chk:["前脚のお尻と内ももに効いている","膝が内に入っていない"],
+    mis:["<strong>この補強のランジを走る前にやる</strong> → 最大の間違い。筋損傷を起こしてから走ることになる。走る前のランジウォークは沈まない別物なので可","膝が内に倒れる → 中臀筋が効いていない","前膝が深く曲がりすぎる → 重心を真下に落とす。前に踏み込まない"],
+    prg:"月曜専用。翌日は火曜のポイント練習なので、回復時間が取れる配置になっている。" },
+  { grp:"中臀筋", gc:"var(--glute)", pos:"立位", nm:"サイドステップ", day:"月", goal:"立位で中臀筋を使う練習", dose:"10歩×左右2往復",
+    how:["軽く膝を曲げ、腰を落とした姿勢を作る",
+         "その高さを保ったまま、横に10歩進む",
+         "上体を起こさず、同じ高さのまま戻る"],
+    chk:["お尻の外側が働いている","上下に弾んでいない","つま先と膝が同じ方向を向いている"],
+    mis:["歩くたびに上下する → 高さを固定する","膝が内に入る → ここが直したい癖そのもの"],
+    prg:"膝上にチューブを巻く。走る前の準備としても使える（その場合は軽く）。" },
+  { grp:"ヒラメ筋・腓腹筋", gc:"var(--calf)", pos:"立位", nm:"カーフレイズ｜膝を伸ばす", day:"月木", goal:"腓腹筋", dose:"12〜15回×2〜3", tempo:"3秒ずつ",
+    how:["腰幅に立つ。つま先はまっすぐ前",
+         "壁か椅子に指先を触れる（体重は預けない）",
+         "膝を伸ばしたまま固定し、3秒かけてかかとを上げる",
+         "3秒かけて下ろす。<strong>足裏が床についたところで止める</strong>",
+         "床より下にかかとを落とさない"],
+    chk:["一番上で足の指がリラックスしている","母指球に圧を感じる","かかとが真上に上がり、外に逃げない","膝の角度が最初から最後まで変わらない"],
+    mis:["前ももが張る → どこかで膝が曲げ伸ばしされている。膝を固定する","一番上で指が床を掴む → 上げすぎ。支点が指に移っている","かかとが外に逃げる → 回外。母指球に乗せ直す","反動を使う → 3秒かければ反動は使えない"],
+    prg:"15回×3が余裕になったらリュックに2〜3kg。その後は片脚へ。" },
+  { grp:"ヒラメ筋・腓腹筋", gc:"var(--calf)", pos:"立位", nm:"カーフレイズ｜膝を曲げる", day:"月木", goal:"ヒラメ筋（長距離で最重要）", dose:"12〜15回×2〜3", tempo:"3秒ずつ",
+    how:["腰幅に立ち、膝を20〜30度曲げる",
+         "<strong>その角度を保ったまま</strong>、3秒かけてかかとを上げる",
+         "3秒かけて下ろす。床で止める",
+         "動作中、膝の角度は一切変えない"],
+    chk:["ふくらはぎの下の方（深い層）に効いている","膝の角度が動いていない","前ももが張っていない"],
+    mis:["曲げ伸ばしの動作をしてしまう → これはスクワットになる。曲げた「姿勢」を保つだけ","角度が浅い → 20度以上曲げないとヒラメ筋に入らない"],
+    prg:"こちらの方が地味だが、長距離では膝を伸ばす版より重要。省略しない。" }
+];
+
+/* 系列ごとの狙い。種目一覧の下に、たたんだ形で置く */
+var GRPINFO = [
+  { tag:"Priority 1", name:"中臀筋", color:"var(--glute)", why:"膝の軌道・骨盤の安定", aim:"片脚で立った瞬間に骨盤が横に落ちるのを止める筋肉です。ここが働くと大腿骨がまっすぐ前に出て、膝が内外にブレなくなります。膝の外側の痛みの予防は、ほぼこのグループに集約されます。" },
+  { tag:"Priority 2", name:"ヒラメ筋・腓腹筋", color:"var(--calf)", why:"アキレス腱を守る", aim:"接地のたびにアキレス腱には体重の6〜8倍の力がかかります。腱は伸ばしても強くならず、重い負荷をゆっくりかけたときだけ耐えられる量が増えます。膝を伸ばす版と曲げる版の両方が必要です。" },
+  { tag:"Priority 3", name:"大臀筋・ハムストリングス", color:"var(--power)", why:"推進力", aim:"股関節を後ろに伸ばす力が、そのまま前に進む力になります。ふくらはぎ主導から股関節主導へ移すには、ここが仕事を引き受けられる状態が必要です。" },
+  { tag:"Priority 4", name:"体幹・腸腰筋", color:"var(--core)", why:"座る時間への対抗", aim:"長時間座ると股関節の前が縮み、股関節を後ろに伸ばせなくなります。走りの推進力そのものが削られるので、デスクワークがある限り毎週の対処が必要です。" }
 ];
 
 /* 種目カード1枚ぶんのHTML。種目・ドリル・ストレッチで共通に使う */
 function exHTML(e){
   return '<details class="ex"><summary>'
     + '<span class="nm">'
-    + (e.day ? '<i class="day' + (e.day === "月木" ? " d2" : "") + '">' + e.day + '</i>' : "")
-    + e.nm + '<em class="goal">' + e.goal + '</em></span>'
-    + '<span class="dose">' + e.dose + '</span><span class="chev"></span></summary>'
+    + (e.day === "月木" ? '<i class="day">木</i>' : "")
+    + e.nm + '<em class="goal">' + e.goal + '</em>'
+    + (e.grp && e.grp !== e.goal ? '<em class="gt" style="--gc:' + e.gc + '">' + e.grp + '</em>' : "")
+    + '</span>'
+    + '<span class="dose">' + e.dose
+    + (e.tempo ? '<b class="tmp">' + e.tempo + '</b>' : '')
+    + '</span><span class="chev"></span></summary>'
     + '<div class="ex-body">'
     + '<div class="blk full"><h5>手順</h5><ol>'
     + e.how.map(function(x){ return '<li>' + x + '</li>'; }).join("") + '</ol></div>'
@@ -1937,16 +1960,39 @@ function exHTML(e){
 }
 
 (function(){
-  var html = "";
-  GROUPS.forEach(function(g){
-    html += '<div class="grp" style="--gc:' + g.color + '">'
-      + '<div class="grp-hd"><span class="tag">' + g.tag + '</span>'
-      + '<h3>' + g.name + '</h3><span class="why">' + g.why + '</span></div>'
-      + '<p class="grp-aim">' + g.aim + '</p>';
-    g.ex.forEach(function(e){ html += exHTML(e); });
-    html += '</div>';
+  /* 種目一覧。曜日のタブで絞り、姿勢ごとの見出しで区切る。
+     姿勢の順に並べてあるので、途中で起き上がり直さずに済む */
+  function listHTML(dayKey){
+    var html = "", pos = "";
+    EXS.forEach(function(e){
+      if(dayKey === "thu" && e.day !== "月木") return;
+      if(e.pos !== pos){ pos = e.pos; html += '<h4 class="posh">' + pos + '</h4>'; }
+      html += exHTML(e);
+    });
+    return html;
+  }
+  var exList = document.getElementById("exlist");
+  var dayBtns = document.querySelectorAll("#daytabs .dtab");
+  function showDay(k){
+    exList.className = "exlist" + (k === "thu" ? " is-thu" : "");
+    exList.innerHTML = listHTML(k);
+    Array.prototype.forEach.call(dayBtns, function(b){
+      var on = b.getAttribute("data-day") === k;
+      b.classList.toggle("is-on", on);
+      b.setAttribute("aria-selected", on ? "true" : "false");
+    });
+  }
+  Array.prototype.forEach.call(dayBtns, function(b){
+    b.addEventListener("click", function(){ showDay(b.getAttribute("data-day")); });
   });
-  document.getElementById("groups").innerHTML = html;
+  showDay("mon");
+
+  document.getElementById("grpinfo").innerHTML = GRPINFO.map(function(g){
+    return '<div class="gi" style="--gc:' + g.color + '">'
+      + '<div class="gi-hd"><span class="tag">' + g.tag + '</span>'
+      + '<h4>' + g.name + '</h4><span class="why">' + g.why + '</span></div>'
+      + '<p>' + g.aim + '</p></div>';
+  }).join("");
 
   /* 走る前のドリルと、走った後のストレッチにも同じ手順カードを出す */
   document.getElementById("drills").innerHTML =
