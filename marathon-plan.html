@@ -385,6 +385,9 @@ details.wk[open]{background:var(--surface-2)}
   border:1px solid var(--rule);border-radius:4px}
 .howto ol{margin:0;padding-left:20px;font-size:13.5px;color:var(--ink-2);line-height:1.8}
 .howto li + li{margin-top:5px}
+/* ol のかわりに文章を置く使い方もするので、同じ寸法を p にも当てる */
+.howto p{margin:0;font-size:13.5px;color:var(--ink-2);line-height:1.8}
+.howto p + p{margin-top:9px}
 .howto .why{margin:11px 0 0;font-size:12.5px;color:var(--ink-3);line-height:1.7}
 /* .note-in は flex の中で使う前提で margin:0 なので、表の下に単体で置くぶんだけ足す */
 #tab-eat .note-in{margin-top:9px}
@@ -539,6 +542,8 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   .wk-table td,.mini td{padding:9px 7px}
   /* 320px級では「レッグスイング（前後）」が1行に収まらず、nowrap のままだと表が横に溢れる */
   .mini td:first-child{white-space:normal}
+  /* 2文字の見出し語を並べる表だけは、狭い画面でも折り返さない */
+  .mini.kv td:first-child{white-space:nowrap}
   .zone{border-right:none}
   .tmpl-row{grid-template-columns:44px 1fr;gap:10px;padding:11px 14px}
   .dayrow{grid-template-columns:28px 42px 1fr;gap:8px}
@@ -696,7 +701,20 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 
 <section id="secSupport">
   <h2><span class="n">05</span>補強と故障予防</h2>
-  <p class="lede">22週で週間距離をほぼ倍まで引き上げる計画です。<strong>補強は「余裕があればやる」ではなく必須メニュー</strong>として月曜と木曜に固定します。</p><p class="lede"><a class="pagelink" href="#str" data-goto="str">補強トレーニングのページ →</a><br><span class="pagelink-sub">種目ごとの手順・回数・よくある間違い・進め方を詳しく載せています。下のカードは①〜④が優先順位で、補強ページと同じ並びです</span></p>
+  <p class="lede">22週で週間距離をほぼ倍まで引き上げる計画です。<strong>補強は「余裕があればやる」ではなく必須メニュー</strong>として月曜と木曜に固定します。</p>
+
+  <p class="lede"><strong>何を心配すべきかは、研究が答えを出しています。</strong>レクリエーションランナーを追跡した研究では、事前に測った12項目——Q角、脚長差、足のアライメント、可動域、足圧——の<strong>ほとんどが故障を予測しませんでした。</strong>姿勢やアライメントを気に病む価値は、思われているより小さいということです。</p>
+
+  <table class="mini kv">
+    <thead><tr><th></th><th>中身</th></tr></thead>
+    <tbody>
+      <tr class="key"><td class="num">予測する</td><td><strong>故障の既往歴（約2倍）／マラソンに向けた練習中であること／練習量の急な増加</strong></td></tr>
+      <tr><td class="num">予測しない</td><td>Q角、脚長差、足のアライメント、可動域、足圧分布、プロネーション</td></tr>
+      <tr class="key"><td class="num">守る</td><td><strong>股関節外旋筋の筋力。</strong>唯一、故障が少ない側に出た項目</td></tr>
+    </tbody>
+  </table>
+
+  <p class="lede"><strong>だから Priority 1 がサイドプランク（膝の開閉）なのです。</strong>横向きで膝を開く動きは、股関節の外転と外旋そのものです。そして「練習量を急に増やさない」が、補強より先に効く対策になります。</p><p class="lede"><a class="pagelink" href="#str" data-goto="str">補強トレーニングのページ →</a><br><span class="pagelink-sub">種目ごとの手順・回数・よくある間違い・進め方を詳しく載せています。下のカードは①〜④が優先順位で、補強ページと同じ並びです</span></p>
 
   <div class="cards">
     <div class="card kc" style="--kc:var(--glute)"><h4><i>1</i>中臀筋</h4><ul>
@@ -925,6 +943,17 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   <p class="lede"><strong>流しやT走など、Eジョグより速く走った日は、1種目めの腸腰筋を飛ばして2〜5だけやります。</strong>足りない分を他で補う必要はありません。引くだけです。理由は<a class="pagelink" href="#str" data-goto="str">05 流しの狙いとやり方</a>に書いています。</p>
   <p class="lede"><strong>1部位につき1種類、片側60秒まで。</strong>同じ部位のストレッチを何種類も重ねないでください。種類を増やしても柔らかくはならず、痛める確率だけが上がります。新しい種目を足すときは1つずつ、数日空けて。</p>
   <p class="lede"><strong>流しをやった日は、腸腰筋と大腿直筋のストレッチを入れません。</strong>その2つを最大速度で使った直後に、温まった状態で深く伸ばすことになるからです。</p>
+  <p class="lede"><strong>長く座った後に「固まったから」と伸ばさないでください。</strong>何時間も座ると股関節の前は縮んだ位置に置かれますが、そこで深く伸ばすのが一番やりがちな失敗です。<strong>立って数歩歩けば戻ります。</strong>座っている最中に30〜45分ごとに一度立つほうが、後からまとめて伸ばすより確実です。</p>
+
+  <p class="lede"><strong>「毎日・長期間」も用量のうちです。</strong>1回60秒を守っていても、同じ場所を毎日伸ばし続ければ負荷は積み上がります。<strong>強い静的ストレッチは、それ自体が筋肉痛を起こす刺激です。</strong>伸ばされながら張力がかかる状態は、筋肉を傷める刺激として最も強い部類に入ります。<strong>同じ部位は週5日まで。2日は触らない日を作ってください。</strong></p>
+
+  <div class="howto">
+    <p><strong>膝を曲げて足を引き寄せる版の腸腰筋ストレッチは、やりません。</strong></p>
+    <p>後ろ脚の膝を曲げて足を引き寄せると、大腿直筋が加わって強度が一段上がります。そして<strong>この姿勢は、大腿神経の張りを調べる検査とほぼ同じ形です。</strong>腰神経叢は大腰筋の中を通っていて、股関節を伸ばして膝を曲げたとき、神経が最も引き伸ばされる位置になります。</p>
+    <p><strong>骨盤を後傾させたまま60秒保てるようになるまでは、通常版（膝を曲げない）だけで十分です。</strong></p>
+    <p><strong>しびれ、感覚の鈍さ、力が入らない。</strong>このどれかが出たら、ストレッチで様子を見る範囲を超えています。整形外科へ。</p>
+  </div>
+
   <p class="lede">張りが「伸ばすと硬い」ではなく<strong>「何もしていないのに張っている」</strong>なら、それは短いのではなく守るために縮んでいる状態です。伸ばしても取れません。温めて、軽く動かして、触らずに置いておくほうが早く戻ります。</p>
 </section>
 
@@ -999,6 +1028,8 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     </tbody>
   </table>
 
+  <p class="lede"><strong>周回コースは、この左右差を増やす側に働きます。</strong>カーブでは内側の脚と外側の脚で、進む距離も働き方も変わります。同じ向きで回り続ければ、その差が毎周たまります。<strong>5〜10分ごとに向きを変えてください。</strong></p>
+
   <p class="lede"><strong>症状が出るのは左、原因は右です。</strong>右の骨盤を支えきれないぶんを、左の内転筋と腸腰筋が余分に働いて埋めています。だから<strong>左をいくらケアしても、右が支えられるようになるまで繰り返します。</strong></p>
   <p class="lede">実行することは1つだけ。<strong>補強は必ず右から始めて、左は右と同じ回数で止める。</strong>強い側に合わせると差が開くだけです。回数を足さないのは、弱い側が限界を越えた瞬間に別の筋肉へ仕事を渡してしまうからで、それは直したい動きそのものです。</p>
 
@@ -1048,7 +1079,40 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     </tbody>
   </table>
 
+  <div class="reality">
+    <h3><span>いまの状態 —&nbsp;</span><span>原因は反り腰ではない</span></h3>
+    <p>走って20〜30分で、付け根に違和感が出る状態が続いています。原因は反り腰そのものではありません。反り腰は何年も前からあって、それだけでは何も起きていませんでした。</p>
+  </div>
+
+  <table class="mini kv">
+    <thead><tr><th></th><th>中身</th></tr></thead>
+    <tbody>
+      <tr><td class="num">素因</td><td>反り腰。ずっとあった。これ単独では症状を出さない</td></tr>
+      <tr class="key"><td class="num">誘因</td><td><strong>腸腰筋ストレッチのやり過ぎ ＋ 同じ日の流し。</strong>この日から出ている</td></tr>
+    </tbody>
+  </table>
+
+  <p class="lede"><strong>組織が敏感になった後は、それまで平気だった姿勢が症状を出します。</strong>反り腰が悪化したのではなく、同じ反り腰に対する耐性が落ちた状態です。だから直す順番は「反り腰を治す」ではなく、<strong>刺激を止めて耐性が戻るのを待つ</strong>が先になります。</p>
+
+  <div class="howto">
+    <p><strong>毎朝のテスト</strong></p>
+    <p>仰向けで<strong>腰を反らせずに脚を上げる</strong>。次に<strong>腰を反らせて脚を上げる</strong>。</p>
+    <p><strong>反らせたときだけ出るなら、位置の問題です。</strong>組織が壊れていれば、どの角度でも出ます。同じ動作が腰の位置だけで変わるのなら、壊れているのではなく、置かれ方の問題だということです。</p>
+    <p>記録するのは<strong>「出たか、出ないか」だけ。</strong>消えてから、走って確かめます。</p>
+  </div>
+
+  <p class="lede"><strong>休む日も、何もしないわけではありません。</strong>完全に休むより、<strong>痛みの出ない範囲で使うほうが戻りが早い</strong>とされています。何もしなければ落ちるだけです。</p>
+
+  <div class="howto">
+    <p><strong>痛みの出ない範囲の保持</strong>（左右5回ずつ）</p>
+    <p>仰向けで両膝を立て、<strong>腰と床の隙間を保ったまま</strong>（反らせない・押しつけない）、片脚を伸ばしたまま床から10〜20cm上げて<strong>10秒保持</strong>。ゆっくり下ろす。</p>
+    <p><strong>上の「毎朝のテスト」で平気だったほうと、同じ動作です。</strong>朝は検査、別の時間に練習として使います。</p>
+    <p><strong>違和感が出たら、その日はそこで終了。</strong>痛みの出ない範囲しかやらないので、朝の記録には影響しません。</p>
+  </div>
+
   <p class="lede"><strong>筋肉痛との見分け方。</strong>走り始めて5〜10分で<strong>軽くなる</strong>なら筋肉痛です。温まれば引きます。走っても消えない、あるいは<strong>走るほど強くなる</strong>なら別物で、その場で走るのをやめます。距離は無視して構いません。</p>
+
+  <p class="lede"><strong>肉離れとの見分け方。</strong>肉離れは<strong>その筋肉を縮めると痛みます。</strong>股関節の前なら、脚を上げる動作で痛むかどうかです。<strong>縮めて平気なら、肉離れではありません。</strong>ほかに、起きた瞬間がはっきりしている・その場で動けなくなる・押すと一点が痛い・安静にしていても痛む、が揃います。どれも当てはまらないなら、別のものを探してください。</p>
 </section>
 
 <footer>
@@ -1189,6 +1253,8 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   <p class="lede">豆乳に替える理由は2つだけ。<strong>牛乳でお腹を壊す場合</strong>と、<strong>鉄が欲しい場合</strong>です。</p>
 
   <p class="lede"><strong>コーヒーはやめなくて構いません。</strong>毎日飲んでいてもレース当日のカフェインの効果は残りますし、急にやめると頭痛と倦怠感が出ます。</p>
+  <p class="lede"><strong>プロテインを飲むなら、水ではなく牛乳で割ります。</strong>牛乳200mlで<strong>たんぱく質が約7g、カルシウムが220mg、糖質が約12g</strong>加わります。糖質とたんぱく質を一緒に入れると、糖質だけよりグリコーゲンの戻りが速くなります。「牛乳だと吸収が遅くなる」とよく言われますが、<strong>30〜60分後に夕食が入るので困りません。</strong>乳糖でお腹が緩くなる場合だけ、水割りに戻して牛乳は夕食時に回します。</p>
+
   <p class="lede">気にするのはタイミングだけです。<strong>コーヒーのポリフェノールは、植物性の鉄の吸収を妨げます。</strong>食事から1時間ほどあければ影響しません。昼食が12時なら13時半以降。牛乳とカルシウムのサプリも同じ理屈なので、<strong>赤身肉や鉄の多い魚を食べる食事とはずらしてください。</strong></p>
 </section>
 
@@ -1859,7 +1925,8 @@ var EXS = [
          "一番上で<strong>1秒止める</strong>。肩から膝まで一直線",
          "<strong>2秒かけて</strong>下ろす。床につく寸前で止めて次へ"],
     chk:["お尻に効いている","腰が反っていない","骨盤が左右に傾いていない"],
-    mis:["腰が張る → お尻ではなく腰で持ち上げている。肋骨を締めて骨盤を立てる","ハムだけが攣りそうになる → お尻を先に締めてから上げる","骨盤が浮いている側に落ちる → 中臀筋の弱さ。Priority 1 に戻る"],
+    mis:["<strong>高く上げようとして腰を反らせる</strong> → 一番多い失敗。高さは低くて構わない。上がった高さではなく、お尻が働いたかで判断する",
+         "腰が張る → お尻ではなく腰で持ち上げている。肋骨を締めて骨盤を立てる","ハムだけが攣りそうになる → お尻を先に締めてから上げる","骨盤が浮いている側に落ちる → 中臀筋の弱さ。Priority 1 に戻る"],
     prg:"両脚のヒップリフトから始めて、安定したら片脚へ。さらに進めるなら足を台に乗せる。" },
   { grp:"体幹・腸腰筋", gc:"var(--core)", pos:"うつ伏せ", nm:"プランク", day:"月", goal:"体幹全体", dose:"45〜60秒×2",
     how:["肘とつま先で体を支える","頭からかかとまで一直線","お尻を締め、肋骨を締める"],

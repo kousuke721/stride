@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>プラスチック包装入門 学習アプリ</title>
+<style>
+:root{--bg:#1a1230;--card:#2d1b52;--card2:#241544;--line:#4a3178;--txt:#f0ebff;
+--sub:#b9a9e0;--dim:#8f7fb8;--lime:#d2f56c;--cyan:#6ce0f5;--amber:#ffc46b;--rose:#ff8fa8}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+line-height:1.78;font-size:15px;padding-bottom:70px;overflow-wrap:break-word}
+.wrap{max-width:880px;margin:0 auto;padding:0 14px}
+header{background:linear-gradient(155deg,#3a2168,#1f1340);border-bottom:2px solid var(--lime);padding:20px 0 16px}
+header h1{font-size:20px;font-weight:800;line-height:1.4}
+header .m{color:var(--sub);font-size:12px;margin-top:6px}
+nav{position:sticky;top:0;z-index:30;background:rgba(26,18,48,.97);backdrop-filter:blur(8px);
+border-bottom:1px solid var(--line);overflow-x:auto;-webkit-overflow-scrolling:touch}
+nav ul{display:flex;gap:6px;list-style:none;padding:9px 14px;white-space:nowrap;max-width:880px;margin:0 auto}
+nav button{padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:700;color:var(--sub);
+border:1px solid var(--line);background:var(--card2);cursor:pointer;font-family:inherit}
+nav button.on{color:#1a1230;background:var(--lime);border-color:var(--lime)}
+main{margin-top:18px}
+h2{font-size:17px;font-weight:800;color:var(--lime);border-left:4px solid var(--lime);padding-left:10px;margin:26px 0 8px;line-height:1.5}
+h3{font-size:15px;font-weight:800;color:var(--cyan);margin:22px 0 7px}
+p{margin:9px 0}
+.lead{color:var(--sub);font-size:13.5px;margin-bottom:14px}
+/* home */
+.hcard{display:block;width:100%;text-align:left;background:linear-gradient(155deg,var(--card),var(--card2));
+border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:10px;cursor:pointer;
+color:var(--txt);font-family:inherit;font-size:15px}
+.hcard:hover{border-color:var(--lime)}
+.hcard .t{font-weight:800;font-size:15.5px}
+.hcard .t i{font-style:normal;color:var(--dim);font-size:12px;font-weight:700;margin-right:7px}
+.hcard .d{font-size:12.5px;color:var(--sub);margin-top:3px;line-height:1.6}
+.hcard .pg{font-size:11px;color:var(--dim);margin-top:4px}
+/* blocks */
+.q{border-left:3px solid var(--dim);padding:5px 0 5px 11px;margin:10px 0;font-size:13.5px;color:#ded5f5}
+.q b{color:var(--txt)}
+.why{background:#1e2a1a;border:1px solid #5d7a3a;border-left:4px solid var(--lime);border-radius:8px;
+padding:10px 12px;margin:11px 0;font-size:13.5px}
+.why .ttl{font-weight:800;color:var(--lime);display:block;margin-bottom:3px;font-size:12.5px}
+.cat{background:#102a33;border:1px solid #2d6b7d;border-left:4px solid var(--cyan);border-radius:8px;
+padding:10px 12px;margin:11px 0;font-size:13.5px}
+.cat .ttl{font-weight:800;color:var(--cyan);display:block;margin-bottom:3px;font-size:12.5px}
+.now{background:#33250f;border:1px solid #8a6a2a;border-left:4px solid var(--amber);border-radius:8px;
+padding:10px 12px;margin:11px 0;font-size:13.5px}
+.now .ttl{font-weight:800;color:var(--amber);display:block;margin-bottom:3px;font-size:12.5px}
+.warn{background:#3a1f2e;border:1px solid #7a4258;border-radius:8px;padding:9px 11px;margin:10px 0;font-size:13px;color:#ffd9e2}
+.warn b{color:var(--rose)}
+b{color:var(--lime);font-weight:700}
+.cat b,.cat strong{color:var(--cyan)}
+.now b{color:var(--amber)}
+.why b{color:var(--lime)}
+/* table */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:11px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+table.w6{min-width:520px}
+table.w8{min-width:660px}
+th,td{border:1px solid var(--line);padding:6px 7px;text-align:left;vertical-align:top}
+th{background:#35205e;color:var(--lime);font-weight:700;font-size:11.5px}
+td{background:var(--card2)}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.hi td{background:#3a2a16}
+tr.hi2 td{background:#16302c}
+.unit{font-size:11.5px;color:var(--dim);margin-top:3px}
+ul.pt{list-style:none;margin:9px 0}
+ul.pt li{padding:7px 0 7px 20px;position:relative;border-bottom:1px solid #322052;font-size:13.5px}
+ul.pt li:last-child{border-bottom:none}
+ul.pt li:before{content:"▸";position:absolute;left:3px;color:var(--lime);font-weight:800}
+/* abbr search */
+.sbox{display:flex;gap:8px;margin:12px 0}
+.sbox input{flex:1;padding:10px 13px;border-radius:9px;border:1px solid var(--line);
+background:var(--card2);color:var(--txt);font-size:15px;font-family:inherit}
+.sbox input:focus{outline:none;border-color:var(--lime)}
+.ab{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #322052;font-size:13.5px}
+.ab .k{flex:0 0 112px;font-weight:800;color:var(--lime);font-size:13px}
+.ab .v{flex:1;color:var(--txt)}
+.cnt{font-size:12px;color:var(--dim);margin:6px 0}
+/* quiz */
+.qz{background:linear-gradient(155deg,var(--card),var(--card2));border:1px solid var(--line);
+border-radius:12px;padding:15px;margin-bottom:12px}
+.qz .qt{font-size:11.5px;color:var(--dim);font-weight:700;margin-bottom:5px}
+.qz .qq{font-size:15px;font-weight:700;margin-bottom:11px;line-height:1.6}
+.op{display:block;width:100%;text-align:left;padding:10px 13px;margin-bottom:7px;border-radius:9px;
+border:1px solid var(--line);background:#1d1138;color:var(--txt);font-size:14px;cursor:pointer;font-family:inherit;line-height:1.5}
+.op:hover{border-color:var(--lime)}
+.op.ok{background:#1e3a1a;border-color:var(--lime);color:var(--lime);font-weight:700}
+.op.ng{background:#3a1a22;border-color:var(--rose);color:var(--rose)}
+.ex{margin-top:10px;padding:11px 13px;background:#1d1138;border-radius:9px;font-size:13.5px;border:1px solid var(--line)}
+.bar{display:flex;gap:9px;align-items:center;margin:12px 0;flex-wrap:wrap}
+.btn{padding:9px 17px;border-radius:999px;border:1px solid var(--lime);background:var(--lime);
+color:#1a1230;font-weight:800;font-size:13.5px;cursor:pointer;font-family:inherit}
+.btn.g{background:transparent;color:var(--lime)}
+.sc{font-size:13px;color:var(--sub);font-weight:700}
+.back{display:inline-block;margin:4px 0 14px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);
+background:var(--card2);color:var(--sub);font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit}
+/* route */
+.prog{margin:14px 0 18px}
+.pbar{height:9px;border-radius:999px;background:#241544;border:1px solid var(--line);overflow:hidden}
+.pfill{height:100%;background:var(--lime);transition:width .3s}
+.ptxt{font-size:12px;color:var(--sub);margin-top:6px;font-weight:700}
+.day{background:linear-gradient(155deg,var(--card),var(--card2));border:1px solid var(--line);
+border-radius:12px;padding:13px 14px;margin-bottom:11px}
+.day.ok{border-color:#5d7a3a;background:linear-gradient(155deg,#243a1c,#1c2d16)}
+.dh{display:flex;gap:11px;align-items:flex-start}
+.ck{flex:0 0 30px;height:30px;border-radius:8px;border:2px solid var(--line);background:#1d1138;
+color:var(--lime);font-size:17px;font-weight:800;cursor:pointer;font-family:inherit;line-height:1;padding:0}
+.day.ok .ck{border-color:var(--lime);background:var(--lime);color:#1a1230}
+.dt{font-weight:800;font-size:15px;line-height:1.45}
+.dm{font-size:11.5px;color:var(--dim);margin-top:2px}
+.dg{font-size:13px;color:var(--sub);margin-top:8px;line-height:1.7}
+.dg b{color:var(--lime)}
+.dl{display:flex;flex-direction:column;gap:6px;margin-top:9px}
+.sl{display:block;padding:8px 11px;border-radius:8px;border:1px solid var(--line);background:#1d1138;
+color:var(--txt);text-decoration:none;font-size:13px;line-height:1.5}
+.sl:hover{border-color:var(--lime)}
+.slc{color:var(--dim);font-size:11px;font-weight:700;margin-right:8px;white-space:nowrap}
+.gl{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:10px}
+.gq{font-weight:800;font-size:14px;color:var(--cyan)}
+.gh{font-size:12.5px;color:var(--sub);margin-top:3px}
+.toc{display:flex;flex-direction:column;gap:5px;margin:12px 0 18px;padding:11px 13px;
+background:var(--card2);border:1px solid var(--line);border-radius:10px}
+.toc a{color:var(--sub);text-decoration:none;font-size:13px;line-height:1.55}
+.toc a:hover{color:var(--lime)}
+.src{margin-top:30px;padding:13px;border:1px dashed var(--line);border-radius:10px;font-size:11.5px;color:var(--dim)}
+@media print{
+  :root,html{color-scheme:light!important}
+  html,body{background:#fff!important;color:#111!important}
+  nav,.back,.btn{display:none}
+  h2{color:#111;border-left-color:#111} h3{color:#111}
+  .q,.why,.cat,.now,.warn,.qz,.hcard,td{background:#fff!important;color:#111!important;border-color:#999!important}
+  .day,.gl,.toc,.sl{background:#fff!important;color:#111!important;border-color:#999!important}
+  .ck,.prog{display:none}
+  th{background:#eee!important;color:#111!important}
+  b{color:#000}
+}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>プラスチック包装入門</h1>
+<div class="m">カウパック(株) 新人教育講座テキスト（2002年7月／渡辺武彦）を読むためのアプリ<br>
+全10章・本文249ページを、規格袋カタログVer.07の実物と結びつけて学ぶ</div>
+</div></header>
+<nav><ul class="wrap" id="nav"></ul></nav>
+<main class="wrap" id="app"></main>
+
+<script>
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+/* ========== 章データ ========== */
+const B=[
+{n:'0',t:'この本の読み方',pg:'—',ic:'🧭',d:'2002年の本をどう扱うか。先に読んでおくと迷わない',s:[
+{h:'結論から：この本は「カタログの答え合わせ」ができる',b:`
+<p>カタログ（規格袋カタログVer.07）は<b>「何が」</b>を教えてくれますが、<b>「なぜ」</b>は書いてありません。この本にはその「なぜ」が全部書いてあります。カウパック自身が新人向けに作った教科書なので当然です。</p>
+<div class="cat"><span class="ttl">いきなり答え合わせ①　バリアの境目</span>
+本書 p.88 にこう書いてあります。<br>
+「<b>バリアー性フィルムと言えるのは酸素透過度が少なくとも 100 ml／㎡・d・MPa 以下のバリアー性を有するフィルムのことである</b>」<br><br>
+カタログ P.156〜157 の酸素透過度と、各製品の「ガスバリア性」アイコンの有無を突き合わせると、<b>48製品すべてでこの100という線が一致します</b>。
+しかも 78.0（HLV）と 126.3（DP16-TN-C）の間にぴったり空白があり、境目をまたぐ製品が1つもありません。<br><br>
+つまり<b>カタログのバリアアイコンは、この100という基準で付いている</b>ということです。</div>
+<div class="cat"><span class="ttl">いきなり答え合わせ②　「//」と「/」</span>
+本書 p.5 の表記ルール：<b>「// はドライラミを示す。／ は押出ラミを示す。」</b><br>
+カタログの材質構成が「バリアONY18μm<b>／ドライ／</b>LLDPE100μm」と、わざわざ「ドライ」「押出」と書いてあるのは、この表記を言葉に開いたものです。</div>`},
+{h:'2002年の本をどう扱うか',b:`
+<p>24年前の本なので、古い部分は確かにあります。ただし<b>古い部分は章によってはっきり分かれます</b>。</p>
+<div class="tw"><table>
+<tr><th>章</th><th>今でも使えるか</th><th>理由</th></tr>
+<tr class="hi2"><td>II〜VII（素材・物性・フィルム・加工）</td><td><b>ほぼそのまま使える</b></td><td>樹脂の性質と物理法則は変わらない。ナイロンが吸湿するのも、アルミが熱で溶けないのも24年前と同じ</td></tr>
+<tr><td>VIII 包装（殺菌・真空・ガス充填）</td><td>原理は使える</td><td>Fo値や水分活性の考え方は現役。機械は進化している</td></tr>
+<tr><td>IX 包材の分析</td><td>手順は使える</td><td>燃焼試験は今でも現場で使う。機器は高度化</td></tr>
+<tr class="hi"><td>X 法律</td><td><b>大きく変わった</b></td><td>食品表示法・ポジティブリスト制度・レジ袋有料化など、制度そのものが入れ替わっている</td></tr>
+</table></div>
+<p>このアプリでは、変わったところに <span style="color:var(--amber);font-weight:800">オレンジの「2002→今」</span> の枠を付けています。そこだけ注意して読めば、残りは安心して覚えて大丈夫です。</p>`},
+{h:'このアプリの枠の意味',b:`
+<ul class="pt">
+<li><b>グレーの縦線</b>　本に書いてある文章の引用（そのまま）</li>
+<li><span style="color:var(--lime);font-weight:800">緑の枠「なぜそうなる」</span>　理屈の説明。試験で「なぜ」と聞かれたときに答える部分</li>
+<li><span style="color:var(--cyan);font-weight:800">青の枠「カタログだとこれ」</span>　実際のカウパック製品との対応。ここが一番ピンとくるはずです</li>
+<li><span style="color:var(--amber);font-weight:800">オレンジの枠「2002→今」</span>　当時と今で違うところ</li>
+</ul>`}]},
+
+{n:'I',t:'包装の歴史と業界の全体像',pg:'6〜10',ic:'📜',d:'なぜ日本はOPP王国・グラビア王国なのか。業界の登場人物',s:[
+{h:'包装の定義（JIS Z 0108）',b:`
+<div class="q">物品の輸送、保管、取引、使用に当たって、その価値及び状態を保護するために適切な材料・容器などを施す技術、又は施した状態。これを<b>個装、内装及び外装</b>の3種類に大別する。</div>`},
+{h:'日本へのプラスチック導入（1950〜1960）',b:`
+<div class="tw"><table><tr><th>年</th><th>導入技術</th><th>開発企業</th></tr>
+<tr><td>1950</td><td>ポリ塩化ビニリデン（PVDC）</td><td>ダウ（米）</td></tr>
+<tr><td>1951</td><td>ナイロン（6-ナイロン）</td><td>デュポン（米）</td></tr>
+<tr><td>1957</td><td>ポリエステル（PET）</td><td>I.C.I（英）</td></tr>
+<tr><td>1958</td><td>ポリエチレン</td><td>I.C.I（英）</td></tr>
+<tr><td>1959</td><td>ポリスチレン</td><td>ダウ（米）</td></tr>
+<tr><td>1960</td><td>ポリプロピレン</td><td>モンテカチーニ（伊）</td></tr></table></div>
+<div class="why"><span class="ttl">なぜ日本がナイロンフィルム誕生の国なのか</span>
+ナイロンもポリプロピレンも、導入当初は<b>繊維用</b>でした。ナイロンは用途開発の一つとしてフィルムが作られ、<b>日本がナイロンフィルム誕生の国</b>になっています（p.7）。<br><br>
+ポリプロピレンはもっと劇的で、「夢の繊維」として導入されたものの<b>染色性が改良できず</b>、苦肉の策として開発されたのが OPP・CPP でした。現在、繊維用のPPはほとんどなく、<b>OPPが包装用材料として世界で一番多く使われています</b>。</div>`},
+{h:'セロハンからOPPへ',b:`
+<div class="q">OPPフィルムが出現するまでは、透明包材としてセロハンが使用され、セロハンメーカーも10社くらい存在したが、ポリプロピレンフィルム（OPP）の出現により、急速にセロハンからOPPへ切替が進み、現在、<b>1社のみがセロハンを生産しており、その主な用途はセロハンテープ</b>である。（p.7）</div>`},
+{h:'包装用フィルムの使用量（H11年推定）',b:`
+<div class="tw"><table><tr><th>区分</th><th>素材</th><th class="n">使用量（t／年）</th></tr>
+<tr class="hi"><td rowspan="3">表素材<br>計264,000</td><td>OPP</td><td class="n">188,000</td></tr>
+<tr class="hi"><td>PET</td><td class="n">46,000</td></tr>
+<tr class="hi"><td>ONY</td><td class="n">30,000</td></tr>
+<tr class="hi2"><td rowspan="2">シーラント<br>計152,000</td><td>LLDPE</td><td class="n">100,000</td></tr>
+<tr class="hi2"><td>CPP</td><td class="n">52,000</td></tr>
+<tr><td rowspan="3">バリアー包材<br>計58,000</td><td>K-OPP</td><td class="n">21,000</td></tr>
+<tr><td>VM-CPP</td><td class="n">11,000</td></tr>
+<tr><td>VM-PET</td><td class="n">8,900</td></tr>
+<tr><td colspan="2"><b>合計</b></td><td class="n"><b>474,000</b></td></tr></table></div>
+<p>押出ラミネート用樹脂は別に200,000トン／年。合わせて約67万トン＝<b>日本人1人あたり約5.6kg</b>（p.9）。</p>
+<div class="now"><span class="ttl">2002→今</span>当時バリアー包材の最大勢力だった <b>K-OPP（PVDCコートOPP）21,000トン</b> は、環境面での忌避から大きく減り、EVOHや透明蒸着に置き換わりました。<b>現在のカウパック規格袋カタログにPVDCコート品は1つもありません</b>。本書の第14節「PVDCコートフィルム」は、今は歴史の章として読むのが実態に合っています。</div>`},
+{h:'軟包装業界の登場人物',b:`
+<p>本書 p.10 に業界の流れ図があります。<b>原料メーカー → フィルムメーカー → コンバーター → 製袋メーカー → 食品メーカー</b> という流れです。</p>
+<div class="cat"><span class="ttl">カウパックの立ち位置</span>
+この図でいうと、カウパックは<b>「製袋メーカー」</b>にあたります。フィルムメーカー（東洋紡・ユニチカ・三菱ケミカルなど）から原反を買い、印刷・ラミネート（コンバーター工程）を経て、袋に仕立てて食品メーカーに売る。<br><br>
+だから<b>材質構成を自分で設計できる</b>のがカウパックの仕事であり、カタログの「材質構成」欄はその設計の答えです。</div>`}]},
+
+{n:'II',t:'プラスチックとは',pg:'11〜16',ic:'🧪',d:'結晶と非晶。この1つを理解すると物性の話が全部つながる',s:[
+{h:'定義と分類',b:`
+<p>語源はギリシャ語の <b>Plastikos ＝「形をつくる事ができるもの」</b>。JIS K6900 の定義は「必須の構成成分として高重合体を含み、かつ完成製品への加工のある段階で流れによって形を与え得る材料」。</p>
+<div class="tw"><table><tr><th>分類</th><th>該当</th></tr>
+<tr class="hi2"><td>熱可塑性・<b>結晶性</b></td><td>ポリエチレン、ポリプロピレン、ナイロン、ポリエステル、ポリ塩化ビニリデン</td></tr>
+<tr class="hi2"><td>熱可塑性・<b>非晶性</b></td><td>ポリ塩化ビニル、ポリスチレン、ポリカーボネート</td></tr>
+<tr><td>熱硬化性</td><td>フェノール樹脂、ユリア樹脂、メラミン樹脂、不飽和ポリエステル、エポキシ、ポリウレタン</td></tr></table></div>
+<p>包装に使うのは<b>すべて熱可塑性</b>で、鎖のようにつながった構造です。網目構造や立体構造のものはありません。</p>`},
+{h:'結晶部と非晶部 ― この本の一番大事な概念',b:`
+<div class="q">ポリマーは長い鎖であり、その長い鎖がきれいに引きそろえられたり、きれいに折りたたまれると、鎖と鎖の引き合う力によって<b>結晶</b>が出来る。（p.14）</div>
+<p>結晶性ポリマーでも100%結晶しているわけではなく、<b>結晶している部分と結晶していない部分</b>があります。この割合は加工方法で大きく変わります。</p>
+<div class="why"><span class="ttl">なぜ密度を測ると結晶化度がわかるのか</span>
+LDPEの<b>結晶部の密度は 1.00 g/cm³</b>、<b>非晶部は 0.855 g/cm³</b>。実際のLDPEは 0.91 g/cm³ くらいなので、逆算すると<b>約40%結晶している</b>とわかります（p.14）。<br><br>
+これが「密度が高い＝結晶化度が高い」という話の中身です。HDPEが硬くて不透明なのも、結晶化度が高いからです。</div>
+<div class="why"><span class="ttl">なぜ結晶化度でバリア性が変わるのか</span>
+ガスも水蒸気も、<b>結晶部は通れず、非晶部だけを通ります</b>。だから結晶化度が上がるほど通りにくくなります。<br><br>
+本書 p.51 の実測：同じポリエチレンでも<br>
+・LDPE（結晶化度50%）→ 酸素透過度 <b>75,600</b><br>
+・HDPE（結晶化度80%）→ 酸素透過度 <b>15,100</b><br>
+結晶化度が30ポイント違うだけで、酸素の通りにくさが5倍違います。</div>`},
+{h:'ガラス転移点（Tg）と融点（Tm）',b:`
+<div class="q">プラスチックは、<b>ガラス転移点（Tg）以上になると柔らかくなり</b>、更に温度をあげると<b>結晶部が融けて（融点：Tm）液状になる</b>。（p.14〜15）</div>
+<p>水は0℃で氷から水に一気に変わりますが、プラスチックは<b>2段階</b>です。非晶部があるからで、ここがプラスチックが他の材料と決定的に違う点です。</p>
+<div class="tw"><table><tr><th>樹脂</th><th class="n">Tg（℃）</th><th class="n">Tm（℃）</th></tr>
+<tr><td>LDPE</td><td class="n">−30, −45</td><td class="n">115</td></tr>
+<tr><td>HDPE</td><td class="n">−55, −85</td><td class="n">137</td></tr>
+<tr class="hi"><td>PP</td><td class="n">−10, −18</td><td class="n">163</td></tr>
+<tr class="hi2"><td>PET</td><td class="n">67〜81</td><td class="n">264</td></tr>
+<tr class="hi2"><td>NY（6）</td><td class="n">50</td><td class="n">215</td></tr>
+<tr><td>MXD-6</td><td class="n">64</td><td class="n">243</td></tr>
+<tr><td>PVDC</td><td class="n">−17</td><td class="n">198</td></tr>
+<tr><td>EVOH（Et33%）</td><td class="n">69</td><td class="n">180</td></tr>
+<tr><td>PVA</td><td class="n">85</td><td class="n">220〜244</td></tr></table></div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+<b>PPのTgは0℃付近（−10〜−18℃）、PEのTgは−30〜−85℃。</b>この差が、CPPシーラントの製品が冷凍非対応で、LLDPEシーラントの製品が冷凍対応である理由そのものです。<br><br>
+カタログでCPPを使う7製品（NCF・EACF・ESCF-TN・NACF-SW/SA/TW/TA）はすべて冷凍非対応。本書 p.71 の衝撃強度グラフでも、CPPは低温で急激に落ちています。</div>`},
+{h:'プラスチックの長所と短所',b:`
+<div class="tw"><table><tr><th>長所</th><th>短所</th></tr>
+<tr><td>① 成形性に優れる<br>② 透明性、着色性を有する<br>③ 軽量で強い<br>④ 耐衝撃性に優れる<br>⑤ 耐薬品性に優れる<br>⑥ 断熱性、耐水性がある<br>⑦ 電気絶縁性に優れる</td>
+<td>① 熱に弱い<br>② 機械的な強さに問題がある<br>③ 溶剤に弱いところがある<br>④ 表面が軟らかく傷がつきやすい<br>⑤ 帯電しやすい</td></tr></table></div>
+<div class="q">その<b>短所をいかにカバーして、使用目的にフィットさせるようにするかが、開発のポイント</b>である。（p.11）</div>
+<div class="cat"><span class="ttl">これが多層構造の理由</span>
+1枚で全部は満たせないから、長所の違うフィルムを貼り合わせる。<b>カタログの材質構成が2層〜4層になっているのは、短所を他の層でカバーしている結果</b>です。<br>
+PET（熱に強いが衝撃に弱い）＋ ONY（衝撃に強いが湿気を通す）＋ AL（バリア最強だが熱で溶けない）＋ CPP（熱で溶けてシールできる）＝ NACF の4層構成。</div>`}]},
+
+{n:'III',t:'素材各論（樹脂11種）',pg:'17〜33',ic:'⚗️',d:'ポリエチレン3世代、ナイロンの水素結合、PVDCの塩素、EVOHの水酸基',s:[
+{h:'ポリエチレンの3世代',b:`
+<div class="tw"><table><tr><th class="n">年</th><th>出来事</th></tr>
+<tr class="hi"><td class="n">1958</td><td>LDPEの生産開始（<b>第一世代</b>・チグラー触媒）</td></tr>
+<tr><td class="n">1963</td><td>EVAの生産開始</td></tr>
+<tr class="hi"><td class="n">1977</td><td>LLDPEの生産開始（<b>第二世代</b>・チグラー触媒）</td></tr>
+<tr><td class="n">1978</td><td>アイオノマーの生産開始</td></tr>
+<tr class="hi"><td class="n">1992</td><td>メタロセンLLDPE（m-LLDPE）生産開始（<b>第三世代</b>）</td></tr></table></div>
+<div class="now"><span class="ttl">2002→今</span>本書はm-LLDPEを「新技術」として扱っていますが、2026年現在は完全に標準品です。ただし「<b>何が違うのか</b>」の説明は今でも正確なので、下の内容はそのまま使えます。</div>`},
+{h:'LDPE・MDPE・HDPE ― 密度で何が変わるか',b:`
+<div class="tw"><table><tr><th>密度(g/cm³)</th><th class="n">0.910</th><th class="n">0.930</th><th class="n">0.942</th><th class="n">0.970</th></tr>
+<tr><td>名称</td><td colspan="2">LDPE（低密度）</td><td>MDPE</td><td>HDPE（高密度）</td></tr>
+<tr><td>結晶度(%)</td><td class="n">65</td><td class="n">75</td><td class="n">85</td><td class="n">95</td></tr>
+<tr><td>融点(℃)</td><td class="n">105</td><td class="n">115</td><td class="n">—</td><td class="n">137</td></tr></table></div>
+<p>低密度側 → 高密度側 で、<b>柔らかい→硬い／よく伸びる→伸びにくい／衝撃に非常に強い→普通／透明に近い→半透明／バリアー性が低い→高い／耐油性 小→大</b> と変化します。</p>
+<div class="why"><span class="ttl">なぜ密度が変わるのか ― 側鎖の数</span>
+<b>LDPEは主鎖の炭素1000個あたり、側鎖が15〜25個</b>付いています（p.17）。この側鎖が邪魔をして鎖がきれいに並べないので、結晶ができにくく、密度が下がります。<br>
+側鎖が少ないほど結晶しやすい＝HDPE。<b>結晶部は硬さを、非晶部は柔軟性と衝撃強さを担当します。</b></div>
+<div class="why"><span class="ttl">MFRとは</span>
+<b>Melt Flow Rate（JIS K7210）</b>。底に直径2mmの穴を開けたシリンダーを190℃に加熱し、樹脂を入れて力を加え、10分間に押し出された量（g）。<b>数値が大きいほど重合度が低い＝鎖が短い</b>。<br>
+MFR 0.7 → 平均分子量 37,000／MFR 7 → 28,000（p.18）</div>`},
+{h:'LLDPE ― 側鎖を設計して作る',b:`
+<div class="q">LLDPEは<b>どのような側鎖をつけるかを最初から設計して作られたもの</b>である。この側鎖の形状及び量によって、狙いとする物性のものを作れるようになった。（p.18）</div>
+<p>エチレンとα・オレフィンのコポリマー。使うα・オレフィンの炭素数で C₄／C₆／C₈ と呼びます。</p>
+<div class="tw"><table><tr><th>α・オレフィン</th><th>炭素数</th></tr>
+<tr><td>ブテン-1</td><td>C₄</td></tr>
+<tr><td>ヘキセン-1 ／ 4メチルペンテン-1</td><td>C₆</td></tr>
+<tr><td>オクテン-1</td><td>C₈</td></tr></table></div>
+<div class="why"><span class="ttl">なぜ同じ密度なのにLLDPEはLDPEより融点が高いのか</span>
+<b>LLDPEの結晶がLDPEより大きいから</b>（p.19）。LDPEは側鎖の長さがバラバラで分岐もあるのに対し、LLDPEは側鎖の長さが揃っているため、揃った大きな結晶ができます。</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>本書 p.63 の比較表では、<b>C₄よりC₆・C₈のLLDPEのほうがシーラントとして優秀</b>とされています（シール強度◎、夾雑物シール性◎、衝撃強さ◎）。カウパックのLLDPEは52製品で使われる主力シーラントです。</div>`},
+{h:'メタロセン触媒（m-LLDPE）',b:`
+<div class="q">触媒とは、エチレンの二重結合（C=C）を容易に開かせる働きをする（<b>二重結合を開かせる鍵のような役目</b>）。（p.20）</div>
+<div class="tw"><table><tr><th></th><th>LDPE/LLDPE（チグラー）</th><th>m-LLDPE（メタロセン）</th></tr>
+<tr><td>触媒活性率</td><td class="n">1〜2%</td><td class="n"><b>100%</b></td></tr>
+<tr><td>触媒活性の強さ</td><td>ばらつきが大きい</td><td><b>均一</b></td></tr>
+<tr><td>分子量分布</td><td>ばらつき 大／中</td><td><b>ばらつき 小</b></td></tr>
+<tr><td>側鎖の分布</td><td>ランダム／低分子量側に偏る</td><td><b>均一に重合</b></td></tr></table></div>
+<div class="why"><span class="ttl">だから何が良くなるのか</span>
+① <b>分子量分布が揃う → 低分子量物が減る → 耐ブロッキング性向上</b><br>
+② <b>α・オレフィンが均一に入る → 結晶が小さくなる → 透明性向上・低温シール性向上・衝撃強度向上</b><br>
+結晶が小さいと光が散乱しにくいので透明になり、低温でも溶けやすいので低温シールできます。</div>`},
+{h:'ナイロン（ポリアミド）― 水素結合がすべて',b:`
+<div class="q">このフィルムは<b>タフネス（強靭）さ</b>を持っている。そのタフネスさは、<b>ナイロンの鎖と鎖が、水素結合によって網目状に架橋されるから</b>である。（p.29）</div>
+<div class="why"><span class="ttl">水素結合とは何が起きているのか</span>
+ナイロンの鎖には <b>C=O</b> と <b>N−H</b> が交互にあります。隣の鎖の C=O と N−H が引き合って、鎖と鎖の間に梯子のような橋が架かります。これが共有結合ではなく「水素結合」で、<b>切れても再びくっつく</b>ので、曲げても破れにくい。<br><br>
+これが<b>突刺強度・耐ピンホール性でナイロンが他を圧倒する理由</b>です。</div>
+<div class="warn"><b>同じ理由で弱点も生まれます。</b>水素結合は水の分子とも仲が良いので、<b>ナイロンは吸湿します</b>。吸湿すると水が鎖の間に入り込み、腰が落ち、滑りが悪くなり、ガスバリア性も落ちます。<b>強さの理由と弱さの理由が同じ</b>というのがナイロンの本質です。</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>カウパック62製品のうち<b>44製品にONYが入っています</b>（約7割）。水物・冷凍・重量物の袋に必ず入っているのは、この突刺強度と耐ピンホール性のためです。</div>`},
+{h:'MXD-6 ― ベンゼン核を入れるとどうなるか',b:`
+<div class="q">MXD-6は、鎖の中にベンゼン核が入ることで、<b>ナイロン-6より硬くなり、酸素に対するバリアー性がよくなっている</b>。（p.30）</div>
+<div class="tw"><table><tr><th>ポリマー</th><th class="n">Tm(℃)</th><th class="n">Tg(℃)</th><th class="n">O₂ 0%RH</th><th class="n">O₂ 100%RH</th><th class="n">比</th></tr>
+<tr class="hi"><td>MXD-6</td><td class="n">243</td><td class="n">64</td><td class="n">0.6</td><td class="n">2.58</td><td class="n"><b>4.3</b></td></tr>
+<tr><td>ナイロン-6</td><td class="n">215</td><td class="n">50</td><td class="n">5</td><td class="n">26</td><td class="n">5.2</td></tr>
+<tr><td>PET</td><td class="n">263</td><td class="n">69</td><td class="n">15</td><td class="n">15</td><td class="n">1</td></tr>
+<tr class="hi2"><td>EVOH</td><td class="n">180</td><td class="n">69</td><td class="n">0.03</td><td class="n">3.75</td><td class="n"><b>125</b></td></tr></table></div>
+<div class="unit">単位 ml・mm／㎡・d・MPa。「比」＝湿度100%時 ÷ 乾燥時。この数字が大きいほど湿気に弱い</div>
+<div class="why"><span class="ttl">この表の読みどころ</span>
+EVOHは乾燥時 0.03 と圧倒的ですが、<b>湿度100%で125倍に悪化</b>します。MXD-6は 0.6 とEVOHに劣るものの、<b>悪化は4.3倍で済みます</b>。<br>
+「どちらが優れているか」は<b>使う環境で逆転する</b>——これが本書の一番大事なメッセージの一つです。</div>
+<p>ただし代償もあり、<b>ベンゼン核が入るとナイロンのタフネスが落ちます</b>。機械的性能はナイロンとPETの中間です。</p>`},
+{h:'PVDC ― 塩素が隙間を狭くする',b:`
+<div class="why"><span class="ttl">なぜPVDCはバリアがあるのか</span>
+<b>鎖に入っている大きな塩素（Cl：ハロゲン元素）の原子が、引っ張り合って鎖と鎖の隙間を小さくし、酸素や水蒸気の分子を通りにくくしている</b>（p.31）。<br><br>
+しかも塩素原子は<b>水と仲が良くない</b>ので、EVOHやPVAと違って<b>湿度の影響をほとんど受けません</b>。これがPVDCの最大の武器です。</div>
+<p>PVDC単独では硬すぎるため、実際には塩化ビニル・アクリロニトリル・酢酸ビニルを共重合させたものが使われます。<b>通常のバリアー用途はVDC 90%以上、ヒートシールグレードは85%程度</b>。</p>
+<div class="now"><span class="ttl">2002→今</span>本書ではPVDC（Kコート）がバリアー包材の主力として大きく扱われていますが、<b>1997年前後のダイオキシン報道以降、塩素を含むことから包装資材として敬遠されるようになり</b>、EVOHや透明蒸着への置き換えが進みました。<b>現在のカウパック規格袋カタログにPVDCコート品はありません。</b></div>`},
+{h:'EVOHとPVA ― 水酸基の数で決まる',b:`
+<div class="tw"><table><tr><th></th><th>EVOH</th><th>PVA</th></tr>
+<tr><td>水酸基（OH）の数</td><td>炭素100個あたり16〜17個</td><td><b>炭素2個に1個</b></td></tr>
+<tr><td>原料</td><td>エチレン＋酢酸ビニル（コポリマー）</td><td>酢酸ビニルのみ（ホモポリマー）</td></tr>
+<tr><td>O₂ 25℃0%RH</td><td class="n">3</td><td class="n"><b>0.5</b></td></tr>
+<tr><td>O₂ 25℃100%RH</td><td class="n">60</td><td class="n"><b>600</b></td></tr></table></div>
+<div class="why"><span class="ttl">水酸基が多いほど、強くて弱い</span>
+水酸基どうしが<b>水素結合で橋を架け</b>、鎖と鎖の隙間を狭くするので酸素を通しません。<b>水酸基が多いPVAのほうがEVOHより隙間が狭く、バリアも高い</b>。<br><br>
+ところが水酸基は<b>水の分子と親和性が非常に高い</b>ので、湿気があると水を吸い込み、鎖の間に水が入って隙間を広げてしまいます。だから<b>水酸基が多いPVAのほうが、湿気には弱い</b>（p.32）。<br><br>
+バリアが高い理由と湿気に弱い理由が、まったく同じ仕組みから出ています。</div>`}]},
+
+{n:'IV',t:'フィルムの製膜方法',pg:'34〜44',ic:'🎞️',d:'延伸すると何が起きるか。Tダイとインフレーションの違い',s:[
+{h:'製膜方法の分類',b:`
+<div class="tw"><table><tr><th>大分類</th><th>方式</th><th>延伸</th></tr>
+<tr><td rowspan="4">溶融製膜法</td><td rowspan="2">Tダイ方式</td><td>無延伸</td></tr>
+<tr><td>二軸延伸（逐次／同時）</td></tr>
+<tr><td rowspan="2">インフレーション方式</td><td>無延伸</td></tr>
+<tr><td>同時二軸延伸</td></tr>
+<tr><td>溶液製膜法</td><td colspan="2">キャスティング法（セロハン、PVAなど加熱溶融できないもの）</td></tr></table></div>`},
+{h:'延伸すると何が起きるか（PPの実例）',b:`
+<div class="tw"><table><tr><th>物性</th><th class="n">無延伸CPP(25μm)</th><th class="n">二軸延伸OPP(25μm)</th></tr>
+<tr><td>引張強さ MD/TD (MPa)</td><td class="n">40／30</td><td class="n"><b>150／320</b></td></tr>
+<tr><td>引張伸び MD/TD (%)</td><td class="n">350／570</td><td class="n">190／40</td></tr>
+<tr><td>引張弾性率 MD/TD (GPa)</td><td class="n">0.7／0.7</td><td class="n"><b>2.2／4.2</b></td></tr>
+<tr><td>衝撃強さ (J)</td><td class="n">0.2〜0.4</td><td class="n">0.5〜0.8</td></tr>
+<tr class="hi"><td>引裂伝播抵抗 MD/TD (mN)</td><td class="n"><b>500〜2900</b></td><td class="n"><b>80／60</b></td></tr>
+<tr><td>透湿度 (g/㎡·d)</td><td class="n">11</td><td class="n">6</td></tr>
+<tr><td>酸素透過度</td><td class="n">19,600〜39,200</td><td class="n">11,800〜15,700</td></tr>
+<tr class="hi2"><td>耐寒性 (℃)</td><td class="n"><b>0</b></td><td class="n"><b>−50</b></td></tr></table></div>
+<div class="why"><span class="ttl">延伸で強くなるのはなぜか</span>
+延伸すると<b>分子が延伸方向に配列（配向）し、結晶化が進む</b>。その状態を熱セットで固定します。だから強度・剛性・バリアー性が上がります。<br><br>
+ただし<b>引裂強さは逆に大幅に下がります</b>（2900→60）。分子が揃っているので、いったん切れ目が入るとそこに沿ってスーッと裂けるからです。<b>これが「延伸フィルムは切りやすい、無延伸フィルムは粘って切れにくい」の正体</b>です。</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+カウパックの袋は外層が延伸フィルム（PET・ONY・OPP）、最内層が無延伸（LLDPE・CPP）。<b>ノッチ（切り込み）が効くのは外層が延伸フィルムだから</b>です。<br>
+本書 p.47 には重要な注意もあります：「<b>延伸フィルムにいくら良いカット性があっても、無延伸フィルムが切れ難かったり、厚すぎたりすると、カット性が生かされないことがある</b>」。つまり<b>シーラントを厚くすると開けにくくなる</b>——大容量の袋ほど開けにくいのはこれが理由です。</div>`},
+{h:'Tダイ方式とインフレーション方式',b:`
+<div class="tw"><table><tr><th></th><th>インフレーション方式</th><th>Tダイ方式</th></tr>
+<tr><td>生産速度</td><td>遅い</td><td><b>速い</b></td></tr>
+<tr><td>原料原単位</td><td><b>良い</b></td><td>耳を切り落とすので悪い</td></tr>
+<tr class="hi"><td>厚みの均一性</td><td>悪い</td><td><b>良い</b></td></tr>
+<tr><td>透明性</td><td>急冷できないので悪い</td><td><b>良い</b></td></tr>
+<tr><td>設備コスト</td><td>小</td><td>中</td></tr></table></div>
+<div class="why"><span class="ttl">なぜ急冷すると透明になるのか</span>
+結晶性ポリマーは<b>ゆっくり冷やすと結晶が大きく成長して光を散乱させ、透明性が悪くなります</b>。急冷して結晶化を抑えると透明なフィルムが得られます。<br>
+インフレーションは空気で冷やすので急冷できず、透明性が落ちます。</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+本書 p.62：「<b>ラミネート材としてのフィルムは、厚みの均一性が要求されるので、厚み精度の均一性がよいTダイ方式の方が優れている</b>」。<br>
+カウパックの製品はすべてラミネート品なので、使われているシーラントはTダイ方式のものが中心ということになります。</div>`},
+{h:'二軸延伸の2方式',b:`
+<div class="tw"><table><tr><th></th><th>逐次二軸延伸</th><th>同時二軸延伸</th></tr>
+<tr><td>設備</td><td>縦延伸機＋テンター</td><td>テンターのみ</td></tr>
+<tr><td>順序</td><td>縦 → 横</td><td>縦・横同時</td></tr>
+<tr><td>物性バランス</td><td>縦横の差が出やすい</td><td><b>縦横のバランスが取りやすい</b></td></tr>
+<tr><td>製膜速度(m/min)</td><td class="n">150〜250</td><td class="n">100〜130（チェーン）<br><b>400〜450（リニアモーター）</b></td></tr></table></div>
+<div class="cat"><span class="ttl">これがOPPとPET/ONYの性格差になる</span>
+本書 p.47 の引張弾性率：<br>
+・<b>OPP　MD 2,000〜2,500／TD 3,500〜4,500</b>（横のほうが強い＝横延伸倍率が高い）<br>
+・<b>PET　MD 4,000〜4,500／TD 4,000〜4,500</b>（バランス延伸）<br>
+・<b>ONY　MD 1,800〜2,200／TD 1,800〜2,200</b>（バランス延伸）<br><br>
+OPPだけ縦横で性質が違うので、加工時に伸びやすく、印刷の見当がずれやすい、という話につながります。</div>`}]},
+
+{n:'V',t:'フィルムの物性',pg:'45〜61',ic:'📐',d:'試験で問われる用語の定義と測定法。SI単位への切替も',s:[
+{h:'腰（こし）の式 ― 厚みは3乗で効く',b:`
+<div class="q"><b>Rigidity ∝ E・b・d³／12</b><br>E＝引張り弾性率、b＝フィルムの幅、d＝<b>フィルムの厚み</b>（p.47）</div>
+<div class="why"><span class="ttl">だから厚みを増すのが一番効く</span>
+<b>厚み d は3乗で効きます。</b>厚みを2倍にすると腰は8倍。弾性率を変えるより厚みを変えるほうが圧倒的に効率がいい、ということです。<br>
+逆に言えば、<b>ゲージダウン（薄くする）は腰を一気に失う</b>ので、慎重に設計されます。</div>`},
+{h:'機械的性質の用語と測定法',b:`
+<div class="tw"><table><tr><th>用語</th><th>何を測るか</th><th>JIS</th></tr>
+<tr><td>引張強さ・伸び</td><td>破れるまで伸ばしたときの応力と伸び。S-Sカーブで表す</td><td>K7127</td></tr>
+<tr><td>引張弾性率</td><td>S-Sカーブの立ち上がりの傾き。腰の指標。2%伸び＝F2、5%伸び＝F5</td><td>K7127</td></tr>
+<tr><td>引裂き強さ</td><td>切り口を付けて裂く力（エルメンドルフ）</td><td>K7128</td></tr>
+<tr><td>衝撃強度</td><td>振り子の先の半球でフィルムを突き破り、消費エネルギーで表す</td><td>K7124</td></tr>
+<tr><td>突刺し強度</td><td>ピンと張ったフィルムにポンチを押し当て、破れるときの荷重</td><td>—</td></tr>
+<tr class="hi"><td>耐ピンホール性</td><td><b>ゲルボテスター</b>で曲げとひねりを与え、発生したピンホール数を数える</td><td>—</td></tr>
+<tr><td>摩擦係数</td><td>200gのおもりを動かす力F。摩擦係数＝F/200</td><td>K7125</td></tr>
+<tr><td>濡れ張力</td><td>表面活性。表面張力の違う指示液でチェック</td><td>K6768</td></tr></table></div>
+<div class="why"><span class="ttl">摩擦係数の実用レンジ</span>
+<b>0.3（60g）〜0.6（120g）が使用可能な範囲。0.3以下なら滑りすぎ、0.6以上なら滑らない</b>（p.58）。製袋機や充填機でフィルムが流れるかどうかに直結します。</div>`},
+{h:'引裂き強さ ― 延伸と無延伸で桁が違う',b:`
+<div class="tw"><table><tr><th>フィルム</th><th class="n">厚み(μm)</th><th class="n">引裂き強さ(mN)</th></tr>
+<tr class="hi2"><td>OPP</td><td class="n">25</td><td class="n">10〜20</td></tr>
+<tr class="hi2"><td>ONY</td><td class="n">15</td><td class="n">25</td></tr>
+<tr class="hi2"><td>PET</td><td class="n">12</td><td class="n">80〜100</td></tr>
+<tr class="hi"><td>CPP</td><td class="n">25</td><td class="n">980</td></tr>
+<tr class="hi"><td>LDPE</td><td class="n">30〜80</td><td class="n">2260</td></tr>
+<tr class="hi"><td>LLDPE</td><td class="n">60</td><td class="n"><b>1960〜6860</b></td></tr></table></div>
+<p>延伸フィルム（上の3つ）と無延伸フィルム（下の3つ）で<b>100倍近く違います</b>。</p>`},
+{h:'耐ピンホール性と突刺強度 ― ONYが圧勝する表',b:`
+<div class="tw"><table><tr><th>フィルム</th><th class="n">厚み(μm)</th><th class="n">ピンホール数(個)</th><th class="n">突刺強度(N)</th><th class="n">ダート衝撃(J)</th></tr>
+<tr class="hi2"><td><b>ONY</b></td><td class="n">15</td><td class="n"><b>0</b></td><td class="n"><b>10</b></td><td class="n">2.5</td></tr>
+<tr class="hi2"><td>CNY（無延伸ナイロン）</td><td class="n">30</td><td class="n"><b>0</b></td><td class="n">6</td><td class="n"><b>10</b></td></tr>
+<tr><td>LDPE</td><td class="n">30</td><td class="n">0</td><td class="n">2</td><td class="n">0.5</td></tr>
+<tr><td>OPP</td><td class="n">25</td><td class="n">5</td><td class="n">7</td><td class="n">1.5</td></tr>
+<tr class="hi"><td>EVOH（Et38%）</td><td class="n">25</td><td class="n">17</td><td class="n">5</td><td class="n">1.3</td></tr>
+<tr class="hi"><td><b>PET</b></td><td class="n">12</td><td class="n"><b>30</b></td><td class="n">6</td><td class="n">2.0</td></tr></table></div>
+<div class="unit">ゲルボフレックステスト100回／23℃65%RH。突刺：ポンチ径1.6mmφ、100mm/min</div>
+<div class="warn"><b>PETはピンホールに弱い（30個）</b>。腰は一番強いのに、繰り返し曲げには一番弱い。<b>「腰が強い＝丈夫」ではない</b>ところが引っかけポイントです。</div>`},
+{h:'SI単位への切替（本書の時代の変わり目）',b:`
+<div class="tw"><table><tr><th>項目</th><th>旧単位</th><th>SI単位</th></tr>
+<tr><td>引張強度</td><td>1 kgf/mm²</td><td>9.807 MPa</td></tr>
+<tr><td>衝撃強度</td><td>1 kgf・cm</td><td>0.098 J</td></tr>
+<tr><td>突刺強度</td><td>1 kg</td><td>9.8 N</td></tr>
+<tr><td>ヒートシール強度</td><td>1 kgf/15mm</td><td>6.538 N/cm</td></tr>
+<tr><td>透湿度</td><td>g/㎡・24hr</td><td>g/㎡・d</td></tr>
+<tr class="hi"><td>酸素ガス透過度</td><td>cc/㎡・24hr・atm</td><td><b>ml/㎡・d・MPa</b></td></tr></table></div>
+<div class="now"><span class="ttl">2002→今</span>本書は「平成11年9月30日ですべての猶予期間が終わり、全面的に新単位へ移行」と書いており、<b>まさに切替の最中に書かれた本</b>です。現在のカタログは完全にSI単位（ml/㎡・d・MPa）なので、本書の数値とそのまま比較できます。<br>
+ただし他社カタログには今も <b>cc/㎡・d・atm</b> 表記が残っており、<b>約10倍の差</b>（1atm≒0.1013MPa）が出ます。他社比較のときは単位を必ず確認してください。</div>`}]},
+
+{n:'VI',t:'フィルム各論（18種）',pg:'62〜120',ic:'📦',d:'本書の山場。カタログの材質構成がそのまま出てくる',s:[
+{h:'シーラントの比較表 ― この1枚が全部',b:`
+<div class="tw"><table><tr><th>特性</th><th>LDPE</th><th>HDPE</th><th>LL C₄</th><th>LL C₆·C₈</th><th>EVA</th><th>アイオノマー</th><th>CPP</th></tr>
+<tr><td>低温シール性</td><td>○</td><td>×</td><td>△</td><td>○〜△</td><td><b>◎</b></td><td>◎〜○</td><td>×</td></tr>
+<tr><td>ホットタック性</td><td>△〜×</td><td>◎</td><td>△</td><td>○</td><td>○〜△</td><td><b>◎</b></td><td>○</td></tr>
+<tr class="hi2"><td>シール強度</td><td>△</td><td>○</td><td>○</td><td><b>◎</b></td><td>○〜△</td><td>○</td><td>×</td></tr>
+<tr class="hi2"><td>夾雑物シール性</td><td>△</td><td>△</td><td>○</td><td><b>◎</b></td><td>○</td><td>○</td><td>×</td></tr>
+<tr class="hi2"><td>衝撃強さ</td><td>△</td><td>○</td><td>○</td><td><b>◎</b></td><td>○</td><td>○〜△</td><td>×</td></tr>
+<tr class="hi"><td>耐熱性</td><td>○〜△</td><td>○</td><td>○</td><td>○</td><td>△</td><td>○〜△</td><td><b>◎</b></td></tr>
+<tr class="hi"><td>耐寒性</td><td>○</td><td>×</td><td>○</td><td>○</td><td><b>◎</b></td><td>○</td><td><b>×</b></td></tr>
+<tr><td>耐ピンホール性</td><td>△</td><td>—</td><td>—</td><td><b>◎</b></td><td>—</td><td>◎</td><td>—</td></tr></table></div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+<b>CPPは耐熱◎・耐寒×</b>。この1行が、カウパックのCPP7製品が全部レトルト対応で全部冷凍非対応である理由です。<br>
+<b>LLDPE C₆·C₈ は耐熱○・耐寒○で、他がほぼ◎</b>。52製品で主力シーラントになっているのは当然の結果です。</div>
+<div class="why"><span class="ttl">用語の意味</span>
+<b>ホットタック性</b>＝シール直後の、まだ溶けている状態での粘りの力。これが弱いと、タテピローで内容物を充填した瞬間に底のシール部が開いてパンクします（p.64）。<br>
+<b>夾雑物シール性</b>＝シール部に内容物（粉や液）が付いた状態でシールしたときの強度。液体スープなどは液中シールをしないとパウチ内の空気をゼロにできないため、この性能が要ります（p.64）。</div>`},
+{h:'CPP ― レトルトの主役',b:`
+<p>原料は<b>ホモポリマー／ランダムコポリマー／ブロックコポリマー／ターポリマー</b>の使い分け。</p>
+<div class="tw"><table><tr><th></th><th>透明性</th><th>低温シール</th><th>耐衝撃</th><th>耐寒</th><th>耐油</th><th>剛性</th></tr>
+<tr><td>ホモポリマー</td><td>○</td><td>×</td><td>×</td><td>×</td><td><b>◎</b></td><td><b>◎</b></td></tr>
+<tr><td>ランダムコポリマー</td><td>○</td><td>○</td><td>△</td><td>△</td><td>△</td><td>○</td></tr>
+<tr><td>ブロックコポリマー</td><td>×</td><td>—</td><td><b>◎</b></td><td>○</td><td>△</td><td>○</td></tr>
+<tr><td>ターポリマー</td><td>○</td><td><b>◎</b></td><td><b>◎</b></td><td>△</td><td>△</td><td>△</td></tr></table></div>
+<div class="why"><span class="ttl">レトルト温度での使い分け</span>
+<b>120℃までのレトルトにはランダムコポリマー、120℃以上にはブロックコポリマー</b>が使われます（p.71）。<br>
+ホモPPの融点165℃、ランダムコポリマー130〜147℃、ターポリマー130〜140℃。</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+カウパックのレトルト製品は 120℃（NCF・EACF）／125℃（ESCF-TN）／130℃（NACF 4製品）と段階があります。本書の区分でいうと、<b>130℃のNACFはブロックコポリマー系のCPPを使っているはず</b>です。<br>
+ちなみに本書 p.69 のCPP物性表では、<b>ホモポリマーの0℃衝撃強度は 0.01〜0.05 J</b>。ブロックコポリマーは 0.1〜1.0 J で<b>10〜20倍</b>違います。</div>`},
+{h:'OPP ― 防湿の王様、でも酸素はザル',b:`
+<div class="tw"><table><tr><th></th><th class="n">OPP</th><th class="n">PET</th><th class="n">ONY</th></tr>
+<tr><td>融点(℃)</td><td class="n">165</td><td class="n">264</td><td class="n">215</td></tr>
+<tr><td>使用可能温度(℃)</td><td class="n">−50〜130</td><td class="n"><b>−70〜150</b></td><td class="n">−60〜140</td></tr>
+<tr class="hi2"><td>透湿度 g/㎡·d</td><td class="n"><b>7</b></td><td class="n">46</td><td class="n">180</td></tr>
+<tr class="hi"><td>酸素透過度</td><td class="n"><b>19,600</b></td><td class="n">1,180</td><td class="n">590</td></tr>
+<tr><td>腰（引張弾性率）</td><td>3番</td><td><b>1番</b></td><td>2番</td></tr>
+<tr><td>衝撃強度・突刺強度</td><td>2番</td><td>3番</td><td><b>1番</b></td></tr></table></div>
+<div class="why"><span class="ttl">OPPの性格</span>
+<b>防湿は断トツで良く（7）、酸素は断トツで悪い（19,600）</b>。この極端さが性格です。だから<b>おかき・海苔など「湿気ったら困るが酸素はそこまで気にしない」もの</b>に使われます。<br>
+また<b>一番伸びやすいフィルム</b>でもあり、8kgf/800mmのテンションで60℃になると OPP 1.2%／ONY 0.5%／PET 0.2% 伸びます。<b>OPPを加工するときは低テンション・低温で</b>（p.75）。</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+<b>カウパックの規格袋62製品にOPPは1つも使われていません。</b>理由はこの表のとおりで、カウパックの主戦場（水物・惣菜・冷凍・レトルト）は酸素バリアと強度が要る領域だからです。OPPが強いのは乾燥食品・菓子の分野です。</div>`},
+{h:'PET ― 熱と腰の担当',b:`
+<ul class="pt">
+<li><b>印刷適性</b>　腰が強く、テンションと温度をかけても伸びないので、高速印刷に耐える</li>
+<li><b>耐熱性</b>　レトルト処理（120〜140℃）をしても物性低下が少ない。だからレトルト用途はほとんどPET</li>
+<li><b>保香性</b>　香りを通さない点では<b>バリアーフィルムのPVDCよりも優れている</b>（p.83）。アルコール・ケトン・芳香族などの有機溶剤にも強い</li>
+</ul>
+<div class="why"><span class="ttl">レトルトでPETが外層になる決定的な理由</span>
+本書 p.83 のグラフ：レトルト処理温度を上げていくと、<b>ONYは120℃を超えると衝撃強度が急落</b>（未処理1.05J → 120℃で0.65J → 140℃で0.15J）。一方<b>PETは全域でほぼ一定（約0.4J）</b>。<br><br>
+だから p.87 にこう書かれています：「<b>レトルト用途では、ONYは表基材として使わず、ONYの上にPETを持って来る様な構成が推奨される</b>」。</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+NACF-SW／SA／TW／TA の構成は <b>PET12／ONY15／AL9／CPP60</b>。まさに本書の推奨どおり、ONYの外側にPETが来ています。<br>
+PETは23製品で使われ、<b>すべて外層</b>。4層構成21件は<b>すべてPET（またはPET静防）で始まります</b>。</div>`},
+{h:'ONY ― 長所と短所',b:`
+<div class="tw"><table><tr><th>ONYの特長</th><th>ONYの弱点</th></tr>
+<tr><td>ⓐ 強靭で耐衝撃強度が優れている<br>ⓑ 耐ピンホール性が良い<br>ⓒ 耐摩耗性が良い<br>ⓓ 耐熱、耐寒性が良い<br>ⓔ ガスバリアー性が比較的良い<br>ⓕ 耐油性、耐薬品性が良い</td>
+<td>ⓐ <b>吸湿性が大きい</b>ことによる腰や滑り性の低下<br>　（逆に吸湿すると耐ピンホール性や耐衝撃強度は<b>向上</b>する）<br>ⓑ <b>酸に弱い</b></td></tr></table></div>
+<div class="warn"><b>ONYは酸に弱い。</b>18%硫酸で溶解します（1N硫酸なら強度保持率92%）。酸性の内容物を入れる袋では注意が要ります。</div>
+<div class="why"><span class="ttl">吸湿の実害 ― 製袋現場で起きること</span>
+p.90：「<b>ラミネート品でも吸湿した場合、シールすると水分により気泡が発生する</b>ので、ラミネート品の保管もシールするまでは防湿包装が必要である」。<br>
+また摩擦係数が湿度40%で0.5、湿度80%で<b>2.0</b>まで跳ね上がり、フィルムが滑らなくなります。</div>
+<div class="cat"><span class="ttl">本書の「耐ピンホール性向上タイプ」＝今のカウパック</span>
+p.91 のONYタイプ分類に<b>「耐ピンホール性向上タイプ」「滑性調整タイプ」「帯電防止タイプ」</b>が挙がっています。<br>
+カタログの <b>GPZ（PET静防／透明蒸着PET／ONY／LLDPE静防）</b> がまさに帯電防止タイプの構成で、粉体（工業薬品）用途です。</div>`},
+{h:'アルミ蒸着と透明蒸着',b:`
+<div class="tw"><table><tr><th>特性</th><th>透明蒸着</th><th>アルミ蒸着</th></tr>
+<tr><td>ガスバリアー性</td><td>◎</td><td>◎</td></tr>
+<tr><td>防湿性</td><td>◎</td><td>◎</td></tr>
+<tr class="hi"><td>遮光性</td><td><b>×</b></td><td><b>◎</b></td></tr>
+<tr class="hi2"><td>シースルー</td><td><b>◎</b> 内容物が確認できる</td><td>×</td></tr>
+<tr><td>外観</td><td>△ 褐色（透明もある）</td><td>◎ 金属光沢</td></tr>
+<tr class="hi2"><td>耐内容物性</td><td><b>◎</b> 酸、アルカリに侵されない</td><td><b>×</b> 酸、アルカリに侵される</td></tr>
+<tr class="hi2"><td>ボイル・レトルト適性</td><td>◎</td><td>○ ボイルまで可</td></tr>
+<tr class="hi2"><td>電子レンジ適性</td><td><b>◎</b></td><td><b>×</b></td></tr>
+<tr><td>加工適性</td><td>△ 高いテンションでクラック発生</td><td>○</td></tr>
+<tr class="hi"><td>経済性</td><td><b>△ 高い</b></td><td><b>◎</b></td></tr></table></div>
+<div class="why"><span class="ttl">アルミは両性金属 ― 酸にもアルカリにも弱い</span>
+p.113：「<b>アルミは両性金属で、酸にもアルカリにも弱いので、取扱い上注意が必要である。内容物に酸成分やアルカリ成分がある時は、蒸着層を保護するためにPETやONYを配置した構成も見受けられる</b>」。</div>
+<div class="why"><span class="ttl">シリカ蒸着がクラックに弱い理由</span>
+p.116：「<b>シリカ蒸着膜はガラスの膜を想定してもらうと理解しやすい。シリカ蒸着フィルムを少し引っ張るとクラックが入る</b>」。だからベースフィルムは<b>伸びにくいPET</b>が使われます。<br><br>
+さらに p.150 では、PVD（物理蒸着）はSiOの固まりがブロック状に積み上がるので伸ばすとクラックが入るが、<b>CVD（化学蒸着）は雲母のような平板が積み重なる構造なので、4%までクラックが発生しない</b>と説明されています。</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+カウパックの<b>透明蒸着PETは12製品</b>（DP10-TN、DP16-TB、DPY、GPZ、EACF、ESCF-TNほか）、<b>アルミ蒸着PETは2製品のみ</b>（DS16-VW、TP-R）。<br>
+本書の時代（2002年）は「透明蒸着を大量に使用しているのは日本だけ」という新技術でしたが、現在は完全に主流です。アルミ蒸着が2製品しかないのは、遮光が要るなら<b>アルミ箔（11製品）</b>を使うからです。</div>`},
+{h:'蒸着層の厚みという豆知識',b:`
+<ul class="pt">
+<li><b>アルミ蒸着層の厚み＝400〜600Å（0.04〜0.06μm）</b>。アルミの結晶が7〜10層に蓄積した状態</li>
+<li>シリカ蒸着はアルミ蒸着より<b>一般的には薄い</b></li>
+<li>蒸着膜厚が約<b>300Åで光線透過率がほぼ0</b>になる＝不透明になる</li>
+<li>アルミの密着強度：コロナ処理のみだと OPP/CPP 0.3〜0.7、PET 0.7、ONY 1.0 N/cm。<b>改良品は1.3〜2.0 N/cm</b></li>
+</ul>
+<div class="warn"><b>蒸着用のOPPやCPPは添加剤を極力入れない。</b>滑剤やブロッキング防止剤が表面にブリードしてくると、アルミの密着強度が落ちるためです（p.112）。帯電防止剤も同じで、「蒸着の場合も、帯電防止剤のような添加物はアルミの密着力を低下させる」（p.79）。</div>`}]},
+
+{n:'VII',t:'フィルムの加工',pg:'121〜172',ic:'🏭',d:'印刷・ラミネート・蒸着・製袋。カウパックの工程そのもの',s:[
+{h:'グラビア印刷 ― 日本はグラビア王国',b:`
+<div class="q">日本の軟包装の印刷は、ほとんどがグラビア印刷で、<b>日本はグラビア王国</b>と言われるほどである。欧米では、フレキソとグラビアの2方式が用いられている。（p.123）</div>
+<div class="tw"><table><tr><th>方式</th><th>原理</th><th>長所</th><th>短所</th></tr>
+<tr><td>凸版（フレキソ）</td><td>凸部にインキを付ける（はんこと同じ）</td><td>細かい印刷に適する／版の訂正が容易</td><td>版の高さ精度管理が難しい</td></tr>
+<tr><td>平版（オフセット）</td><td>親油性部にインキが着く／水を使う</td><td>ほとんどの素材に印刷可／製版が安い</td><td>水を使うので色調のバラツキ・汚れ</td></tr>
+<tr class="hi2"><td><b>凹版（グラビア）</b></td><td>凹部にインキを溜め、ドクターでかき取って転移</td><td><b>濃度のある印刷／濃淡を表しやすい</b></td><td>製版代が高い／版の訂正が困難</td></tr></table></div>
+<div class="why"><span class="ttl">グラビアロールの仕組み</span>
+網目の線は1cm当り<b>50〜80本</b>、セルの大きさは<b>約100μm</b>、深い穴で<b>30〜40μmの深さ</b>。金属ロールに銅メッキし、その軟らかい層に穴を掘り、仕上げにクロームメッキ（p.125）。</div>
+<div class="warn"><b>印刷の色順</b>　面刷りは<b>白→黄→赤→青→墨</b>。裏刷りはこの逆順。隠蔽性の墨が表側になるようにするためです（p.127）。</div>`},
+{h:'残留溶剤 ― 臭いトラブルの原因',b:`
+<div class="tw"><table><tr><th>フィルム</th><th class="n">エタノール</th><th class="n">IPA</th><th class="n">酢酸エチル</th><th class="n">MEK</th><th class="n">トルエン</th></tr>
+<tr><td>PET</td><td class="n">0.51</td><td class="n">0.64</td><td class="n">8.21</td><td class="n">4.03</td><td class="n">0.59</td></tr>
+<tr class="hi"><td>ONY</td><td class="n"><b>351</b></td><td class="n">1.59</td><td class="n">3.08</td><td class="n">1.74</td><td class="n">0.09</td></tr>
+<tr class="hi"><td>OPP</td><td class="n">1.74</td><td class="n">0.61</td><td class="n">73.4</td><td class="n">52.9</td><td class="n"><b>661</b></td></tr>
+<tr class="hi"><td>PVDC</td><td class="n">0.79</td><td class="n">0.36</td><td class="n"><b>788</b></td><td class="n"><b>2630</b></td><td class="n">358</td></tr></table></div>
+<div class="unit">有機溶剤の蒸気透過性（g・0.1mm／㎡・d）</div>
+<div class="why"><span class="ttl">どのフィルムがどの溶剤に弱いか</span>
+<b>親水性のONYはアルコールに弱い。OPPは炭化水素（トルエン）に弱い。PVDCはエステル・ケトン・芳香族に弱い。</b><br>
+透過しやすい＝親和性がある＝吸着されやすい、ということなので、残留溶剤になりやすい組み合わせがここから読めます（p.127）。</div>
+<div class="warn"><b>乾燥は温度より風量。</b>p.128のグラフで、弱風（10m/sec）は温度を上げてもあまり下がらないのに対し、強風（25m/sec）は大きく下がります。</div>`},
+{h:'ドライラミネート ― カウパックの標準工程',b:`
+<div class="q">基材に有機溶剤に溶解させた接着剤をグラビアロールでコートし、<b>乾燥機（80〜120℃）</b>で溶剤を蒸発させ、粘着状態になった接着剤層と他基材を重ね<b>60〜80℃に加熱された金属ロールとゴムロール</b>で圧着、冷却して巻取る。巻取り後、<b>35〜45℃で2〜7日間エージング</b>を行なう。（p.129）</div>
+<div class="tw"><table><tr><th>用途</th><th>フィルム構成</th><th class="n">コート量(固形分 g/㎡)</th></tr>
+<tr><td>一般用</td><td>平滑なフィルム</td><td class="n">1.5〜2.0</td></tr>
+<tr><td>一般用</td><td>平滑性の悪いフィルム／多色刷り／コートフィルム</td><td class="n">2.5〜3.5</td></tr>
+<tr class="hi2"><td>ボイル用</td><td>—</td><td class="n">3.0〜3.5</td></tr>
+<tr class="hi"><td>レトルト用</td><td>透明レトルト</td><td class="n">3.5〜4.0</td></tr>
+<tr class="hi"><td>レトルト用</td><td>アルミ構成レトルト</td><td class="n"><b>4.0〜5.0</b></td></tr></table></div>
+<div class="unit">コート量 1g/㎡ ＝ フィルム厚み約1μm増</div>
+<div class="why"><span class="ttl">接着剤は2液ウレタンが9割</span>
+<b>接着剤使用量の90%以上がポリウレタン系</b>。<b>OH基を持った主剤</b>と<b>NCO基（イソシアネート基）を持った硬化剤</b>を混ぜる2液反応タイプで、ウレタン結合を作って硬化します。溶剤は<b>酢酸エチル</b>が最も多い。<br>
+耐熱性が要るときは<b>ポリエステルポリオール</b>を使います（p.131）。</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+カウパック62製品のうち<b>55製品がドライラミ</b>。レトルトの7製品はコート量4.0〜5.0g/㎡の最も厚いレベルで作られているはずです。<b>エージングに2〜7日かかる</b>ので、ドライラミ品は納期が押出ラミより長くなります。</div>`},
+{h:'押出ラミネート ― なぜ300℃以上で押し出すのか',b:`
+<div class="q">LDPEは、AC処理を施した基材にでも接着性がよくない。この接着性を上げるため溶融押出をした後、<b>酸化させてカルボニル基（=CO）などを発生させて、接着性を上げている</b>。このカルボニル基の発生は溶融レジンの温度が高いほど多くなるので、<b>300℃以上の高温で溶融押出を行なっている</b>。（p.142）</div>
+<div class="warn"><b>ところが、そのカルボニル基はシール強度を下げます。</b>接着性を上げる操作が、シール性能を犠牲にするという矛盾です。</div>
+<div class="why"><span class="ttl">だから「2度貼り」をする</span>
+解決策は<b>2段階に分ける</b>こと（p.142〜143）：<br>
+① まず基材に<b>高温（310℃）でLDPEを押出ラミ</b>　→ 接着を担当<br>
+② その上に<b>低温（280〜290℃）でLDPEをもう一度押出ラミ</b>　→ シールを担当<br><br>
+断面は <b>基材／AC層／LDPE高温押出／LDPE低温押出</b> の4層になります。<br>
+さらに本書は経時データも示していて、<b>一度押出しのものは60日後にシール強度が大きく低下</b>します。高温押出で劣化した低分子物が表面にブリードしてくるためです。</div>
+<div class="cat"><span class="ttl">カタログの謎が解ける ― TKの57μm と SPNの67μm</span>
+カウパックのLLDPEは10μm刻みが原則ですが、<b>TK（57μm）と SPN（67μm）だけが半端</b>です。<br>
+この2製品はどちらも<b>押出ラミ</b>。本書のこの「2度貼り」や、押出されるPE層が加算される仕組みを踏まえると、半端な数字になる事情が見えてきます。<br>
+（本書に直接TK・SPNの記載があるわけではないので、ここは推測です。研修で先輩に聞くと面白い質問になります。）</div>
+<div class="warn"><b>EVAは250℃以上で脱酢酸反応</b>が起き、臭切れ・酢酸臭・発煙のトラブルが出ます。だからEVAも「LDPEを高温で押出した上に、250℃以下でEVAを押出す」2度貼りが基本です（p.143）。<br>
+<b>LLDPEは300℃を越すと極端な特性低下</b>。高いシール強度が要るときは、LDPEを高温で押した面に<b>295℃前後</b>でLLDPEを押します（p.144）。</div>`},
+{h:'アンカーコート剤（AC剤）',b:`
+<div class="q">LDPEのような<b>無極性のレジン</b>を押出ラミするとき、同種のフィルムとはよく接着するが、<b>PETやONYのような素材が違うフィルムとは、全然接着しない</b>。（p.138）</div>
+<div class="tw"><table><tr><th>基材＼レジン</th><th>LDPE</th><th>EVA</th><th>ION</th><th>EEA</th><th>EAA</th></tr>
+<tr><td>OPP</td><td>×</td><td>○</td><td>○</td><td>—</td><td>—</td></tr>
+<tr><td>PET</td><td>×</td><td>—</td><td>×</td><td>◎</td><td>○</td></tr>
+<tr class="hi"><td>ONY</td><td><b>××</b></td><td>×</td><td>◎</td><td>○</td><td>○</td></tr>
+<tr class="hi2"><td>Al</td><td>○</td><td>—</td><td>◎</td><td>◎</td><td><b>◎</b></td></tr></table></div>
+<div class="unit">◎良／○可／△不可／×ぜんぜんダメ／××（原文表記）</div>
+<div class="why"><span class="ttl">AC剤の種類と使い分け</span>
+<b>イソシアネート系（ウレタン）</b>が最も多く使われます。初期接着性は低いものの、<b>耐湿性・耐水性・耐ボイル性・耐油性がすべて○</b>。反応完了に1日ほどのエージングが必要。<br>
+水性系の<b>ポリエチレンイミン系</b>は初期接着性が良く残留溶剤も少ないが、耐水性×・耐ボイル性×なので<b>乾燥食品用</b>。<br><br>
+コート量は 0.06〜0.25 g/㎡（Dry）と極めて薄く、ドライラミ接着剤（1.5〜5 g/㎡）の<b>1/20以下</b>です。</div>`},
+{h:'ラミネート方式の総合比較',b:`
+<div class="tw"><table><tr><th>方式</th><th>接着媒体</th><th class="n">コート量<br>(g/㎡)</th><th class="n">速度<br>(m/min)</th><th>耐熱性</th><th>残留溶剤</th></tr>
+<tr class="hi2"><td><b>ドライラミ（溶剤型）</b></td><td>ポリウレタン</td><td class="n">1.5〜5</td><td class="n">60〜150</td><td><b>◎</b></td><td>△</td></tr>
+<tr><td>ドライラミ（無溶剤）</td><td>ポリウレタン</td><td class="n">0.8〜2.0</td><td class="n">100〜200</td><td>○〜◎</td><td>◎</td></tr>
+<tr><td>ウエットラミ</td><td>澱粉・カゼイン・酢ビ</td><td class="n">4〜10(wet)</td><td class="n">70〜150</td><td>△</td><td>◎</td></tr>
+<tr><td>ホットメルトラミ</td><td>ワックス・EVA</td><td class="n">4〜10</td><td class="n">100〜150</td><td>△</td><td>◎</td></tr>
+<tr class="hi"><td><b>押出ラミ</b></td><td>溶融LDPEなど</td><td class="n">0.01〜0.065<br>(AC剤)</td><td class="n">80〜120</td><td><b>○</b></td><td>○</td></tr></table></div>
+<div class="why"><span class="ttl">無溶剤（ノンソル）ラミがレトルトに使えない理由</span>
+無溶剤型の接着剤は、熱で溶融させるため<b>分子量が数千の低分子量</b>。溶剤型は分子量数万です。硬化後も分子量が低いので<b>耐熱性の付与が難しく、レトルト包材に適用できません</b>（p.133）。耐熱性は<b>ボイル処理まで</b>。</div>`},
+{h:'シール方法の種類',b:`
+<div class="tw"><table><tr><th>方法</th><th>原理</th><th>主な用途</th></tr>
+<tr class="hi2"><td><b>ヒートシール（バーシール）</b></td><td>加熱板で圧力をかけて押さえる。一番多い方法</td><td>汎用</td></tr>
+<tr class="hi"><td><b>インパルスシール</b></td><td>ニクロムリボンを圧着後、瞬間的に大電流を流して加熱。<b>冷却後に開放する</b></td><td>水物用袋の製袋機、真空包装のトップシール</td></tr>
+<tr><td>溶断シール（サイドシール）</td><td>はんだ鏝で溶断すると同時に端部を丸めて溶融</td><td>パンの袋、繊維製品の袋</td></tr>
+<tr><td>超音波シール</td><td>毎秒2〜3万回の振動で分子を動かし、摩擦熱で溶融</td><td>OPPの背貼り</td></tr>
+<tr><td>高周波シール</td><td>交番電場で分子を分極・振動させ摩擦熱で溶融</td><td>ONY・PVC・PVDC・PVA（<b>無極性のポリオレフィンには使えない</b>）</td></tr>
+<tr><td>コールドシール</td><td>圧力だけでシール。熱をかけたくないものに</td><td>チョコレート（欧米で多い）</td></tr></table></div>
+<div class="why"><span class="ttl">シール幅の基準</span>
+p.152：「<b>PEやCPPのような単体フィルムをシールする場合は、外観をよくするために、シール巾は2〜3mm</b>であるが、<b>OPP//CPP、ONY//CPP や PET//Al//CPP のようなラミネート品の場合は10mmくらいの巾にシール</b>している」。</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+カウパックの<b>三方シール袋のサイドシールは10mm</b>。本書のラミネート品の基準そのものです。<br>
+一方<b>スタンド袋は5mm</b>。これはスタンド袋が別の製袋機（スタンドパウチ製袋機）で作られるためで、本書の p.159 に別工程として説明があります。</div>
+<div class="warn"><b>溶断シール・フレームシールでは、コロナ処理面はシール強度が極端に低下します。</b>コロナ処理は接着性を上げるための処理ですが、シール面に施されていると逆効果です（p.153）。</div>`},
+{h:'三方シール製袋機 ― なぜ2段シールなのか',b:`
+<p>工程（p.157）：</p>
+<ul class="pt">
+<li>① フィルムを送り出し、中央部をナイフで切って二分する</li>
+<li>② 二分されたフィルムを上下に振り分ける</li>
+<li>③ 2枚を重ねてシール工程へ</li>
+<li>④ まず<b>袋の底部をタテヒーターでシール</b>→ 冷却板で冷却</li>
+<li>⑤ 次に<b>袋の側面を2段シール</b>（2回のシールで完全なシールに仕上げる）→ 冷却</li>
+<li>⑥ ナイフで開口部をカット、カッターで1個ずつカット</li>
+</ul>
+<div class="why"><span class="ttl">なぜ冷却板が必要か</span>
+p.157：「<b>ヒートシールのあとには、冷却板でシール部を冷却する。冷却しないと結晶化が進み強いシール強度が得られなく、また外観も悪くなる</b>」。<br>
+熱いままだと結晶が大きく育ってしまい、脆くなるということです。</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+本書は「<b>完全なシールを要求されるような時には三方シールの袋が使用される。医薬品やレトルトに三方シールの袋が多く使用されている</b>」としています。<br>
+カウパックのレトルト製品（NCF・EACF・NACF-SW/SA・MLR）が三方シール袋なのはこの理由です。</div>`},
+{h:'スタンドパウチ ― 自立の仕掛け',b:`
+<div class="q">底部も同じ構成のものを使用した場合、単に底部にフィルムを折込み底部をシールするだけでは、<b>底部が開いて、袋が立たない</b>。<br><br>
+そのため底部の両側面をシールするために、<b>底部のフィルムはシールする前に両側面のシールしたい部分に相当するところに穴を開けて置く</b>。この底部をシールすると<b>底材の穴の開いている所は、胴材の上下のフィルムが（直接）シールされ</b>、底部の両側面がシールされ<b>自立性が付与される</b>。（p.159）</div>
+<div class="why"><span class="ttl">なぜ穴が要るのか</span>
+スタンド袋には <b>ONY//LL</b> のような<b>片面だけヒートシールできる</b>ラミネートフィルムが使われます。LL面どうしは溶着しますが、ONY面は溶着しません。<br>
+底材を折り込むと、胴材と底材の間は <b>LL面どうし</b>で溶着しますが、<b>底材の裏側（ONY面）どうしが向き合う両脇</b>はくっつかず、そこから開いてしまいます。<br>
+そこで<b>底材に先に穴を開けておく</b>と、その穴のところで<b>胴材の上下のLL面どうしが直接溶着</b>し、両脇が閉じて自立します。装置図には<b>「底ノッチャー」</b>という穴あけ装置が描かれています。</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+カウパックのスタンド袋31製品すべてがこの構造です。カタログの寸法図で<b>底部の両脇に斜めのシール</b>が描かれているのは、この穴を通して溶着した部分です。<br>
+また<b>TP-N／TP-H／TP-W の材質構成が「本体」と「底部」で別記載</b>になっているのも、胴材ロールと底材ロールの2本を使う製袋方式だからです。</div>`}]},
+
+{n:'VIII',t:'包装',pg:'173〜191',ic:'🥫',d:'殺菌・真空・ガス充填・脱酸素剤。Fo値と水分活性',s:[
+{h:'包装機の種類',b:`
+<div class="tw"><table><tr><th>分類</th><th>方式</th><th>主な内容物</th></tr>
+<tr><td rowspan="4">自動製袋充填機<br>ピロー型</td><td>縦ピロー・フィンシール</td><td>スナック</td></tr>
+<tr><td>縦ピロー・ラップシール</td><td>砂糖、コーヒー</td></tr>
+<tr><td>横ピロー・上方供給</td><td>パン、ラーメン</td></tr>
+<tr><td>横ピロー・下方供給（逆ピロー）</td><td>ばら物</td></tr>
+<tr class="hi2"><td rowspan="2">三方・四方シール式</td><td>三方シール</td><td>化学調味料、ふりかけ</td></tr>
+<tr class="hi2"><td>四方シール</td><td>粉体、粒体、液体</td></tr>
+<tr class="hi2"><td>自立袋用</td><td>丸底（スタンドパウチ）</td><td>ココア</td></tr>
+<tr class="hi"><td rowspan="2">自動充填包装機<br>（半自動・給袋式）</td><td>充填包装機</td><td><b>レトルト、漬物</b></td></tr>
+<tr class="hi"><td>真空包装機</td><td><b>煮豆、惣菜、煮物</b></td></tr></table></div>
+<div class="cat"><span class="ttl">カウパックの規格袋はここで使われる</span>
+カウパックが売っているのは<b>できあがった袋</b>なので、お客様が使うのは<b>「自動充填包装機（半自動・給袋式）」</b>です。<br>
+本書 p.177 の工程：① パウチ供給 → ② 捺印 → ③ パウチ開口・底部整形 → ④ 固形物充填 → ⑤ 液体充填 → ⑥ 口閉じ・脱気・一次シール → ⑦ 二次シール → ⑧ 冷却プレス・排出。<b>包装速度は10〜40袋／分</b>。<br><br>
+「<b>レトルト用途など完全な密封性を要求される時は、二次シールを行なう</b>」とあり、お客様側でも2段シールしていることがわかります。</div>`},
+{h:'殺菌の分類と温度',b:`
+<div class="tw"><table><tr><th>分類</th><th>温度</th></tr>
+<tr><td>低温加熱（熱水）</td><td>100℃以下</td></tr>
+<tr class="hi"><td>高温加熱（レトルト・HTST）</td><td>100℃〜</td></tr>
+<tr class="hi"><td>超高温加熱（UHT）</td><td>130℃〜</td></tr></table></div>
+<p>セミレトルト／ハイレトルトの区分は本書 p.183 で <b>「一般的に、100〜120℃をセミレトルト、それ以上の温度で殺菌処理する場合をハイレトルト」</b>としています。</p>
+<div class="why"><span class="ttl">Fo値とは</span>
+<b>121℃（250°F）で1分処理したものを Fo＝1</b> とする指標。違う温度×時間の殺菌効果を比較できます。<br>
+本書の例：<b>135℃×2分の処理は、121℃×5分の処理に相当</b>。温度を14℃上げると、時間が2.5分の1で済むということです。</div>
+<div class="tw"><table><tr><th>品名</th><th class="n">温度(℃)</th><th class="n">時間</th><th class="n">Fo値</th></tr>
+<tr><td>カレー</td><td class="n">120</td><td class="n">25分</td><td class="n">8</td></tr>
+<tr><td>ハンバーグ</td><td class="n">120</td><td class="n">30分</td><td class="n">—</td></tr>
+<tr><td>かまぼこ</td><td class="n">120</td><td class="n">4分</td><td class="n">4</td></tr>
+<tr><td>コンソメスープ</td><td class="n">135</td><td class="n">2分</td><td class="n">5.0</td></tr>
+<tr><td>中華丼の素</td><td class="n">135</td><td class="n">7分30秒</td><td class="n">5.4</td></tr></table></div>`},
+{h:'酸性度（pH）で殺菌条件が変わる',b:`
+<div class="q"><b>酸は、殺菌の力を持っているので、酸性の強い食品は、加熱殺菌などでも低い温度で行なわれる。</b>（p.180）</div>
+<div class="tw"><table><tr><th>名称</th><th class="n">pH範囲</th><th>代表的な食品</th><th>殺菌条件</th></tr>
+<tr><td>アルカリ性食品</td><td class="n">7.0以上</td><td>えび、かに水煮</td><td><b>高温殺菌</b></td></tr>
+<tr class="hi"><td>低酸性食品</td><td class="n">7.0〜5.0</td><td>シチュー、カレー</td><td><b>高温殺菌</b></td></tr>
+<tr><td>中酸性食品</td><td class="n">5.0〜4.5</td><td>トマト加工品、漬物の一部</td><td>低温殺菌／熱間充填</td></tr>
+<tr class="hi2"><td>酸性食品</td><td class="n">4.5〜3.7</td><td>フルーツみつまめ、オレンジジュース</td><td>熱間充填／低温殺菌</td></tr>
+<tr class="hi2"><td>高酸性食品</td><td class="n">3.7以下</td><td>いちご類、スイートピクルス</td><td><b>低温殺菌</b>／熱間充填</td></tr></table></div>
+<div class="cat"><span class="ttl">商談で効く話</span>
+お客様から「<b>何℃で殺菌できますか</b>」と聞かれたときに、まず<b>中身のpH</b>を聞けば、必要な温度の見当がつきます。カレーやシチューのような低酸性食品は120℃以上が必要で、そこで初めて<b>CPPシーラントのレトルト製品</b>が候補になります。漬物のような中酸性食品なら、ボイル98℃のHLVやNLHで足ります。</div>`},
+{h:'水分活性（Aw）',b:`
+<div class="q"><b>水分活性とは、包装された食品がどれだけ水蒸気（自由水）を発生しているかを示す数値。</b>食塩が多い食品は、水分を含んでいても食塩が水分を離さないので、水分活性の値は低くなる。（p.181）</div>
+<p>純水 ＝ <b>1</b>　／　飽和食塩水 ＝ <b>0.75</b></p>
+<div class="tw"><table><tr><th>微生物</th><th class="n">生育に必要な最低Aw</th></tr>
+<tr><td>多くの細菌</td><td class="n">0.91</td></tr>
+<tr><td>多くの酵母</td><td class="n">0.88</td></tr>
+<tr><td>多くのカビ</td><td class="n">0.80</td></tr>
+<tr><td>多くの好塩細菌</td><td class="n">0.75</td></tr>
+<tr class="hi"><td>乾性カビ</td><td class="n"><b>0.61</b></td></tr></table></div>
+<div class="why"><span class="ttl">だから Aw 0.6以下なら微生物は繁殖できない</span>
+本書 p.180 に「<b>AW：0.6以下では微生物は繁殖できない</b>」とあります。ビスケット（Aw 0.33）や緑茶（Aw 0.26）が常温で長期保存できるのはこのためで、<b>この場合に必要なのは殺菌ではなく防湿</b>です。<br>
+逆に生鮮食品（Aw 0.97〜0.99）は何もしなければすぐ腐ります。</div>`},
+{h:'包装手法の使い分け',b:`
+<div class="tw"><table><tr><th>手法</th><th>原理</th><th>包材に要る特性</th></tr>
+<tr><td>含気包装</td><td>単に密封するだけ。最も基本的</td><td>—（<b>微生物コントロールや油脂劣化の防止効果はない</b>）</td></tr>
+<tr class="hi2"><td>真空包装</td><td>空気を除去してシール。<b>完全には除けず数%の酸素が残る</b>ので脱気包装とも</td><td>柔軟性、伸度、収縮性、<b>耐ピンホール性</b></td></tr>
+<tr class="hi2"><td>ガス充填包装</td><td>脱気してからN₂やCO₂を充填</td><td><b>ガスバリアー性</b>、耐ピンホール性</td></tr>
+<tr class="hi2"><td>脱酸素剤封入包装</td><td>脱酸素剤で容器内の酸素を除去</td><td><b>ガスバリアー性</b>、耐ピンホール性</td></tr>
+<tr class="hi"><td>加熱殺菌（レトルト）</td><td>脱気包装＋加熱殺菌</td><td><b>耐熱性</b>、耐水性、耐油脂性、耐ストレスクラッキング性、耐ピンホール性</td></tr>
+<tr><td>無菌包装（アセプティック）</td><td>滅菌食品を滅菌容器に無菌環境で充填。容器は<b>過酸化水素や紫外線</b>で滅菌</td><td>生菌数、過酸化水素離脱性、柔軟性、耐ピンホール性</td></tr></table></div>
+<div class="why"><span class="ttl">CO₂とN₂の使い分け</span>
+<b>炭酸ガス（CO₂）は微生物、特にカビの発育を抑える制菌作用</b>があります。だから切り餅はCO₂。<br>
+<b>窒素（N₂）は酸化防止だけ</b>。食用油、粉乳、日本茶、削り節、納豆はN₂。<br>
+ハム・ソーセージは<b>CO₂＋N₂</b>で、酸化防止と微生物制御の両方を狙っています（p.182）。</div>
+<div class="cat"><span class="ttl">脱酸素剤とバリア性</span>
+p.183：「<b>脱酸素剤を使用する時は、食品の保存期間、包材のバリアー性などを考慮して使用する脱酸素剤の大きさを決めなければならない</b>」。<br>
+袋のバリアが悪いと外から酸素が入り続けるので、脱酸素剤が先に寿命を迎えます。<b>脱酸素剤を使う案件では必ずバリア付き製品を提案する</b>——他社比較のときの基本です。</div>`},
+{h:'冷蔵・冷凍の温度区分',b:`
+<div class="tw"><table><tr><th>区分</th><th class="n">温度</th></tr>
+<tr><td>冷蔵</td><td class="n">0℃〜10℃</td></tr>
+<tr><td>チルド</td><td class="n">−5℃〜5℃</td></tr>
+<tr><td>氷温</td><td class="n">−3℃〜0℃</td></tr>
+<tr class="hi"><td>冷凍</td><td class="n">−15℃〜−30℃（通常 −18℃〜−20℃）</td></tr></table></div>
+<div class="why"><span class="ttl">冷凍包装で何に気をつけるか</span>
+p.184：「<b>冷凍保存中は、雰囲気は乾燥状態にあり、水分が凍っていても氷から水蒸気が出るので、表面乾燥が起こりやすい</b>」。<br>
+だから冷凍用の包材には<b>防湿性・酸化防止・香臭気</b>の3つを配慮する必要があります。</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+カタログの冷凍対応アイコンは<b>「マイナス40℃の冷凍保存に対応する製品です」</b>。本書の冷凍区分（−15〜−30℃）より厳しい条件を設定しています。<br>
+これが<b>CPPシーラント（Tg 0℃付近）が冷凍非対応</b>になる理由で、−40℃ではCPPは完全に脆化します。</div>`}]},
+
+{n:'IX',t:'包材の分析',pg:'192〜212',ic:'🔬',d:'手元のサンプルが何でできているかを調べる。燃焼試験は今も現役',s:[
+{h:'五感による判定',b:`
+<ul class="pt">
+<li><b>目視</b>　透明性・光沢・色。<b>HDPEは白っぽく不透明だからすぐ判る</b></li>
+<li><b>手の感触と音</b>　腰・きしみ・音。<b>OPP、PET、ONY は指の感触で判定できる</b>。引っ張れば<b>延伸か無延伸かも判る</b></li>
+<li><b>水に入れる</b>　<b>浮く＝ポリオレフィン系（LDPE・HDPE・LLDPE・CPP・OPP）</b>／<b>沈む＝PET・ONY・PVDC・EVOH・PVA</b>。ONYは「沈んで吸水してグニャグニャになる」、PVAは「沈んでグニャリとなる」</li>
+</ul>
+<div class="why"><span class="ttl">なぜ水で分かれるのか</span>
+比重が1より小さいか大きいかです。PE 0.91〜0.965／PP 0.90／<b>水 1.00</b>／ONY 1.15／EVOH 1.19／PVA 1.21〜1.31／PET 1.4／PVDC 1.57〜1.68。<br>
+<b>ポリオレフィンは全部1未満、それ以外はほぼ全部1超</b>というきれいな分かれ方です。</div>`},
+{h:'燃焼試験の判別フロー',b:`
+<p>数センチのサンプルとライター、クリップ、灰皿があればできます。</p>
+<div class="tw"><table><tr><th>炎を遠ざけると</th><th>煙</th><th>燃えだれ・臭い</th><th>素材</th></tr>
+<tr class="hi2"><td rowspan="6"><b>燃え続ける</b></td><td>煙なし</td><td>紙のこげる臭い</td><td>セロファン</td></tr>
+<tr class="hi2"><td rowspan="4">煙少ない<br>燃えだれ少しあり</td><td><b>弱い酢酸臭</b></td><td><b>EVA</b></td></tr>
+<tr class="hi2"><td><b>ワックス臭</b></td><td><b>PP</b></td></tr>
+<tr class="hi2"><td><b>ろうそく臭</b></td><td><b>LDPE</b></td></tr>
+<tr class="hi2"><td>軽いろうそく臭</td><td>LLDPE</td></tr>
+<tr class="hi2"><td>黒煙・煤が多い</td><td>ステンレス臭</td><td>OPS</td></tr>
+<tr class="hi"><td rowspan="3"><b>すぐ消える</b></td><td>黒煙・燃えだれ多い</td><td><b>甘い芳香</b></td><td><b>PET</b></td></tr>
+<tr class="hi"><td>煙少ない・燃えだれ少ない</td><td><b>羊毛・爪のこげた臭い</b></td><td><b>ONY</b></td></tr>
+<tr class="hi"><td>黒煙・垂れない</td><td>軽い刺激臭</td><td>PVC</td></tr>
+<tr><td rowspan="2">燃えにくい<br>（青い炎）</td><td>煙少ない<br>黒いかすが残る</td><td>刺激臭</td><td>PVDC</td></tr>
+<tr><td></td><td>軽い刺激臭</td><td>PVDCコート品</td></tr>
+<tr><td colspan="3">燃えない</td><td><b>アルミ</b></td></tr></table></div>
+<div class="warn"><b>安全上の注意（p.193）</b><br>
+① 斜めの方向から火をつける。<b>決してサンプルの下に手を入れない</b>（燃えだれで火傷をする）<br>
+② サンプルは1〜2cm幅に切ってクリップに挟む<br>
+③ 燃えだれが落ちるので灰皿を用意する<br>
+④ <b>OPS（スチレン）はすごく燃えて煤を多く出す</b>ので、どのサンプルもまず1〜2×2〜3cmの少量で予備テストを<br>
+⑤ 臭いをかぐときは<b>手で扇いで鼻に寄せる</b></div>
+<div class="why"><span class="ttl">臭いの覚え方</span>
+<b>PE＝ろうそく</b>（ロウはパラフィン＝PEの仲間）／<b>PP＝ワックス</b>／<b>EVA＝酢酸</b>（酢酸ビニルが入っているから）／<b>ONY＝髪の毛を焼いた臭い</b>（ナイロンもタンパク質と同じアミド結合を持つ）／<b>PET＝甘い芳香</b>（ベンゼン核）。<br>
+全部<b>分子構造から説明がつく</b>ので、理屈で覚えられます。</div>`},
+{h:'ラミネート方式の見分け方',b:`
+<ul class="pt">
+<li><b>手による感触</b>　ドライラミは<b>硬い</b>、押出ラミは<b>柔らかい</b></li>
+<li><b>外観</b>　ドライラミ品は表面が柚肌になっているものが多い、押出ラミは<b>面がスムース</b></li>
+<li><b>カール</b>　<b>押出ラミ品はカールしやすく、ひどい場合はくるくる巻き付く</b></li>
+<li><b>溶剤による剥離</b>　酢酸エチル・MEK・トルエンなどに浸すと、<b>ドライラミ品は容易に剥がれる</b>（押出ラミは剥がれない）</li>
+</ul>
+<div class="cat"><span class="ttl">他社サンプルを手にしたとき</span>
+この4つを順にやれば、<b>その場でドライラミか押出ラミかが判断できます</b>。そして押出ラミなら<b>殺菌温度は95℃までのはず</b>と推測できる——これが商談でそのまま使える知識です。<br>
+カウパック62製品のうち押出ラミは8製品（NPU2・NS・NHP・NPZ・WN・SPN・TK・TP-S）で、最高殺菌温度はすべて95℃以下です。</div>`},
+{h:'PVDCコート品の確認法',b:`
+<ul class="pt">
+<li><b>モルホリンテスト</b>　モルホリンをコート面に薄く塗ると、しばらくして<b>茶褐色に変色</b>する</li>
+<li><b>燃焼テスト</b>　燃やすと<b>黒いかすが残る。刺激臭あり</b></li>
+<li><b>アルコールランプテスト</b>　銅線を焼いて樹脂を付け、再び焼くと<b>炎の周辺に青い炎</b>が出る（塩素の反応）</li>
+</ul>`},
+{h:'IR（赤外分光）で何がわかるか',b:`
+<div class="why"><span class="ttl">原理</span>
+<b>分子の振動を利用</b>します。原子間は伸び縮みしたりねじれたりしており、それぞれ固有の振動数を持っています。赤外線を当てて<b>その振動数と波長が合うと吸収される</b>ので、どの波長で吸収されたかで素材がわかります。</div>
+<div class="tw"><table><tr><th>素材</th><th>特定の吸収波長(cm⁻¹)</th></tr>
+<tr><td>PE全般（LDPE・HDPE・LLDPE）</td><td>−(CH₂)− <b>720</b></td></tr>
+<tr class="hi"><td>PP</td><td><b>明確な特定吸収帯はない</b></td></tr>
+<tr><td>EVA</td><td>720／C=O <b>1,730</b></td></tr>
+<tr><td>PET</td><td>C=O 1,730／ベンゼン核 720</td></tr>
+<tr class="hi2"><td>ナイロン6</td><td>NH <b>3,300</b>／C=O <b>1,640</b></td></tr>
+<tr><td>MXD-6</td><td>ベンゼン核 700／C=O 1,640／NH 3,300</td></tr>
+<tr><td>PVA</td><td>OH <b>3,500</b></td></tr>
+<tr><td>EVOH</td><td>1,100／OH 3,500</td></tr>
+<tr><td>PS</td><td>ベンゼン核 700</td></tr>
+<tr class="hi"><td>PVC・PVDC</td><td>C-Cl <b>603, 638, 690</b></td></tr></table></div>
+<div class="warn"><b>IRでも苦手なものがある。</b>「LDPE、HDPEやLLDPEは、特定の吸収波長（720）のみでは判別できない。<b>特にLLDPEのC₄、C₆、C₈の判定は特に難しく</b>、IRのチャート全体を見て分析しなければならない」（p.197）。エチレンコポリマー同士も同様です。</div>`}]},
+
+{n:'X',t:'食品包装に関係する法律',pg:'213〜245',ic:'⚖️',d:'ここが一番古い。2002年の内容と、今どう変わったかを並べて読む',s:[
+{h:'先に：この章の扱い方',b:`
+<div class="now"><span class="ttl">2002→今　この章だけは注意</span>
+本書の法律の章は、<b>制度そのものが入れ替わっている部分が多い</b>です。とくに次の4つ。<br><br>
+① <b>食品表示法（2015年4月施行）</b>　食品衛生法・JAS法・健康増進法の「表示」部分が一本化されました。本書の「7.品質表示」「栄養表示基準」の章は、この法律に置き換わっています。栄養成分表示も2020年4月に完全義務化されました。<br><br>
+② <b>ポジティブリスト制度（2018年改正／2020年6月施行）</b>　本書は「業界の自主規制（ポリ衛協のポジティブリスト）」として説明していますが、現在は<b>食品衛生法そのものにポジティブリスト制度が導入</b>され、法律上の制度になりました。<br><br>
+③ <b>レジ袋有料化（2020年7月）／プラスチック資源循環促進法（2022年4月施行）</b>　本書の容器包装リサイクル法のうえに、新しい法律が乗っています。<br><br>
+④ <b>JAS法</b>　名称も内容も改正されています（現・日本農林規格等に関する法律）。<br><br>
+<b>そのため、この章の具体的な数値や手続きは、必ず現行法で確認してください。</b>ただし「なぜこういう規制があるのか」という考え方の部分は、今でも有効です。</div>`},
+{h:'4つの法律の目的（これは今も有効な考え方）',b:`
+<div class="tw"><table><tr><th>法律</th><th>制定</th><th>目的を一言で</th></tr>
+<tr class="hi2"><td>食品衛生法</td><td>S22(1947)</td><td><b>国民の公衆衛生の管理</b></td></tr>
+<tr class="hi2"><td>JAS</td><td>S25(1950)</td><td><b>公正な取引が行なわれること</b></td></tr>
+<tr><td>製造物責任法（PL法）</td><td>H6(1994)</td><td><b>製造物の欠陥による被害者の保護</b></td></tr>
+<tr><td>容器包装リサイクル法</td><td>H7(1995)</td><td><b>一般廃棄物の減量及び再利用</b></td></tr></table></div>
+<div class="why"><span class="ttl">同じ品質表示でも目的が違う</span>
+食品衛生法の表示は<b>公衆衛生に主眼</b>（添加物を表示する）。JASの表示は<b>公正な取引のため</b>（内容量を表示する）。<br>
+本書はレトルト食品の表示項目を並べて比較していて、<b>食品衛生法は「添加物」を、JASは「内容量」を</b>要求しているのがよくわかります。目的が違えば要求も違う、という話です。</div>`},
+{h:'レトルト容器の規格（今も使われている試験）',b:`
+<p>食品衛生法の「容器包装詰加圧加熱殺菌食品」の規格です。</p>
+<ul class="pt">
+<li><b>遮光性を有し、気体透過性のないもの</b>（内容物が油脂の変敗による品質低下のおそれのない場合を除く）</li>
+<li>水を満たし密封し、製造時と同一の加圧加熱を行なったとき、<b>破損・着色・変形・変色を生じない</b></li>
+<li><b>耐圧縮試験</b>　内容物や水の漏れがないこと</li>
+<li><b>熱封かん強度試験　2.3 kgf以上</b></li>
+<li><b>落下試験</b>　内容物や水が漏れないこと</li>
+</ul>
+<div class="tw"><table><tr><th>総重量</th><th class="n">耐圧縮試験の荷重</th><th class="n">落下試験の高さ</th></tr>
+<tr><td>100g未満</td><td class="n">20kg</td><td class="n">80cm</td></tr>
+<tr><td>100g以上 400g未満</td><td class="n">40kg</td><td class="n">50cm</td></tr>
+<tr><td>400g以上 2,000g未満</td><td class="n">60kg</td><td class="n">30cm</td></tr>
+<tr><td>2,000g以上</td><td class="n">80kg</td><td class="n">25cm</td></tr></table></div>
+<div class="unit">落下試験は底面部または平面部が当たるように2回落下（コンクリート床面）</div>
+<div class="cat"><span class="ttl">カタログだとこれ</span>
+<b>「遮光性を有し、気体透過性のないもの」</b>——これがレトルト容器の原則です。<br>
+カウパックのレトルト製品で<b>アルミ箔入りのNACF 4製品</b>がこの原則どおり。一方で<b>透明なEACF・ESCF-TN・NCF</b>は、但し書きの「内容物が油脂の変敗による品質低下のおそれのない場合」に当たります。<br>
+だから「レトルト＝必ずアルミ」ではなく、<b>中身が油脂の酸化を気にするかどうか</b>で分かれる、と説明できます。</div>`},
+{h:'材質試験と溶出試験',b:`
+<div class="tw"><table><tr><th>試験</th><th>何を見るか</th></tr>
+<tr><td><b>材質試験</b></td><td>材料を燃やして、その<b>灰の中にカドミウムと鉛が100ppm以上あってはならない</b></td></tr>
+<tr><td><b>溶出試験</b></td><td>容器に内容物を入れて、<b>容器から内容物へ溶け出してはいけない</b>量を定めた試験。抽出液は内容物を想定して決められている</td></tr></table></div>
+<div class="tw"><table><tr><th>項目</th><th>PE・PP</th><th>PET</th><th>ナイロン</th></tr>
+<tr><td>カドミウム・鉛（材質）</td><td colspan="3" style="text-align:center">100ppm</td></tr>
+<tr><td>重金属</td><td colspan="3" style="text-align:center">4%酢酸 60℃30分　1ppm</td></tr>
+<tr class="hi"><td>アンチモン</td><td>—</td><td><b>0.05ppm</b></td><td>—</td></tr>
+<tr class="hi"><td>ゲルマニウム</td><td>—</td><td><b>0.1ppm</b></td><td>—</td></tr>
+<tr><td>蒸発残留物（n-ヘプタン）</td><td>150ppm<br>100℃以上使用は30ppm</td><td>30ppm</td><td>30ppm</td></tr>
+<tr class="hi"><td>ε-カプロラクタム</td><td>—</td><td>—</td><td><b>15ppm</b></td></tr></table></div>
+<div class="why"><span class="ttl">なぜPETだけアンチモンとゲルマニウムなのか</span>
+<b>PETの重合触媒にアンチモンとゲルマニウムを使っているから</b>です（p.219）。<br>
+<b>ナイロンのε-カプロラクタム</b>は、ナイロン6の原料そのもの。重合しきれなかった低重合物が残っているので、その量を確認しています。<br><br>
+つまり<b>溶出試験の項目は、その樹脂の作り方から逆算されている</b>ということです。覚えるときはこの理屈で覚えると忘れません。</div>`},
+{h:'PL法 ― 何が変わったのか',b:`
+<div class="tw"><table><tr><th></th><th>立証すべきこと</th></tr>
+<tr><td>従来の民法709条</td><td><b>過失</b>の証明 → 欠陥 → 損害</td></tr>
+<tr class="hi2"><td><b>PL法</b></td><td><b>欠陥</b>の証明 → 損害</td></tr></table></div>
+<div class="why"><span class="ttl">被害者の負担が軽くなった</span>
+民法では被害者が<b>メーカーの過失</b>（予見できたのに回避しなかったこと）を証明しなければなりませんでした。PL法では<b>欠陥（通常備えるべき安全性を欠いていること）</b>さえ証明すればよくなりました。<br>
+PL法は民法の<b>特別法</b>で、PL法でカバーできない部分は民法が従来どおり適用されます。</div>
+<p>欠陥は4種類に分けられます：<b>①設計品質 ②製造品質 ③指示 ④警告上の欠陥</b>。期限は<b>損害が生じてから3年以内</b>、製品販売から<b>10年</b>（民法は20年）。</p>
+<div class="cat"><span class="ttl">包材屋として他人事ではない</span>
+<b>警告・表示上の欠陥</b>も対象です。袋の注意書き（「電子レンジ不可」「開封後要冷蔵」など）が不十分だと、それ自体が欠陥になりえます。<br>
+カタログの<b>ヒンジキャップ16Dφ3が「ボイル非対応」</b>と明記されているのも、この文脈で見ると意味がわかります。</div>`},
+{h:'容器包装リサイクル法',b:`
+<div class="tw"><table><tr><th></th><th class="n">容積比(%)</th><th class="n">重量比(%)</th></tr>
+<tr><td>容器包装以外</td><td class="n">44.5</td><td class="n">77.4</td></tr>
+<tr class="hi"><td><b>容器・包装の合計</b></td><td class="n"><b>約55</b></td><td class="n"><b>約23</b></td></tr></table></div>
+<p>家庭ごみに占める容器包装廃棄物は<b>容積比で6割、重量比で2〜3割</b>。だから容器包装が狙われました。</p>
+<div class="why"><span class="ttl">3つのリサイクル</span>
+<b>マテリアルリサイクル</b>＝原料として再利用／<b>ケミカルリサイクル</b>＝油に戻して再利用／<b>サーマルリサイクル</b>＝燃料として使用。<br>
+本書の時点では「<b>サーマルリサイクルで燃料として使用できるのは、ケミカルリサイクルで回収された油に限定</b>」とされています。</div>
+<div class="now"><span class="ttl">2002→今</span>
+本書は「<b>平成13年4月より紙とプラスチックに識別表示をすることが法律で決められた</b>」「平成15年4月から罰則適用」と書いており、<b>プラマーク（♻プラ）が始まった時期の本</b>です。<br>
+カタログの材質構成でプラマーク記号（PA・PET・PE・PP・M）が併記されているのは、この識別表示義務に対応するためです。<br><br>
+その後、<b>2020年7月のレジ袋有料化</b>、<b>2022年4月のプラスチック資源循環促進法</b>が加わり、現在は「<b>減らす・替える</b>」方向の規制が中心になっています。カウパックのDS16シリーズ（リサイクルONY＋バイオマスLLDPE）はまさにこの流れへの対応です。</div>`}]},
+
+{n:'付',t:'巻末の比較表',pg:'246〜巻末',ic:'📊',d:'表基材3種とバリアー包材5種の総まとめ。1枚で全体像',s:[
+{h:'表基材の比較（巻末付録）',b:`
+<div class="tw"><table><tr><th>分類</th><th>物性</th><th class="n">OPP</th><th class="n">PET</th><th class="n">ONY</th></tr>
+<tr><td rowspan="6">機械的性質</td><td>強度（伸びにくい）</td><td>○</td><td><b>◎</b></td><td>△</td></tr>
+<tr><td>腰</td><td>○</td><td><b>◎</b></td><td>△</td></tr>
+<tr><td>引裂強さ</td><td>○</td><td>○</td><td>○</td></tr>
+<tr><td>衝撃強度</td><td>○</td><td>△</td><td><b>◎</b></td></tr>
+<tr><td>突刺強度</td><td>○</td><td>△</td><td><b>◎</b></td></tr>
+<tr class="hi"><td>耐ピンホール性</td><td>△</td><td><b>×</b></td><td><b>◎</b></td></tr>
+<tr><td rowspan="4">化学的性質</td><td>透湿度</td><td><b>◎</b></td><td>△</td><td><b>×</b></td></tr>
+<tr><td>酸素透過度</td><td><b>×</b></td><td>△</td><td>○</td></tr>
+<tr><td>保香性</td><td>×</td><td><b>◎</b></td><td>△</td></tr>
+<tr><td>耐薬品性</td><td>◎</td><td>△ アルカリ</td><td>△ 酸</td></tr>
+<tr><td>熱的性質</td><td>耐熱性</td><td>△</td><td><b>◎</b></td><td>○</td></tr></table></div>
+<div class="why"><span class="ttl">この表の読み方 ― 3つに役割が割れている</span>
+<b>PET＝腰と耐熱と保香</b>（ただしピンホールに×）<br>
+<b>ONY＝衝撃と突刺とピンホール</b>（ただし透湿に×）<br>
+<b>OPP＝防湿</b>（ただし酸素に×）<br><br>
+きれいに三すくみになっていて、<b>どれか1枚では成立しない</b>のがわかります。だから組み合わせる。これが多層構造の本質です。</div>
+<div class="cat"><span class="ttl">カウパックが使う2つ、使わない1つ</span>
+カウパックの62製品では <b>PET 23製品／ONY 44製品／OPP 0製品</b>。<br>
+OPPを使わないのは、カウパックの主戦場が<b>酸素バリアと強度を求める領域</b>（水物・惣菜・冷凍・レトルト）だからです。OPPの得意分野である乾燥菓子・米菓は別の会社の領域ということになります。</div>`},
+{h:'バリアー包材の比較（巻末付録）',b:`
+<div class="tw"><table><tr><th>特性</th><th>EVOH・PVA</th><th>PVDC<br>Kコート</th><th>MXD-6</th><th>透明蒸着</th><th>アルミ箔<br>アルミ蒸着</th></tr>
+<tr><td>酸素透過度</td><td>◎</td><td>◎</td><td>○</td><td>◎</td><td>◎</td></tr>
+<tr class="hi"><td>透湿度</td><td><b>×</b></td><td>◎</td><td>△</td><td>◎</td><td>◎</td></tr>
+<tr><td>耐薬品性</td><td>○</td><td>○</td><td>△</td><td><b>◎</b></td><td><b>×</b></td></tr>
+<tr><td>加工適性</td><td>◎</td><td>◎</td><td>◎</td><td>△</td><td>○</td></tr>
+<tr class="hi2"><td>レトルト適性</td><td><b>×</b></td><td>△</td><td>○</td><td><b>◎</b></td><td>×（蒸着）</td></tr>
+<tr class="hi2"><td>電子レンジ適性</td><td>◎</td><td>◎</td><td>◎</td><td>◎</td><td><b>×</b></td></tr>
+<tr><td>環境適性</td><td>◎</td><td><b>×</b></td><td>○</td><td>◎</td><td>×</td></tr></table></div>
+<div class="why"><span class="ttl">この表が示している結論</span>
+<b>透明蒸着がほぼ全部◎</b>です。弱点は加工適性（クラック）とコストだけ。<br>
+だから2002年以降、<b>PVDC（環境×）とEVOH（透湿×・レトルト×）から透明蒸着への移行</b>が進みました。本書の時点でもう答えは出ていたことになります。</div>
+<div class="cat"><span class="ttl">カタログの現在地</span>
+カウパックが使うバリア材は <b>バリアONY（19製品）／透明蒸着PET（12製品）／アルミ箔（11製品）／アルミ蒸着PET（2製品）</b>。<br>
+<b>PVDCコート品はゼロ、EVOH単体もゼロ。</b>この表の「環境適性×」「透湿度×」がそのまま効いた結果です。<br><br>
+そして<b>バリアONY</b>——本書でいう「NY/EVOH/NY や NY/MXD-6/NY の共押出品」が、カウパックの主力になっています。EVOHを<b>ナイロンで挟んで湿気から守る</b>ことで、EVOHの弱点を消した形です。</div>`},
+{h:'フィルム物性表（本文246）',b:`
+<div class="tw"><table><tr><th>項目</th><th class="n">LDPE</th><th class="n">LLDPE</th><th class="n">CPP</th><th class="n">OPP</th><th class="n">PET</th><th class="n">ONY</th><th class="n">PVDC</th><th class="n">EVOH</th></tr>
+<tr><td>厚み(μm)</td><td class="n">25</td><td class="n">30</td><td class="n">30</td><td class="n">20</td><td class="n">12</td><td class="n">15</td><td class="n">20</td><td class="n">12</td></tr>
+<tr><td>密度(g/cm³)</td><td class="n">—</td><td class="n">0.92</td><td class="n">0.90</td><td class="n">0.91</td><td class="n">1.4</td><td class="n">1.15</td><td class="n">1.7</td><td class="n">1.19</td></tr>
+<tr><td>ヘイズ(%)</td><td class="n">10</td><td class="n">5.0</td><td class="n">2.6</td><td class="n">1.2</td><td class="n">3.0</td><td class="n">2.5</td><td class="n">3.0</td><td class="n">2.5</td></tr>
+<tr><td>引張弾性率 MD(GPa)</td><td class="n">0.21</td><td class="n">0.15</td><td class="n">0.55</td><td class="n">2.5</td><td class="n"><b>4.0</b></td><td class="n">2.1</td><td class="n">1.0</td><td class="n">3.4</td></tr>
+<tr class="hi2"><td>酸素透過度 20℃0%RH</td><td class="n">5,000〜<br>13,500</td><td class="n">—</td><td class="n">2,500〜<br>4,500</td><td class="n">2,000</td><td class="n">100</td><td class="n">40</td><td class="n">10</td><td class="n"><b>2</b></td></tr>
+<tr class="hi"><td>透湿度 40℃90%RH</td><td class="n">20</td><td class="n">—</td><td class="n">13</td><td class="n"><b>7</b></td><td class="n">40</td><td class="n"><b>170</b></td><td class="n">5</td><td class="n">50</td></tr>
+<tr><td>融点(℃)</td><td class="n">115</td><td class="n">122〜127</td><td class="n">160〜165</td><td class="n">165</td><td class="n">260</td><td class="n">220</td><td class="n">170</td><td class="n">180</td></tr>
+<tr><td>Tg(℃)</td><td class="n">−30</td><td class="n">−51</td><td class="n">−18</td><td class="n">−20</td><td class="n">70</td><td class="n">45</td><td class="n">−18</td><td class="n">55</td></tr>
+<tr><td>使用可能範囲(℃)</td><td class="n">−50〜80</td><td class="n">−50〜100</td><td class="n">0〜120</td><td class="n">−50〜130</td><td class="n">−60〜200</td><td class="n">−60〜140</td><td class="n">−18〜150</td><td class="n">—</td></tr></table></div>
+<div class="unit">酸素透過度 ml/㎡・d・MPa、透湿度 g/㎡・d。メーカー・銘柄は本文246参照</div>
+<div class="warn"><b>CPPの使用可能範囲は「0℃〜120℃」。</b>下限が0℃です。この1行だけで、CPPシーラントの製品が冷凍非対応である理由の説明がつきます。<br>
+対してLLDPEは −50℃〜100℃。<b>下限が50℃も違います。</b></div>`}]}
+];
+
+/* ========== 学習ルート ========== */
+const ROUTE=[
+{d:1,min:15,t:'まず構えを作る',g:'「バリアは100の線」と「// ＝ドライラミ、/ ＝押出ラミ」。この2つだけで、明日からカタログの見え方が変わります。',r:[[0,0],[0,1],[0,2]]},
+{d:2,min:20,t:'材料の地図を1枚持つ',g:'PET・ONY・OPPが三すくみになっていること、バリア材5種のどれが何に強いかを、表2枚で把握します。細かい数字は覚えなくて大丈夫です。',r:[[11,0],[11,1]]},
+{d:3,min:20,t:'シーラント（最内層）',g:'「なぜCPPの製品は全部冷凍できないのか」を説明できるようにします。確認テストで一番よく問われるところです。',r:[[6,0],[6,1]]},
+{d:4,min:25,t:'表基材3種',g:'「なぜレトルトはPETが外層なのか」を説明できるようにします。NACFの構成が腑に落ちます。',r:[[6,2],[6,3],[6,4]]},
+{d:5,min:15,t:'バリア材',g:'透明蒸着・アルミ蒸着・アルミ箔の3つの違いを言えるようにします。「中身が見える袋でバリアは出せますか」に答えられます。',r:[[6,5],[6,6]]},
+{d:6,min:25,t:'袋の作り方（実務直結）',g:'「なぜ三方シールは10mm、スタンド袋は5mmなのか」「なぜスタンド袋は立つのか」。カタログの寸法図が読めるようになります。',r:[[7,6],[7,7],[7,8]]},
+{d:7,min:25,t:'ラミネート',g:'ドライラミと押出ラミの違い、そして「押出ラミは95℃の壁がある」。他社比較でそのまま使えます。',r:[[7,2],[7,3],[7,4],[7,5]]},
+{d:8,min:20,t:'殺菌と包装',g:'「中身のpHで必要な殺菌温度が決まる」。お客様に何℃必要か聞かれたときの答え方が身につきます。',r:[[8,1],[8,2],[8,3],[8,4]]},
+{d:9,min:20,t:'理屈の土台',g:'結晶と非晶、Tgと融点。ここまで来てから読むと「だからあの数字だったのか」とつながります。最初に読むと折れるので9日目です。',r:[[2,1],[2,2],[5,0],[5,3]]},
+{d:10,min:20,t:'手で見分ける',g:'手元のサンプルが何でできているかを、燃焼試験と手触りで判定できるようにします。他社サンプルを渡されたときに効きます。',r:[[9,0],[9,1],[9,2]]}
+];
+const EXTRA=[
+{t:'樹脂そのものの中身を知りたい',c:3,g:'化学構造の話。面白いですが、営業の現場で直接は使いません'},
+{t:'フィルムがどう作られるかを知りたい',c:4,g:'工場見学の予習に'},
+{t:'物性の用語と測定法をきちんと',c:5,g:'JIS番号まで覚えたい人向け'},
+{t:'業界の全体像と歴史',c:1,g:'なぜ日本がOPP王国・グラビア王国なのか'},
+{t:'包装機械と包装形態41種',c:8,g:'お客様の設備の話が出たとき'},
+{t:'法律',c:10,g:'※2002年の内容なので、現行法の確認が必須'}
+];
+const GOAL=[
+{q:'何℃で殺菌できますか、と聞かれた',r:[[8,2],[8,1],[6,1]],h:'中身のpHを聞けば必要な温度の見当がつきます'},
+{q:'冷凍で使えますか、と聞かれた',r:[[6,1],[2,2],[8,5]],h:'シーラントがCPPかLLDPEかで決まります'},
+{q:'電子レンジで使えますか、と聞かれた',r:[[6,5]],h:'アルミ箔・アルミ蒸着は不可、透明蒸着は可'},
+{q:'中身が見えるバリア袋はありますか',r:[[6,5],[11,1]],h:'透明蒸着PETの出番です'},
+{q:'なぜこの材質構成なんですか、と聞かれた',r:[[6,3],[6,4],[11,0]],h:'1枚で全部は満たせないから貼り合わせる、という話から'},
+{q:'他社品のサンプルを渡された',r:[[9,2],[9,1],[9,0]],h:'手触りとカールでドライか押出かがわかります'},
+{q:'脱酸素剤を使いたいと言われた',r:[[8,4],[0,0]],h:'バリア付きでないと脱酸素剤が先に寿命を迎えます'},
+{q:'確認テストが近い',r:[[11,0],[11,1],[6,0]],h:'この3つ＋クイズを回すのが一番効率的です'}
+];
+let done=loadDone();
+function loadDone(){try{const v=localStorage.getItem('cp_book_done');return v?JSON.parse(v):[];}catch(e){return [];}}
+function saveDone(){try{localStorage.setItem('cp_book_done',JSON.stringify(done));return true;}catch(e){return false;}}
+let canSave=(function(){try{localStorage.setItem('cp_t','1');localStorage.removeItem('cp_t');return true;}catch(e){return false;}})();
+function tog(d){const i=done.indexOf(d);if(i<0)done.push(d);else done.splice(i,1);saveDone();render();}
+
+/* ========== 略語表 ========== */
+const AB=[
+['ABS','アクリロニトリル−ブタジエン−スチレン共重合ポリマー'],['AC剤','アンカーコート剤'],['Al','アルミ箔'],
+['AN','アクリロニトリル'],['A-PET','アモルファス（非晶）PET'],['AS','①アクリロニトリル−スチレン樹脂　②静電防止（Anti-Static）'],
+['ASTM','American Society for Testing and Materials（試験法）'],['AW','水分活性'],['BIB','バック イン ボックス'],
+['BIC','バック イン カートン'],['CNY','無延伸ナイロン'],['C-PET','結晶性PET'],['CPP, CP','無延伸ポリプロピレン'],
+['CVD','化学蒸着'],['D','密度'],['EAA','エチレン・アクリル酸共重合体'],['EB法','電子ビーム法'],
+['EEA','エチレン・アクリル酸エチル共重合体'],['EMA','エチレン・アクリル酸メチル共重合体'],
+['EMAA','エチレン・メタクリル酸共重合体'],['EMMA','エチレン・メタクリル酸メチル共重合体'],
+['EPS','発泡ポリスチレン（＝FPS）'],['Et','エチレン'],['EVA','エチレン−酢酸ビニル共重合体'],
+['EVOH','エチレンビニルアルコール共重合体（フィルム）'],['FDA','Food and Drug Administration（米国：食品医薬品局）'],
+['FPS','発泡ポリスチレン（＝EPS）'],['GPPS','一般用ポリスチレン'],['HDPE','高密度ポリエチレン'],
+['HIPS','耐衝撃性ポリスチレン（フィルム）'],['HM','ホットメルト接着剤'],['HMDSO','ヘキサメチルジシロキサン'],
+['I','インキ'],['ION, IO','アイオノマー'],['IPA','イソプロピルアルコール'],['IPP','ポリプロピレンインフレーションフィルム'],
+['JAS','農林物資の規格及び品質表示の適正化に関する法律'],['JIS','日本工業規格'],['K','PVDCコート'],
+['LDPE','低密度ポリエチレン'],['LL, LLDPE','リニヤー−LDPE（直鎖状低密度ポリエチレン）'],['MA','メタアクリレート'],
+['MD','縦方向（Machine Direction）'],['MDPE','中密度ポリエチレン'],['MEK','メチルエチルケトン'],
+['MF','メラミン樹脂'],['MFR','メルトフローレート：粘度'],['MIBK','メチルイソブチルケトン'],
+['MMA','メタクリル酸メチル'],['MST','防湿セロファン'],['MXD-6','ポリメタキシリレンアジパミド'],
+['NY-6','ナイロン−6'],['O.D.','透過光線量、吸光指数'],['ONY','二軸延伸ナイロンフィルム'],
+['OPP, OP','二軸延伸ポリプロピレンフィルム'],['OPS','延伸ポリスチレンフィルム'],
+['OSM','二軸延伸MXD-6フィルム'],['PA','ポリアミド（ナイロン）'],['PAN','ポリアクリロニトリルフィルム又は樹脂'],
+['PC','ポリカーボネート'],['PCB','ポリクロロビフェニル'],['PDR','ポリブタジエン'],['PE','ポリエチレン'],
+['PEN','ポリエチレンナフタレート'],['PET','二軸延伸ポリエステルフィルム'],['PF','フェノール樹脂'],
+['PL法','製造物責任法（Products Liability）'],['PMMA','メタクリル樹脂'],['PP','ポリプロピレン'],
+['PS','ポリスチレンフィルム又は樹脂'],['PT','普通セロファン'],['PTP包装','Press Through Package'],
+['PVA','ポリビニルアルコール'],['PVC','ポリ塩化ビニル（塩ビ）'],['PVD','物理蒸着'],['PVDC','ポリ塩化ビニリデン'],
+['S-Sカーブ','Stress-Strain Curve（応力−ひずみ曲線）'],['TD','横方向（Transverse Direction）'],
+['Tg','ガラス転移点'],['Tm','融点'],['UF','ユリア樹脂'],['VA','酢酸ビニル'],['VC','塩化ビニル'],
+['VDC','塩化ビニリデン'],['VM','蒸着'],['WT','濡れ張力（Wetting Tension）'],
+['WVTR','水蒸気透過度（Water Vapor Transmission Rate）'],['μs','静摩擦係数'],['μd','動摩擦係数'],
+['//','ドライラミを示す（本書の表記ルール）'],['/','押出ラミを示す（本書の表記ルール）']
+];
+
+/* ========== 2002→今 ========== */
+const NOW=[
+{t:'食品表示法（2015年4月施行）',o:'本書は食品衛生法・JAS法それぞれに品質表示の規定があるものとして説明',n:'食品衛生法・JAS法・健康増進法の「表示」部分が食品表示法に一本化された。栄養成分表示は2020年4月に完全義務化。本書の「品質表示」「栄養表示基準」の章は現行法で要確認',w:'法律'},
+{t:'ポジティブリスト制度（2018年改正／2020年6月施行）',o:'ポリオレフィン等衛生協議会（ポリ衛協）の「自主規制」としてポジティブリストを説明（1974年制定）',n:'食品衛生法そのものに器具・容器包装のポジティブリスト制度が導入され、法律上の制度になった。使える物質がリスト化されている',w:'法律'},
+{t:'プラスチック資源循環促進法（2022年4月施行）／レジ袋有料化（2020年7月）',o:'容器包装リサイクル法（1995年制定）まで。識別表示の義務化が始まったところ',n:'「リサイクルする」から「そもそも減らす・替える」方向へ。バイオマス・リサイクル原料・モノマテリアル化が実務の論点に',w:'法律'},
+{t:'PVDC（Kコート）の退潮',o:'バリアー包材の主力として大きく扱われる。K-OPPだけで年21,000トン',n:'1997年前後のダイオキシン問題を機に敬遠され、EVOH・透明蒸着へ移行。カウパック規格袋カタログにPVDCコート品は現在1つもない',w:'素材'},
+{t:'透明蒸着の一般化',o:'「日本で技術が開発され、世界で大量に使用しているのは日本だけ」という最新技術の扱い',n:'完全に標準技術。カウパックでも12製品で採用。GL FILM・テックバリア・エコシアールなど各社の定番品になっている',w:'素材'},
+{t:'メタロセンLLDPE',o:'1992年生産開始の「第三世代」として新技術の扱い',n:'標準品。ただし「何が違うのか」の説明（分子量分布が揃う・結晶が小さくなる）は今でも正確',w:'素材'},
+{t:'バリアナイロンの主流化',o:'MXD-6を中心に説明。EVOH共押出タイプは補足的',n:'EVOH共押出タイプが主流に。カウパックの「バリアONY」19製品がこれにあたる。EVOHをナイロンで挟んで湿気から守る設計',w:'素材'},
+{t:'環境対応素材',o:'ほぼ登場しない（1990年に生分解性ポリマー、1992年にリサイクル法施行の年表記載のみ）',n:'リサイクル原料・バイオマス原料が実用化。カウパックのDS16-TB／DS16-VW（リサイクルONY40%＋バイオマスLLDPE30%）がその製品',w:'素材'},
+{t:'SI単位への完全移行',o:'「平成11年9月30日で猶予期間が終わった」と、移行の最中として記載',n:'完全に定着。ただし他社カタログには cc/㎡・d・atm 表記が残っており、約10倍の差が出るので他社比較では必ず単位確認を',w:'実務'},
+{t:'ノンソルラミネーター',o:'「現在、国内で約60台のラミネーターが稼動している」',n:'普及が進み一般的な工法に。ただしレトルトに使えない（分子量が低く耐熱性を付与できない）という制約は今も同じ',w:'実務'}
+];
+
+/* ========== クイズ ========== */
+const QZ=[
+{g:'素材',q:'ナイロンの突刺強度・耐ピンホール性が優れている理由は？',o:['鎖と鎖が水素結合で網目状に架橋されるから','結晶化度が90%以上と高いから','分子量が他の樹脂より大きいから','ベンゼン核が入っているから'],a:0,
+e:'本書 p.29。<b>C=O と N−H が引き合う水素結合</b>が鎖と鎖に橋を架けます。共有結合と違い切れても再びくっつくので、曲げても破れにくい。<br>同じ理由で<b>水の分子とも仲が良く、吸湿する</b>——強さの理由と弱さの理由が同じです。'},
+{g:'素材',q:'ONYをレトルト用途で表基材（最外層）に使わず、上にPETを置くのはなぜ？',o:['ONYはレトルト温度で衝撃強度が急落するから','ONYは印刷ができないから','ONYはレトルト温度で溶けるから','PETのほうが安いから'],a:0,
+e:'本書 p.87。レトルト処理温度を上げると<b>ONYの衝撃強度は未処理1.05J→120℃で0.65J→140℃で0.15J</b>と急落します。PETは全域でほぼ一定（約0.4J）。<br>だからカウパックのNACFは <b>PET12／ONY15／AL9／CPP60</b> と、ONYの外側にPETが来ています。'},
+{g:'素材',q:'EVOHとPVAを比べたとき、PVAのほうがバリアも高いが湿気にも弱い。その理由は？',o:['水酸基（OH）の数がPVAのほうが多いから','PVAのほうが結晶化度が低いから','PVAのほうが薄く作られるから','PVAには塩素が入っているから'],a:0,
+e:'EVOHは炭素100個あたり水酸基16〜17個、<b>PVAは炭素2個に1個</b>。水酸基どうしの水素結合が多いほど隙間が狭くなりバリアが高くなりますが、<b>水酸基は水の分子と親和性が非常に高い</b>ので、湿気があると水を吸い込んで隙間を広げてしまいます。'},
+{g:'素材',q:'PVDCが湿度の影響をほとんど受けないのはなぜ？',o:['大きな塩素原子が引っ張り合って隙間を狭くしており、水と親和性がないから','結晶化度が100%だから','表面にコート層があるから','分子量が非常に大きいから'],a:0,
+e:'本書 p.31。<b>塩素（ハロゲン元素）が鎖どうしを引っ張り合って隙間を狭く</b>しています。EVOHやPVAのように水酸基で隙間を狭めているわけではないので、<b>水を吸い込まない</b>。これがPVDCが湿度に強い理由です。'},
+{g:'物性',q:'同じポリエチレンでも、LDPE（結晶化度50%）とHDPE（結晶化度80%）で酸素透過度が5倍違うのはなぜ？',o:['ガスは結晶部を通れず、非晶部だけを通るから','HDPEのほうが厚く作られるから','HDPEは不透明だから','LDPEには側鎖があるから'],a:0,
+e:'本書 p.51の実測：LDPE 75,600 に対し HDPE 15,100。<b>ガスも水蒸気も結晶部は通れず、非晶部だけを通ります</b>。結晶化度が上がる＝通り道が減る、ということです。'},
+{g:'物性',q:'フィルムの腰（Rigidity）の式で、厚み d は何乗で効くか？',o:['3乗','1乗','2乗','0.5乗'],a:0,
+e:'<b>Rigidity ∝ E・b・d³／12</b>（p.47）。厚みを2倍にすると腰は8倍。だからゲージダウン（薄くする）は腰を一気に失います。'},
+{g:'物性',q:'本書が定義する「バリアーフィルムと言える」酸素透過度の基準は？',o:['100 ml/㎡・d・MPa 以下','1,000 ml/㎡・d・MPa 以下','10 ml/㎡・d・MPa 以下','1 ml/㎡・d・MPa 以下'],a:0,
+e:'本書 p.88。この100という線を使うと、<b>カタログのガスバリア性アイコンの有無が48製品すべてで説明できます</b>。しかも78.0（HLV）と126.3（DP16-TN-C）の間に空白があり、境目をまたぐ製品が1つもありません。'},
+{g:'物性',q:'二軸延伸すると引裂強さはどうなる？',o:['大幅に下がる（CPP 980mN → OPP 10〜20mN）','大幅に上がる','ほとんど変わらない','厚みによって変わる'],a:0,
+e:'延伸で分子が揃うため、<b>切れ目が入るとそこに沿って裂けやすくなります</b>。これが「延伸フィルムは切りやすく、無延伸フィルムは粘って切れにくい」の正体で、ノッチが効く理由でもあります。'},
+{g:'物性',q:'表基材3種のうち、耐ピンホール性が「×」なのはどれ？',o:['PET','ONY','OPP','3つとも○'],a:0,
+e:'巻末比較表。<b>PETは腰（◎）と耐熱（◎）が一番なのに、耐ピンホール性は×</b>（ゲルボ100回で30個）。ONYは0個。「腰が強い＝丈夫」ではないところが引っかけです。'},
+{g:'フィルム',q:'CPPシーラントの製品が冷凍非対応になる根本的な理由は？',o:['PPのTgが0℃付近で、低温で脆くなるから','CPPが水を吸うから','CPPが薄いから','CPPがレトルト専用だから'],a:0,
+e:'PPのTgは −10〜−18℃（ポリマー）で、本書 p.71 の衝撃強度グラフでもCPPは低温で急落します。巻末のフィルム物性表でも<b>CPPの使用可能範囲は「0℃〜120℃」と下限が0℃</b>。対してLLDPEは −50℃〜100℃。<br>カウパックのCPP7製品はすべて冷凍非対応です。'},
+{g:'フィルム',q:'カウパックの規格袋62製品にOPPが1つも使われていないのはなぜか、本書の表から説明すると？',o:['OPPは酸素透過度が19,600と極端に悪く、カウパックの主戦場（水物・惣菜・冷凍・レトルト）に合わないから','OPPが高価だから','OPPがヒートシールできないから','OPPが日本で手に入らないから'],a:0,
+e:'OPPは<b>防湿が断トツに良く（7）、酸素が断トツに悪い（19,600）</b>という極端な性格。おかき・海苔など「湿気ったら困るが酸素は気にしない」ものが得意分野です。カウパックの領域とは重なりません。'},
+{g:'フィルム',q:'透明蒸着フィルムのベースにPETが使われる理由は？',o:['シリカ蒸着膜はガラスのようなもので、伸ばすとクラックが入るため、伸びにくいPETが必要だから','PETが一番安いから','PETが一番透明だから','PETが一番薄いから'],a:0,
+e:'本書 p.116：「<b>シリカ蒸着膜はガラスの膜を想定してもらうと理解しやすい。少し引っ張るとクラックが入る</b>」。だから印刷やラミネートでは高いテンションを避ける必要があります。'},
+{g:'フィルム',q:'アルミ蒸着層の厚みはどれくらい？',o:['400〜600Å（0.04〜0.06μm）','4〜6μm','40〜60μm','0.4〜0.6μm'],a:0,
+e:'本書 p.111。アルミの結晶が7〜10層蓄積した状態です。アルミ箔（7〜9μm）の<b>100分の1以下</b>。<br>なお蒸着膜厚が約300Åで光線透過率がほぼ0＝不透明になります。'},
+{g:'加工',q:'押出ラミで LDPE を300℃以上の高温で押し出すのはなぜ？',o:['酸化させてカルボニル基を発生させ、接着性を上げるため','生産速度を上げるため','透明性を上げるため','厚みを薄くするため'],a:0,
+e:'本書 p.142。無極性のLDPEはそのままでは接着しないので、<b>高温で酸化させてカルボニル基（=CO）を作る</b>ことで接着性を出します。<br>ただし<b>そのカルボニル基はシール強度を下げる</b>ので、2度貼り（高温で接着層、低温でシール層）をします。'},
+{g:'加工',q:'EVAを押出ラミするとき250℃以上にできない理由は？',o:['脱酢酸反応が起きて、臭切れ・酢酸臭・発煙のトラブルになるから','溶けないから','固まらないから','接着しすぎるから'],a:0,
+e:'本書 p.143。だからEVAも「<b>まずLDPEを高温で押出ラミし、その上に250℃以下でEVAを押出す</b>」2度貼りが基本です。'},
+{g:'加工',q:'ドライラミ接着剤のコート量が最も多いのはどの用途？',o:['アルミ構成レトルト（4.0〜5.0 g/㎡）','一般用・平滑なフィルム（1.5〜2.0）','ボイル用（3.0〜3.5）','透明レトルト（3.5〜4.0）'],a:0,
+e:'本書 p.131。コート量1g/㎡でフィルム厚みが約1μm増えます。<b>条件が厳しいほど接着剤を厚く塗る</b>という関係です。'},
+{g:'加工',q:'スタンドパウチが自立するために、底材に事前に何をしておくか？',o:['両側面のシールしたい部分に穴を開けておく','両側面を折り返しておく','底材を2枚重ねておく','底材にノッチを入れておく'],a:0,
+e:'本書 p.159。穴のところで<b>胴材の上下のフィルム（LL面どうし）が直接シールされ</b>、底部の両脇が閉じて自立します。装置図にある「<b>底ノッチャー</b>」がこの穴あけ装置です。'},
+{g:'加工',q:'ラミネート品のシール幅の目安は？',o:['10mmくらい','2〜3mm','5mm','20mm'],a:0,
+e:'本書 p.152：単体フィルムは外観重視で2〜3mm、<b>ラミネート品は10mmくらい</b>。カウパックの三方シール袋のサイドシールが10mmなのはこの基準どおりです（スタンド袋は別工程で5mm）。'},
+{g:'加工',q:'溶断シールやフレームシールで、シール面にコロナ処理があるとどうなる？',o:['シール強度が極端に低下する','シール強度が上がる','何も変わらない','溶断できなくなる'],a:0,
+e:'本書 p.153。コロナ処理は<b>インキや接着剤との接着性を上げる</b>ための処理で、シール面に施されていると逆効果になります。引っかけ問題として出やすいところです。'},
+{g:'包装',q:'Fo値の定義は？',o:['121℃で1分処理したものを Fo＝1 とする','100℃で1分処理したものを Fo＝1 とする','121℃で10分処理したものを Fo＝1 とする','135℃で1分処理したものを Fo＝1 とする'],a:0,
+e:'本書 p.183。違う温度×時間の殺菌効果を比較できます。例：<b>135℃×2分 ≒ 121℃×5分</b>。'},
+{g:'包装',q:'微生物が繁殖できなくなる水分活性（Aw）の目安は？',o:['0.6以下','0.9以下','0.3以下','0.75以下'],a:0,
+e:'本書 p.180。乾性カビでも0.61が必要です。ビスケット（0.33）や緑茶（0.26）が常温保存できるのはこのため。<b>この場合に必要なのは殺菌ではなく防湿</b>です。'},
+{g:'包装',q:'切り餅にCO₂（炭酸ガス）を使うのはなぜ？',o:['CO₂には微生物、特にカビの発育を抑える制菌作用があるから','CO₂のほうが安いから','CO₂のほうが軽いから','N₂だと餅が硬くなるから'],a:0,
+e:'本書 p.182。<b>N₂は酸化防止だけ</b>（食用油・粉乳・日本茶・削り節・納豆）。<b>CO₂には制菌作用がある</b>。ハム・ソーセージはCO₂＋N₂で両方を狙っています。'},
+{g:'包装',q:'低酸性食品（pH 7.0〜5.0、カレー・シチューなど）に必要な殺菌は？',o:['高温殺菌','低温殺菌','熱間充填','殺菌不要'],a:0,
+e:'本書 p.180。<b>酸には殺菌力があるので、酸性が強い食品ほど低い温度で済みます</b>。カレーのような低酸性食品は120℃以上が必要で、そこで初めてCPPシーラントのレトルト製品が候補になります。'},
+{g:'分析',q:'水に入れたとき「浮く」のはどれ？',o:['LDPE・HDPE・LLDPE・CPP・OPP','PET・ONY','PVDC・EVOH','PVA'],a:0,
+e:'比重が1未満か超かで分かれます。<b>ポリオレフィンは全部1未満（0.90〜0.965）</b>、PET 1.4／ONY 1.15／PVDC 1.57〜1.68 などは沈みます。ONYは「沈んで吸水してグニャグニャになる」のが特徴。'},
+{g:'分析',q:'燃焼試験で「羊毛・爪のこげた臭い」がするのは？',o:['ONY（ナイロン）','PET','LDPE','PP'],a:0,
+e:'ナイロンはタンパク質と同じ<b>アミド結合</b>を持つので、髪の毛を焼いた臭いがします。<br>PE＝ろうそく臭／PP＝ワックス臭／EVA＝酢酸臭／PET＝甘い芳香（ベンゼン核）。すべて分子構造から説明がつきます。'},
+{g:'分析',q:'押出ラミ品の特徴として正しいのは？',o:['柔らかく、面がスムースで、カールしやすい','硬く、表面が柚肌で、カールしにくい','溶剤に浸すと容易に剥がれる','透明性が高い'],a:0,
+e:'本書 p.194。<b>ドライラミは硬い・柚肌・溶剤で剥がれる</b>／<b>押出ラミは柔らかい・スムース・カールしやすい</b>。<br>押出ラミと判断できれば<b>殺菌温度は95℃までのはず</b>と推測できます。'},
+{g:'法律',q:'レトルト容器（容器包装詰加圧加熱殺菌食品）の原則として食品衛生法が求めているのは？',o:['遮光性を有し、気体透過性のないもの','透明であること','アルミ箔を使用すること','厚みが100μm以上あること'],a:0,
+e:'ただし<b>「内容物が油脂の変敗による品質の低下のおそれのない場合を除く」</b>という但し書きがあります。<br>だから「レトルト＝必ずアルミ」ではなく、カウパックの透明レトルト（EACF・ESCF-TN・NCF）はこの但し書きに当たります。'},
+{g:'法律',q:'溶出試験で、PETだけアンチモンとゲルマニウムが規制されている理由は？',o:['PETの重合触媒にアンチモンとゲルマニウムを使っているから','PETが一番溶け出しやすいから','PETが食品に直接触れるから','PETが高温で使われるから'],a:0,
+e:'本書 p.219。同じく<b>ナイロンのε-カプロラクタム</b>はナイロン6の原料そのもので、重合しきれなかった低重合物の量を確認しています。<b>溶出試験の項目は、その樹脂の作り方から逆算されている</b>と覚えると忘れません。'},
+{g:'法律',q:'PL法と従来の民法709条の違いは？',o:['民法は「過失」の証明が必要だが、PL法は「欠陥」の証明で足りる','PL法は刑事罰がある','民法は適用されなくなった','PL法は輸入品には適用されない'],a:0,
+e:'本書 p.238。<b>欠陥＝通常備えるべき安全性を欠いていること</b>。期限は損害発生から3年以内、製品販売から10年（民法は20年）。<br>欠陥には<b>警告・表示上の欠陥</b>も含まれるので、袋の注意書きも対象です。'},
+{g:'カタログ接続',q:'カタログの材質構成に書かれる「ドライ」「押出」は、本書ではどう表記されている？',o:['ドライ＝「//」、押出＝「/」','ドライ＝「/」、押出＝「//」','両方とも「/」','両方とも「//」'],a:0,
+e:'本書 p.5 の表記ルール。<b>「ONY(15)-I // VM-PET(12) / PE(20) / LL(30)」</b> なら、ONYとVM-PETの間がドライラミ、それ以降が押出ラミという意味です。<br>本書の構成例を読むときに必須の知識です。'},
+{g:'カタログ接続',q:'カウパックのLLDPEで、TKの57μm と SPNの67μm だけが半端な数字。この2製品の共通点は？',o:['どちらも押出ラミ','どちらも漬物用','どちらもバリアONY','どちらも三方シール袋'],a:0,
+e:'どちらも押出ラミです（ただし押出ラミでもNS・NHP・NPZ・TP-Sは10μm刻みなので、押出だから必ず半端になるわけではありません）。<br>本書の「2度貼り」（高温でLDPE、低温でもう一度）を踏まえると、層が加算される事情が見えてきます。<b>研修で先輩に聞くと面白い質問</b>になります。'},
+{g:'カタログ接続',q:'本書が挙げる押出ラミの耐熱限界は？',o:['ボイルまで','レトルトまで','ハイレトルトまで','殺菌不可'],a:0,
+e:'押出ラミの接着層は押出コート用LDPE（融点108〜113℃）なので、レトルト温度（120℃以上）では層間が保てません。<br>カウパックの押出ラミ8製品（NPU2・NS・NHP・NPZ・WN・SPN・TK・TP-S）は<b>最高殺菌温度がすべて95℃以下</b>です。'}
+];
+
+/* ========== 描画 ========== */
+const TABS=[{k:'start',l:'🚩 はじめかた'},{k:'book',l:'📘 本文'},{k:'now',l:'⚠️ 2002→今'},{k:'ab',l:'📖 略語'},{k:'qz',l:'✍️ クイズ'},{k:'home',l:'ℹ️ この本について'}];
+let tab='start', ch=null, qi=0, qsc=0, qans=null, qset=[];
+
+function nav(){document.getElementById('nav').innerHTML=TABS.map(t=>
+ `<li><button class="${tab===t.k?'on':''}" onclick="go('${t.k}')">${t.l}</button></li>`).join('');}
+function go(k){tab=k;ch=null;if(k==='qz')newQuiz();render();window.scrollTo(0,0);}
+function openCh(i){ch=i;tab='book';render();window.scrollTo(0,0);}
+function jump(ci,si){ch=ci;tab='book';render();
+ setTimeout(()=>{const e=document.getElementById('sec-'+ci+'-'+si);
+ if(e)e.scrollIntoView({block:'start'});else window.scrollTo(0,0);},30);}
+
+function widen(){document.querySelectorAll('.tw table').forEach(t=>{
+ let m=0;t.querySelectorAll('tr').forEach(r=>{let c=0;r.querySelectorAll('th,td').forEach(x=>c+=(x.colSpan||1));if(c>m)m=c;});
+ t.classList.remove('w6','w8'); if(m>=8)t.classList.add('w8'); else if(m>=6)t.classList.add('w6');});}
+function render(){nav();const a=document.getElementById('app');
+ if(tab==='start')a.innerHTML=startv();
+ else if(tab==='home')a.innerHTML=home();
+ else if(tab==='book')a.innerHTML=ch===null?booklist():chap(ch);
+ else if(tab==='now')a.innerHTML=nowv();
+ else if(tab==='ab')a.innerHTML=abv();
+ else a.innerHTML=qzv();
+ if(tab==='ab'){const e=document.getElementById('abq');e.oninput=()=>abfilter(e.value);abfilter('');}
+ widen();}
+
+function secLink(ci,si){const b=B[ci];
+ return `<a class="sl" href="#sec-${ci}-${si}" onclick="jump(${ci},${si});return false;">`+
+  `<span class="slc">${b.ic} ${esc(b.n)}</span>${esc(b.s[si].h)}</a>`;}
+
+function startv(){
+ const dn=done.length, pc=Math.round(dn/ROUTE.length*100);
+ return `<h2>🚩 ここから始めてください</h2>
+<p class="lead">12章ぜんぶを順番に読む必要はありません。<b>営業の現場で効く順</b>に並べ直したルートを用意しました。1日15〜25分×10日です。</p>
+
+<div class="prog"><div class="pbar"><div class="pfill" style="width:${pc}%"></div></div>
+<div class="ptxt">${dn} / ${ROUTE.length} 日ぶん完了（${pc}%）${canSave?'':'　<span style="color:var(--rose)">※この端末ではチェックが保存されません</span>'}</div></div>
+
+<div class="why"><span class="ttl">今日やることが1つだけ決まっています</span>
+<b>1日目を開いて、3つの節を読むだけ</b>です。15分で終わります。<br>
+読み終わったらチェックを付けてください。次に開いたとき、どこまで進んだかがわかります。</div>
+
+<h3>10日ルート</h3>
+${ROUTE.map(r=>{const ok=done.includes(r.d);
+ return `<div class="day ${ok?'ok':''}">
+ <div class="dh"><button class="ck" onclick="tog(${r.d})">${ok?'✓':''}</button>
+ <div><div class="dt">${r.d}日目　${esc(r.t)}</div><div class="dm">目安 ${r.min}分・${r.r.length}節</div></div></div>
+ <div class="dg">${esc(r.g)}</div>
+ <div class="dl">${r.r.map(x=>secLink(x[0],x[1])).join('')}</div>
+ ${r.d===10?'<div class="dg" style="margin-top:8px">仕上げに<b onclick="go(\'qz\')" style="cursor:pointer;text-decoration:underline">確認クイズ32問</b>を1周してください。</div>':''}
+ </div>`;}).join('')}
+
+<h3>困ったときの逆引き</h3>
+<p class="lead">お客様に聞かれて答えられなかったとき、ここから探してください。</p>
+${GOAL.map(g=>`<div class="gl"><div class="gq">${esc(g.q)}</div>
+<div class="gh">${esc(g.h)}</div>
+<div class="dl">${g.r.map(x=>secLink(x[0],x[1])).join('')}</div></div>`).join('')}
+
+<h3>10日が終わったら</h3>
+<p class="lead">残りの章です。急ぎません。</p>
+${EXTRA.map(e=>`<button class="hcard" onclick="openCh(${e.c})">
+<div class="t"><i>${B[e.c].ic} ${B[e.c].n}</i>${esc(e.t)}</div>
+<div class="d">${esc(e.g)}</div></button>`).join('')}
+
+<div class="src">このルートは、カウパックの営業で実際に聞かれることから逆算して並べています。<br>
+本の章立て（I〜X）どおりではありません。章の順に読みたいときは「📘 本文」タブへ。</div>`;}
+
+function home(){return `
+<h2>この本について</h2>
+<p class="lead">カウパック(株)が2002年に作った新人教育用のテキストです。全10章・本文249ページ。著者は渡辺武彦氏。</p>
+<div class="cat"><span class="ttl">なぜこの本を読む価値があるか</span>
+規格袋カタログは<b>「何が」</b>を教えてくれますが、<b>「なぜ」</b>は書いてありません。この本にはその「なぜ」が全部書いてあります。<br><br>
+たとえば本書 p.88 の「<b>バリアーフィルムと言えるのは酸素透過度が100 ml/㎡・d・MPa以下</b>」という定義。この線を引くと、<b>カタログのガスバリア性アイコンの有無が48製品すべてで説明できます</b>。</div>
+<h2>章を選ぶ</h2>
+${B.map((b,i)=>`<button class="hcard" onclick="openCh(${i})">
+<div class="t"><i>${b.ic} ${b.n}</i>${esc(b.t)}</div>
+<div class="d">${esc(b.d)}</div>
+<div class="pg">本文 ${b.pg}　／　${b.s.length}節</div></button>`).join('')}
+<div class="src"><b>出典</b>　プラスチック包装入門　カウパック(株)新人教育講座テキスト（2002年7月11日発行／著者・発行者：渡辺武彦）<br>
+カタログとの対応づけは、規格袋カタログVer.07（全62製品・101材質構成）を集計したものです。<br>
+「2002→今」の内容は2026年時点の一般的な情報で、法令の詳細は必ず現行法でご確認ください。</div>`;}
+
+function booklist(){return `<h2>本文</h2><p class="lead">章を選んでください。</p>
+${B.map((b,i)=>`<button class="hcard" onclick="openCh(${i})">
+<div class="t"><i>${b.ic} ${b.n}</i>${esc(b.t)}</div>
+<div class="d">${esc(b.d)}</div><div class="pg">本文 ${b.pg}</div></button>`).join('')}`;}
+
+function chap(i,sec){const b=B[i];
+ return `<button class="back" onclick="go('start')">← はじめかた</button>
+<button class="back" onclick="go('book')">章の一覧</button>
+<h2>${b.ic}　${b.n}　${esc(b.t)}</h2>
+<p class="lead">本文 ${b.pg} ページ　／　${b.s.length}節</p>
+${b.s.length>2?`<div class="toc">${b.s.map((x,j)=>`<a href="#sec-${i}-${j}" onclick="jump(${i},${j});return false;">${j+1}. ${esc(x.h)}</a>`).join('')}</div>`:''}
+${b.s.map((s,j)=>`<h3 id="sec-${i}-${j}">${esc(s.h)}</h3>${s.b}`).join('')}
+<div class="bar" style="margin-top:26px">
+${i>0?`<button class="btn g" onclick="openCh(${i-1})">← ${esc(B[i-1].t)}</button>`:''}
+${i<B.length-1?`<button class="btn" onclick="openCh(${i+1})">${esc(B[i+1].t)} →</button>`:''}
+</div>`;}
+
+function nowv(){const W=[...new Set(NOW.map(n=>n.w))];
+ return `<h2>⚠️ 2002年から変わったところ</h2>
+<p class="lead">24年前の本なので、古い部分はあります。ただし<b>変わった部分ははっきり分かれます</b>。ここに挙げた以外は、基本的にそのまま使えます。</p>
+${W.map(w=>`<h3>${esc(w)}</h3>`+NOW.filter(n=>n.w===w).map(n=>`
+<div class="now" style="margin-bottom:12px"><span class="ttl">${esc(n.t)}</span>
+<b style="color:var(--dim)">本書（2002年）</b>　${esc(n.o)}<br>
+<b>今（2026年）</b>　${esc(n.n)}</div>`).join('')).join('')}
+<div class="warn" style="margin-top:20px"><b>法律の章だけは要注意。</b>食品表示法・ポジティブリスト制度・プラスチック資源循環促進法など、制度そのものが入れ替わっています。本書の具体的な数値や手続きは、必ず現行法で確認してください。<br>
+ただし「<b>なぜこういう規制があるのか</b>」という考え方の部分は今でも有効です。</div>`;}
+
+function abv(){return `<h2>📖 略語表</h2>
+<p class="lead">本書 p.3〜5 の略語一覧（${AB.length}語）。カタログや他社資料を読むときの辞書として使ってください。</p>
+<div class="sbox"><input id="abq" type="text" placeholder="略語や名称で検索（例：ONY、ナイロン、蒸着）" autocomplete="off"></div>
+<div class="cnt" id="abc"></div><div id="abl"></div>`;}
+
+function abfilter(q){q=(q||'').trim().toLowerCase();
+ const r=AB.filter(([k,v])=>!q||k.toLowerCase().includes(q)||v.toLowerCase().includes(q));
+ document.getElementById('abc').textContent=q?`${r.length}件`:`全${AB.length}語`;
+ document.getElementById('abl').innerHTML=r.length?r.map(([k,v])=>
+  `<div class="ab"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div></div>`).join('')
+  :'<div class="cnt">該当なし</div>';}
+
+function newQuiz(){qset=[...QZ].sort(()=>Math.random()-0.5);qi=0;qsc=0;qans=null;}
+function qzv(){
+ if(qi>=qset.length){const p=Math.round(qsc/qset.length*100);
+  return `<h2>✍️ 結果</h2><div class="qz"><div class="qq">${qsc} / ${qset.length} 問正解（${p}%）</div>
+  <p class="lead">${p>=90?'完璧です。この本の内容はほぼ入っています。':p>=70?'よくできています。間違えたところだけ本文に戻って確認してください。':'まずは「素材」と「フィルム」の章を読み直すのがおすすめです。'}</p>
+  <div class="bar"><button class="btn" onclick="newQuiz();render()">もう一度（順番はシャッフルされます）</button>
+  <button class="btn g" onclick="go('book')">本文を読む</button></div></div>`;}
+ const q=qset[qi];
+ return `<h2>✍️ 確認クイズ</h2>
+ <div class="bar"><span class="sc">${qi+1} / ${qset.length} 問目　正解 ${qsc}</span>
+ <button class="btn g" onclick="newQuiz();render()">最初から</button></div>
+ <div class="qz"><div class="qt">${esc(q.g)}</div><div class="qq">${esc(q.q)}</div>
+ ${q.o.map((o,j)=>{let c='op';if(qans!==null){if(j===q.a)c+=' ok';else if(j===qans)c+=' ng';}
+  return `<button class="${c}" ${qans===null?`onclick="ans(${j})"`:'disabled'}>${esc(o)}</button>`;}).join('')}
+ ${qans!==null?`<div class="ex"><b>${qans===q.a?'正解':'不正解'}</b>　${q.e}</div>
+ <div class="bar"><button class="btn" onclick="nx()">${qi+1<qset.length?'次の問題 →':'結果を見る →'}</button></div>`:''}
+ </div>`;}
+function ans(j){qans=j;if(j===qset[qi].a)qsc++;render();}
+function nx(){qi++;qans=null;render();}
+
+render();
+</script>
+</body>
+</html>
