@@ -312,6 +312,12 @@ details.wk[open]{background:var(--surface-2)}
   text-transform:uppercase;padding:2px 0;border-radius:3px;text-align:center;
   display:block;white-space:nowrap}
 .c-rest{background:var(--rest-bg);color:var(--rest)}
+/* 計画からの一時的な変更の印。計画データは書き換えず、表示だけ差し替える */
+.ovr{display:inline-block;font-style:normal;font-family:var(--cond);font-size:10.5px;
+  font-weight:700;letter-spacing:.06em;line-height:1;padding:3px 5px;margin-right:7px;
+  border-radius:3px;vertical-align:1px;white-space:nowrap;
+  color:var(--ink);background:var(--indigo-soft);border:1px solid var(--indigo)}
+.dayrow.is-ovr .m{color:var(--ink)}
 .c-E{background:var(--easy-bg);color:var(--easy)}
 .c-M{background:var(--mp-bg);color:var(--mp)}
 .c-T{background:var(--thr-bg);color:var(--thr)}
@@ -1110,6 +1116,22 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     <p><strong>違和感が出たら、その日はそこで終了。</strong>痛みの出ない範囲しかやらないので、朝の記録には影響しません。</p>
   </div>
 
+  <div class="howto">
+    <p><strong>走ってよいかの判断表</strong></p>
+    <p><strong>4日続けて朝のテストを記録してから、次の走りを決めます。</strong></p>
+    <p><strong>一度も出なかった → Eジョグ20分。</strong>1〜2日出た → <strong>15分。</strong>毎日出た → <strong>走らない。整形外科へ。</strong></p>
+    <p><strong>赤信号は、この表より優先です。</strong>しびれ／感覚の鈍さ／力が入らない／安静にしていても痛む／押して一点だけ鋭く痛む——どれかなら、走らずに受診してください。</p>
+    <p>走ってよい日は、<strong>出たら即終了。出なくてもその時間で終了。</strong>次の走りは、出なければ＋10分、出たらその時点の5分手前まで戻します。</p>
+  </div>
+
+  <div class="howto">
+    <p><strong>いま外している種目</strong>（症状が消えるまで）</p>
+    <p><strong>レッグレイズ</strong> — 腹筋種目に見えて、主働筋は腸腰筋</p>
+    <p><strong>座位ニーアップ</strong> — そのまま腸腰筋</p>
+    <p><strong>ランジ</strong> — 後ろ脚が股関節を伸ばす。保留中</p>
+    <p>種目一覧には残してあります。<strong>治ったら戻すものを、消す必要はありません。</strong>戻したら、この囲みごと削除します。</p>
+  </div>
+
   <p class="lede"><strong>筋肉痛との見分け方。</strong>走り始めて5〜10分で<strong>軽くなる</strong>なら筋肉痛です。温まれば引きます。走っても消えない、あるいは<strong>走るほど強くなる</strong>なら別物で、その場で走るのをやめます。距離は無視して構いません。</p>
 
   <p class="lede"><strong>肉離れとの見分け方。</strong>肉離れは<strong>その筋肉を縮めると痛みます。</strong>股関節の前なら、脚を上げる動作で痛むかどうかです。<strong>縮めて平気なら、肉離れではありません。</strong>ほかに、起きた瞬間がはっきりしている・その場で動けなくなる・押すと一点が痛い・安静にしていても痛む、が揃います。どれも当てはまらないなら、別のものを探してください。</p>
@@ -1586,6 +1608,26 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   var TODAY_I = ((dayDiff(START, new Date()) % 7) + 7) % 7;   /* 0=月 … 6=日 */
   var BEGUN  = dayDiff(START, new Date()) >= 0;                /* 計画が始まっているか */
 
+  /* 計画からの一時的な変更。故障や予定で計画どおりにできない日を、日付で上書きする。
+     22週の計画そのものは書き換えない。元に戻すときは、この中身を空にするだけ。
+     形式: "YYYY-MM-DD": [チップ, チップの色, 内容, 理由] */
+  var OVERRIDE = {
+    "2026-10-07": ["休", "rest", "完全休養。補強のみ（呼吸・カーフレイズ2種・保持）", "腸腰筋の症状"],
+    "2026-10-08": ["休", "rest", "完全休養。呼吸ドリルのみ", "村の行事"],
+    "2026-10-09": ["休", "rest", "完全休養。呼吸ドリルのみ", "村の行事"],
+    "2026-10-10": ["E", "key", "<strong>再テスト</strong>　Eジョグ15〜20分。朝のテストの結果で時間を決める", "症状の確認"],
+    "2026-10-11": ["?", "rest", "土曜の結果が出てから決める", "未定"]
+  };
+  function dkey(dt){
+    return dt.getFullYear() + "-" + ("0" + (dt.getMonth() + 1)).slice(-2)
+                            + "-" + ("0" + dt.getDate()).slice(-2);
+  }
+  function ovrAt(wn, dix){
+    var dt = new Date(START.getFullYear(), START.getMonth(),
+                      START.getDate() + (wn - 1) * 7 + dix);
+    return OVERRIDE[dkey(dt)] || null;
+  }
+
   document.getElementById("statDays").textContent  = Math.max(0, LEFT);
   document.getElementById("statWeeks").textContent = WLEFT;
   /* 狭い画面でカタカナの語中で改行されるため、意味のまとまりを
@@ -1614,10 +1656,11 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
         + '<div class="wk-body">';
       w.days.forEach(function(d, dix){
         var isToday = (w.n === CURW && dix === TODAY_I && LEFT >= 0 && BEGUN);
-        html += '<div class="dayrow' + (isToday ? ' today' : '') + '">'
+        var ov = ovrAt(w.n, dix);
+        html += '<div class="dayrow' + (isToday ? ' today' : '') + (ov ? ' is-ovr' : '') + '">'
           + '<span class="d">' + d[0] + '</span>'
-          + '<span class="chip c-' + d[2] + '">' + d[1] + '</span>'
-          + '<span class="m">' + d[3] + '</span></div>';
+          + '<span class="chip c-' + (ov ? ov[1] : d[2]) + '">' + (ov ? ov[0] : d[1]) + '</span>'
+          + '<span class="m">' + (ov ? '<i class="ovr">変更</i>' + ov[2] : d[3]) + '</span></div>';
       });
       if(w.key) html += '<p class="milestone">' + w.key + '</p>';
       html += '</div></details>';
@@ -1637,12 +1680,14 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     PHASES.forEach(function(ph){ ph.weeks.forEach(function(w){ if(w.n === CURW) wk = w; }); });
     if(!wk || !wk.days[di]){ box.innerHTML = ""; return; }
     var d = wk.days[di];
+    var ov = ovrAt(wk.n, di);
     var now = new Date();
     box.innerHTML = '<div class="today"><div class="today-hd">'
       + '<b>今日</b><span>' + (now.getMonth()+1) + '月' + now.getDate() + '日(' + d[0] + ')</span>'
       + '<span class="wkname">W' + wk.n + '　' + wk.t + '</span></div>'
-      + '<div class="today-menu"><span class="chip c-' + d[2] + '">' + d[1] + '</span>'
-      + '<span>' + d[3] + '</span></div>'
+      + '<div class="today-menu"><span class="chip c-' + (ov ? ov[1] : d[2]) + '">'
+      + (ov ? ov[0] : d[1]) + '</span>'
+      + '<span>' + (ov ? '<i class="ovr">変更</i>' + ov[2] : d[3]) + '</span></div>'
       + '<button class="today-go" type="button" id="goWeek">今週の詳細へ ↓</button></div>';
     document.getElementById("goWeek").addEventListener("click", function(){
       var el = document.querySelector(".wk.now");
