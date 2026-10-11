@@ -364,6 +364,23 @@ details.wk[open]{background:var(--surface-2)}
 
 /* ===== タブ ===== */
 .tabs{display:flex;gap:2px;margin-top:30px;border-bottom:1px solid var(--rule-strong)}
+/* 案C タブバーを画面上端に固定し、丸ボタンも置く。
+   どのタブにいるかが常に見え、タブの移動もどこからでもできる */
+.tabs{position:sticky;top:0;z-index:50;margin-top:30px;
+  background:var(--paper);box-shadow:0 6px 14px -10px rgba(0,0,0,.9)}
+/* タブバーが上に貼り付くので、見出しへ飛ぶとき先頭がバーの下に隠れる。
+   飛び先の上に余白を確保して、見出しがバーの下に出るようにする */
+section[data-nav],.wk,.phase,#secSupport{scroll-margin-top:56px}
+@media (max-width:400px){ section[data-nav],.wk,.phase,#secSupport{scroll-margin-top:52px} }
+.totop{position:fixed;right:16px;bottom:18px;z-index:60;appearance:none;
+  width:42px;height:42px;border-radius:50%;display:grid;place-items:center;cursor:pointer;
+  background:var(--surface);color:var(--ink-2);border:1px solid var(--rule-strong);
+  box-shadow:0 3px 14px rgba(0,0,0,.45);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .18s,transform .18s,color .12s}
+.totop.on{opacity:1;transform:none;pointer-events:auto}
+.totop svg{width:17px;height:17px}
+
 .tab{appearance:none;background:none;border:0;border-bottom:2px solid transparent;
   margin-bottom:-1px;padding:10px 16px;cursor:pointer;font-family:var(--sans);
   font-size:14.5px;font-weight:700;color:var(--ink-3);transition:color .12s}
@@ -1020,7 +1037,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 
   <div class="reality">
     <h3><span>左右差 —&nbsp;</span><span>情報が全部、</span><span>右側を指している</span></h3>
-    <p>別々の日に、別々のきっかけで出てきた5つが、すべて同じ側を指しています。偶然ではありません。</p>
+    <p>別々の日に、別々のきっかけで出てきた6つが、すべて同じ側を指しています。偶然ではありません。<strong>最後の1つだけは性質が違います</strong>——他は靴の減りや張りからの推測ですが、これは中臀筋にその仕事を直接やらせて、できなかったという結果です。</p>
   </div>
 
   <table class="mini">
@@ -1031,8 +1048,11 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       <tr><td>右シューズの甲の内側に接触痕</td><td>左足が右のくるぶしに当たっている</td></tr>
       <tr><td>右シューズの靴底、土踏まず側が減る</td><td>右足のほうが内側に深く転がっている</td></tr>
       <tr><td>右アキレス腱の付着部に反応が出たことがある</td><td>かかとの骨が内に倒れ、腱がねじられる</td></tr>
+      <tr class="key"><td><strong>右足を軸にした片足立ちが苦手</strong></td><td><strong>片足立ちは中臀筋の仕事そのもの。推測ではなく、直接の結果</strong></td></tr>
     </tbody>
   </table>
+
+  <p class="lede"><strong>片足立ちは、鍛える種目ではなく測る種目として使います。</strong>床の上で裸足、2〜3m先の一点を見て、左右30秒ずつ。週に一度で足ります。足の指で床をつかんでいたら、股関節が働いていない証拠です。<strong>揺れを止めようとしないこと。</strong>小さく揺れて静かに戻せていれば正解です。</p>
 
   <p class="lede"><strong>周回コースは、この左右差を増やす側に働きます。</strong>カーブでは内側の脚と外側の脚で、進む距離も働き方も変わります。同じ向きで回り続ければ、その差が毎周たまります。<strong>5〜10分ごとに向きを変えてください。</strong></p>
 
@@ -1337,6 +1357,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 
 </div>
 
+<button class="totop" id="toTop" type="button" aria-label="先頭へ戻る"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <script>
 (function(){
   "use strict";
@@ -1616,7 +1637,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     "2026-10-08": ["休", "rest", "完全休養。呼吸ドリルのみ", "村の行事"],
     "2026-10-09": ["休", "rest", "完全休養。呼吸ドリルのみ", "村の行事"],
     "2026-10-10": ["E", "key", "<strong>再テスト</strong>　Eジョグ15〜20分。朝のテストの結果で時間を決める", "症状の確認"],
-    "2026-10-11": ["?", "rest", "土曜の結果が出てから決める", "未定"]
+    "2026-10-11": ["E", "E", "Eジョグ<strong>30分が上限</strong>。違和感が出たら即終了。ベルトあり", "復帰の段階"]
   };
   function dkey(dt){
     return dt.getFullYear() + "-" + ("0" + (dt.getMonth() + 1)).slice(-2)
@@ -1694,6 +1715,23 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       if(!el) return;
       el.open = true;
       el.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  })();
+
+
+  /* ---------- 先頭へ戻る ---------- */
+  (function(){
+    var btn = document.getElementById("toTop");
+    if(!btn) return;
+    var shown = false;
+    function upd(){
+      var want = window.scrollY > window.innerHeight * 1.2;
+      if(want !== shown){ shown = want; btn.classList.toggle("on", want); }
+    }
+    window.addEventListener("scroll", upd, {passive:true});
+    upd();
+    btn.addEventListener("click", function(){
+      window.scrollTo({top:0, behavior:"smooth"});
     });
   })();
 
