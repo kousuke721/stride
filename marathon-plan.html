@@ -372,6 +372,24 @@ details.wk[open]{background:var(--surface-2)}
    飛び先の上に余白を確保して、見出しがバーの下に出るようにする */
 section[data-nav],.wk,.phase,#secSupport{scroll-margin-top:56px}
 @media (max-width:400px){ section[data-nav],.wk,.phase,#secSupport{scroll-margin-top:52px} }
+/* 案C スクロール中、タブバーの右端に「いま見ている週」を小さく出す。
+   パンくず（階層）ではなく現在地。22週を下っていっても迷子にならない。
+   左の棒はその週が属する期の色。言葉を使わずに期が分かる */
+.tabs .nowpill{margin-left:auto;align-self:center;margin-right:2px;flex:0 0 auto;
+  display:flex;align-items:center;gap:6px;
+  padding:3px 9px 3px 7px;border-radius:999px;
+  background:var(--paper);border:1px solid var(--rule-strong);
+  font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.05em;
+  color:var(--ink-3);white-space:nowrap;
+  opacity:0;transform:translateY(-2px);transition:opacity .18s,transform .18s}
+.tabs .nowpill.on{opacity:1;transform:none}
+.tabs .nowpill::before{content:"";width:3px;height:11px;border-radius:2px;
+  background:var(--nc,var(--indigo))}
+.tabs .nowpill b{color:var(--ink-2);font-weight:700;font-size:12.5px}
+/* 幅が足りないとタブが2行に折れる。狭い端末ではまず期の名前を落とし、
+   それでも足りなければピルごと引っ込める。タブが1行であることを優先する */
+@media (max-width:480px){ .tabs .nowpill span{display:none} }
+@media (max-width:340px){ .tabs .nowpill{display:none} }
 .totop{position:fixed;right:16px;bottom:18px;z-index:60;appearance:none;
   width:42px;height:42px;border-radius:50%;display:grid;place-items:center;cursor:pointer;
   background:var(--surface);color:var(--ink-2);border:1px solid var(--rule-strong);
@@ -595,6 +613,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   <button class="tab is-on" data-tab="plan" type="button">22週の計画</button>
   <button class="tab" data-tab="str" type="button">補強メニュー</button>
   <button class="tab" data-tab="eat" type="button">食事</button>
+  <span class="nowpill" id="nowAt" aria-hidden="true"></span>
 </nav>
 
 <div class="tabpane" id="tab-plan">
@@ -1654,7 +1673,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     "2026-10-13": ["E", "E", "Eジョグ<strong>40分</strong>（計画は8km）", "練習量の戻しすぎを避ける"],
     "2026-10-14": ["E", "E", "Eジョグ<strong>30分</strong>（計画は7km）", "同上"],
     "2026-10-16": ["E", "E", "Eジョグ<strong>30分。流しは入れない</strong>", "流しは引き金の半分だった"],
-    "2026-10-18": ["E", "key", "<strong>ロング走 60分</strong>（計画は100分）。<strong>30分より先は未検証</strong>", "本当の試験"]
+    "2026-10-18": ["E", "key", "<strong>ロング走 60分</strong>（計画は100分）。<strong>40分より先は未検証</strong>", "本当の試験"]
   };
   function dkey(dt){
     return dt.getFullYear() + "-" + ("0" + (dt.getMonth() + 1)).slice(-2)
@@ -2020,13 +2039,13 @@ var EXS = [
     mis:["腰が反る → 膝を曲げた状態から始める","勢いで振り上げる → ゆっくり"],
     prg:"腰が浮くなら片脚ずつ。楽になったら脚を伸ばしたまま、下ろす範囲を広げる。" },
   { grp:"大臀筋・ハムストリングス", gc:"var(--power)", pos:"仰向け", nm:"シングルレッグ・ヒップリフト", day:"月", goal:"大臀筋・ハムストリングス", dose:"左右10回×2", tempo:"2-1-2秒",
-    how:["仰向けに寝て、片膝を立てる。もう片脚は伸ばすか軽く浮かせる",
+    how:["仰向けに寝て、片膝を立てる。<strong>かかとはお尻の近くへ</strong>（寝たまま手を伸ばして、指先が触れるくらい）。もう片脚は伸ばすか軽く浮かせる",
          "立てた脚のかかとで床を押し、<strong>2秒かけて</strong>お尻を持ち上げる",
          "一番上で<strong>1秒止める</strong>。肩から膝まで一直線",
          "<strong>2秒かけて</strong>下ろす。床につく寸前で止めて次へ"],
     chk:["お尻に効いている","腰が反っていない","骨盤が左右に傾いていない"],
     mis:["<strong>高く上げようとして腰を反らせる</strong> → 一番多い失敗。高さは低くて構わない。上がった高さではなく、お尻が働いたかで判断する",
-         "腰が張る → お尻ではなく腰で持ち上げている。肋骨を締めて骨盤を立てる","ハムだけが攣りそうになる → お尻を先に締めてから上げる","骨盤が浮いている側に落ちる → 中臀筋の弱さ。Priority 1 に戻る"],
+         "腰が張る → お尻ではなく腰で持ち上げている。肋骨を締めて骨盤を立てる","<strong>裏ももに効いて、お尻に効かない</strong> → ①<strong>かかとをお尻に近づける</strong>（これが9割。足が遠いとハムが有利になる）②骨盤を後傾させてから上げる ③浮かせる前にお尻を締める。それでも裏ももなら両脚版に戻す","骨盤が浮いている側に落ちる → 中臀筋の弱さ。Priority 1 に戻る"],
     prg:"両脚のヒップリフトから始めて、安定したら片脚へ。さらに進めるなら足を台に乗せる。" },
   { grp:"体幹・腸腰筋", gc:"var(--core)", pos:"うつ伏せ", nm:"プランク", day:"月", goal:"体幹全体", dose:"45〜60秒×2",
     how:["肘とつま先で体を支える","頭からかかとまで一直線","お尻を締め、肋骨を締める"],
@@ -2191,6 +2210,40 @@ function exHTML(e){
   function hash(){ try{ return (location.hash || "").replace("#",""); }catch(e){ return ""; } }
   window.addEventListener("hashchange", function(){ show(hash(), true); });
   show(hash(), false);   /* 再読み込みでタブが保持される */
+})();
+
+/* ===== スクロール中の「いま見ている週」をタブバーに出す =====
+   画面上端（貼り付いたバーの下）にある .wk を拾い、その週番号と
+   属する期の色を出す。計画タブにいて、240px 以上スクロールしたときだけ */
+(function(){
+  var out = document.getElementById("nowAt");
+  var pane = document.getElementById("tab-plan");
+  var bar  = document.getElementById("tabs");
+  if(!out || !pane || !bar) return;
+  var tick = false;
+  function upd(){
+    tick = false;
+    if(pane.hidden || window.scrollY < 240){ out.classList.remove("on"); return; }
+    var h = bar.getBoundingClientRect().height, wks = pane.querySelectorAll(".wk"), cur = null;
+    for(var i = 0; i < wks.length; i++){
+      if(wks[i].getBoundingClientRect().top <= h + 10) cur = wks[i]; else break;
+    }
+    if(!cur){ out.classList.remove("on"); return; }
+    var ph = cur.closest ? cur.closest(".phase") : null;
+    var n  = cur.querySelector(".wk-n"), pn = ph ? ph.querySelector("h3") : null;
+    out.innerHTML = "<b>W" + (n ? n.textContent.trim() : "")
+                  + "</b><span>" + (pn ? pn.textContent.trim() : "") + "</span>";
+    if(ph) out.style.setProperty("--nc", ph.style.getPropertyValue("--pc") || "");
+    out.classList.add("on");
+  }
+  function later(){ if(!tick){ tick = true; requestAnimationFrame(upd); } }
+  window.addEventListener("scroll", later, {passive:true});
+  window.addEventListener("resize", later);
+  window.addEventListener("hashchange", function(){ setTimeout(upd, 80); });
+  /* タブの切り替えと週の開閉で位置が変わるので、拾い直す */
+  document.addEventListener("click", function(){ setTimeout(upd, 80); }, true);
+  pane.addEventListener("toggle", later, true);
+  upd();
 })();
 </script>
 </body>
