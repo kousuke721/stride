@@ -481,7 +481,7 @@ section[data-nav],.wk,.phase,#secSupport{scroll-margin-top:56px}
   font-family:var(--cond);font-size:11.5px;font-weight:400;letter-spacing:.03em;
   color:var(--ink-3);border-left:3px solid var(--gc)}
 /* 木曜タブでは全種目が木曜なので、「木」の印は出さない */
-.exlist.is-thu .day{display:none}
+.exlist.is-mon .day{display:none}
 .grpinfo-wrap{margin-top:26px;border-top:1px solid var(--rule-strong)}
 .grpinfo-wrap > summary{list-style:none;cursor:pointer;padding:14px 0;
   font-weight:700;font-size:14px;color:var(--ink-2)}
@@ -696,10 +696,10 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   <p class="lede">平日は仕事終わりの夜に走る前提です。<strong>強度の高い練習は火曜と日曜の2本だけに絞り、他はすべてEペース</strong>にしました。平日に2回ポイント練習を入れると仕事との両立が続かず、土曜に入れると翌日のロング走の質が落ちます。</p>
 
   <div class="tmpl">
-    <div class="tmpl-row"><div class="tmpl-day">月</div><div class="tmpl-body">完全休養＋補強20分<em>週の疲労をここで切る。走らない日を必ず作る</em></div></div>
+    <div class="tmpl-row"><div class="tmpl-day">月</div><div class="tmpl-body">完全休養＋補強10分<em>週の疲労をここで切る。走らない日を必ず作る</em></div></div>
     <div class="tmpl-row"><div class="tmpl-day">火</div><div class="tmpl-body"><strong>ポイント練習（T走／Mペース走）</strong><em>月曜に休んだ後の一番フレッシュな日。一定ペースなので暗い道でも安全</em></div></div>
     <div class="tmpl-row"><div class="tmpl-day">水</div><div class="tmpl-body">Eジョグ＋流し<em>火の疲れを抜きながら距離を稼ぐ</em></div></div>
-    <div class="tmpl-row"><div class="tmpl-day">木</div><div class="tmpl-body">Eジョグ<em>つなぎ。きつければ迷わず短縮</em></div></div>
+    <div class="tmpl-row"><div class="tmpl-day">木</div><div class="tmpl-body">Eジョグ＋補強20分<em>走ってから補強。つなぎ。きつければ迷わず短縮</em></div></div>
     <div class="tmpl-row"><div class="tmpl-day">金</div><div class="tmpl-body">休養 or リカバリージョグ<em>日曜のロング走に向けて脚を戻す</em></div></div>
     <div class="tmpl-row"><div class="tmpl-day">土</div><div class="tmpl-body">Eジョグ＋流し<em>絶対に追い込まない。翌日のための日</em></div></div>
     <div class="tmpl-row"><div class="tmpl-day">日</div><div class="tmpl-body"><strong>ロング走（W10以降は後半にMペース）</strong><em>この計画の背骨。最優先で確保する</em></div></div>
@@ -878,8 +878,8 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
   <p class="lede">タブで曜日を切り替えてください。<strong>上から順にやれば、そのまま終わります。</strong>仰向け → うつ伏せ → 横向き → 座位 → 立位の順に並べてあるので、途中で起き上がり直す必要がありません。</p>
   <p class="lede"><strong>左右があるものは、必ず右から。</strong>左は右に合わせます。</p>
   <div class="daytabs" id="daytabs" role="tablist">
-    <button type="button" class="dtab is-on" data-day="mon" role="tab" aria-selected="true">月曜<b>12種目・20分</b></button>
-    <button type="button" class="dtab" data-day="thu" role="tab" aria-selected="false">木曜<b>3種目・10分</b></button>
+    <button type="button" class="dtab is-on" data-day="mon" role="tab" aria-selected="true">月曜<b>3種目・10分</b></button>
+    <button type="button" class="dtab" data-day="thu" role="tab" aria-selected="false">木曜<b>12種目・20分</b></button>
   </div>
   <div class="exlist" id="exlist"></div>
   <details class="grpinfo-wrap"><summary>それぞれの狙い</summary><div id="grpinfo"></div></details>
@@ -1190,7 +1190,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
 </section>
 
 <footer>
-  補強は「余裕があればやる」ではなく、走る量を増やすための前提条件です。月曜20分・木曜10分、週30分。これをテーパー前（W20）まで続ければ、走れる脚になります。
+  補強は「余裕があればやる」ではなく、走る量を増やすための前提条件です。月曜10分・木曜20分、週30分。これをテーパー前（W20）まで続ければ、走れる脚になります。
 </footer>
 
 </div>
@@ -1481,34 +1481,34 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       aim:"火曜のクルーズインターバルで閾値の滞在時間を伸ばす。マラソンのタイムを最も直接的に決めるのがこの能力。ロング走は130分まで、全てEペース。",
       weeks:[
       { n:5, d:"10/19 – 10/25", fx:32, lr:{e:115}, t:"クルーズインターバル開始",
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","T","T",'W/U 2km → <strong>T 8分×3</strong>（つなぎ90秒ジョグ）<span class="p p-T" data-p="T"></span> → C/D 2km（計10km）'],
               ["水","E","E",'Eジョグ 8km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 8km＋補強10分"],
+              ["木","E","E","Eジョグ 8km＋補強20分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 6km ＋ 流し100m×4'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="115"></span> <span class="p p-E" data-p="E"></span>']] },
       { n:6, d:"10/26 – 11/1", fx:34, lr:{e:125}, t:"閾値の滞在時間を伸ばす",
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","T","T",'W/U 2km → <strong>T 10分×3</strong>（つなぎ2分ジョグ）<span class="p p-T" data-p="T"></span> → C/D 2km（計11km）'],
               ["水","E","E",'Eジョグ 9km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 8km＋補強10分"],
+              ["木","E","E","Eジョグ 8km＋補強20分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 6km ＋ 流し100m×4'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="125"></span> <span class="p p-E" data-p="E"></span>']] },
       { n:7, d:"11/2 – 11/8", fx:36, lr:{e:130}, t:"T走を連続30分へ",
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","T","T",'W/U 2km → <strong>T走 30分 連続</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計11km）<em>分割せず一本で押せるかがPhase 2の到達点</em>'],
               ["水","E","E",'Eジョグ 10km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 9km＋補強10分"],
+              ["木","E","E","Eジョグ 9km＋補強20分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 6km ＋ 流し100m×4'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="130"></span> <span class="p p-E" data-p="E"></span>']] },
       { n:8, d:"11/9 – 11/15", fx:28, lr:{e:100}, t:"回復週", rec:true,
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","T","T",'W/U 2km → <strong>T走 20分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計8km）'],
               ["水","E","E","Eジョグ 8km"],
-              ["木","E","E","Eジョグ 7km＋補強10分"],
+              ["木","E","E","Eジョグ 7km＋補強20分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 5km ＋ 流し100m×4'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="100"></span> <span class="p p-E" data-p="E"></span>']] }
@@ -1517,35 +1517,35 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       aim:"ロング走の後半にMペースを入れ始める。週の強度は火曜のT走と日曜のロング走の2本に集約し、土曜は完全に回復に回す。W12のハーフTTで最終目標を確定する。",
       weeks:[
       { n:9, d:"11/16 – 11/22", fx:42, lr:{e:115}, t:"ロング走に質を入れ始める",
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","T","T",'W/U 2km → <strong>T走 35分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計12km）'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km＋補強10分"],
+              ["木","E","E","Eジョグ 10km＋補強20分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 9km ＋ <strong>流し100m×6</strong><em>土曜は完全にEペース。日曜のロング走に脚を残す</em>'],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="115"></span> <span class="p p-E" data-p="E"></span><em>最後の20分だけ自然に上げる（ビルドアップ）。時計は見ない</em>']] },
       { n:10, d:"11/23 – 11/29", fx:43, lr:{e:105,m:25}, t:"Mペースを後半に",
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","T","T",'W/U 2km → <strong>T走 40分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計13km）'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km＋補強10分"],
+              ["木","E","E","Eジョグ 10km＋補強20分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 9km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="105" data-m="25"></span>　前半105分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半25分をMペース</strong> <span class="p p-M" data-p="M"></span>']] },
       { n:11, d:"11/30 – 12/6", fx:44, lr:{e:120,m:30}, t:"150分の壁",
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","T","T",'W/U 2km → <strong>T走 40分</strong> <span class="p p-T" data-p="T"></span> → C/D 2km（計13km）'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km＋補強10分"],
+              ["木","E","E","Eジョグ 10km＋補強20分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="30"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半30分をMペース</strong> <span class="p p-M" data-p="M"></span><em>初めての150分走。<strong>本題は補給を試すこと</strong>で、タイムは二の次。ジェルは60分と110分あたりで入れ、胃が受け付けるかを確かめる。水は最初の60分からこまめに。午前中に出て、午後は完全休養に充てる</em><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 2個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
       { n:12, d:"12/7 – 12/13", fx:50, lr:null, t:"ハーフTTで目標確定", rec:true,
         key:"12/13(日) ハーフマラソンTT — ここで最終目標（サブ3:15 / 3:20 / 3:30）を決める",
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","E","E","Eジョグ 8km"],
               ["水","E","E","Eジョグ 8km"],
-              ["木","休","rest","休養＋補強10分"],
+              ["木","休","rest","休養＋補強20分"],
               ["金","E","E",'Eジョグ 5km ＋ 流し100m×4'],
               ["土","E","E","Eジョグ 4km（脚の確認だけ）"],
               ["日","TT","key",'<strong>ハーフTT 21.1km</strong>　W/U 2km ＋ 本番 ＋ C/D 2km（計25km）<em>レースにエントリーできればなお良い。ハーフタイム×2＋10分がフル予想</em>']] }
@@ -1554,34 +1554,34 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       aim:"レースペースを体に覚えさせる。ロング走の後半にMペースを組み込み、「疲れた脚でレースペースを刻む」感覚をつくる。この期が本番の結果を決める。",
       weeks:[
       { n:13, d:"12/14 – 12/20", fx:46, lr:{e:115,m:35}, t:"Mペース走を開始",
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 12km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計15km）<em>一定ペースなので夜でも可。時計を見ずに体感で刻む練習</em>'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km＋補強10分"],
+              ["木","E","E","Eジョグ 10km＋補強20分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="115" data-m="35"></span>　前半115分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半35分をMペース</strong> <span class="p p-M" data-p="M"></span><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 2個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
       { n:14, d:"12/21 – 12/27", fx:48, lr:{e:120,m:40}, t:"160分へ",
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 14km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計17km）'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km＋補強10分"],
+              ["木","E","E","Eジョグ 10km＋補強20分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="40"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半40分をMペース</strong> <span class="p p-M" data-p="M"></span><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 2個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
       { n:15, d:"12/28 – 1/3", fx:50, lr:{e:120,m:45}, t:"165分・後半45分M",
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 16km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計19km）'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km＋補強10分"],
+              ["木","E","E","Eジョグ 10km＋補強20分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="45"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半45分をMペース</strong> <span class="p p-M" data-p="M"></span><em>この計画で最も重要な練習形式。年末年始で潰れたらW16と入れ替える</em><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 3個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
       { n:16, d:"1/4 – 1/10", fx:34, lr:{e:150}, t:"回復週", rec:true,
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","E","E","Eジョグ 10km"],
               ["水","E","E","Eジョグ 9km"],
-              ["木","休","rest","休養＋補強10分"],
+              ["木","休","rest","休養＋補強20分"],
               ["金","E","E",'Eジョグ 7km ＋ 流し100m×4'],
               ["土","E","E","Eジョグ 8km"],
               ["日","E","E",'<strong>ロング走</strong> <span class="lr" data-e="150"></span> <span class="p p-E" data-p="E"></span><em>回復週なのでMペースは入れない。年末年始が潰れたらW15と入れ替え</em><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 2個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] }
@@ -1590,27 +1590,27 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       aim:"最大の負荷をかける3週間。W18の180分走（後半60分がMペース）がこの計画の上限で、これ以上は伸ばさない。ここを越えたら、あとは疲労を抜くだけ。",
       weeks:[
       { n:17, d:"1/11 – 1/17", fx:50, lr:{e:115,m:55}, t:"距離のピーク",
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 16km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計19km）'],
               ["水","E","E",'Eジョグ 11km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 10km＋補強10分"],
+              ["木","E","E","Eジョグ 10km＋補強20分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 10km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="115" data-m="55"></span>　前半115分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半55分をMペース</strong> <span class="p p-M" data-p="M"></span><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 3個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
       { n:18, d:"1/18 – 1/24", fx:45, lr:{e:120,m:60}, t:"最長のロング走",
         key:"1/24(日) 180分走 — 本番4週前、この計画の山場。3時間を超えたら距離が残っていても打ち切る",
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 14km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計17km）'],
               ["水","E","E",'Eジョグ 10km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 9km＋補強10分"],
+              ["木","E","E","Eジョグ 9km＋補強20分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 9km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="120" data-m="60"></span>　前半120分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半60分をMペース</strong> <span class="p p-M" data-p="M"></span><em>本番当日と同じ時間・同じ朝食・同じシューズ・同じ補給で走る</em><span class="kit"><b>持ち物</b><i>水 500ml×2</i><i>ジェル 3個</i><i>ワセリン</i><i>手袋</i><i>スマホ</i><i>小銭・ICカード</i></span>']] },
       { n:19, d:"1/25 – 1/31", fx:42, lr:{e:100,m:30}, t:"負荷を下げ始める",
-        days:[["月","休","rest","完全休養＋補強20分"],
+        days:[["月","休","rest","完全休養＋補強10分"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 12km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計15km）'],
               ["水","E","E",'Eジョグ 10km ＋ 流し100m×4'],
-              ["木","E","E","Eジョグ 9km＋補強10分"],
+              ["木","E","E","Eジョグ 9km＋補強20分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 8km ＋ 流し100m×6'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="100" data-m="30"></span>　前半100分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半30分をMペース</strong> <span class="p p-M" data-p="M"></span>']] }
@@ -1619,10 +1619,10 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
       aim:"距離だけを落とし、強度は最後まで残す。走らないと不安になるが、ここで走りすぎると本番で脚が残らない。「物足りない」が正解。",
       weeks:[
       { n:20, d:"2/1 – 2/7", fx:35, lr:{e:75,m:20}, t:"テーパー開始（量−35%）",
-        days:[["月","休","rest","完全休養＋補強15分"],
+        days:[["月","休","rest","完全休養＋ストレッチ"],
               ["火","M","M",'W/U 2km → <strong>Mペース走 10km</strong> <span class="p p-M" data-p="M"></span> → C/D 1km（計13km）'],
               ["水","E","E","Eジョグ 8km"],
-              ["木","E","E","Eジョグ 7km＋補強10分"],
+              ["木","E","E","Eジョグ 7km＋補強15分"],
               ["金","休","rest","休養"],
               ["土","E","E",'Eジョグ 7km ＋ 流し100m×4'],
               ["日","M","M",'<strong>ロング走</strong> <span class="lr" data-e="75" data-m="20"></span>　前半75分 <span class="p p-E" data-p="E"></span> ＋ <strong>後半20分をMペース</strong> <span class="p p-M" data-p="M"></span>']] },
@@ -1673,7 +1673,10 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule-strong);
     "2026-10-13": ["E", "E", "Eジョグ<strong>40分</strong>（計画は8km）", "練習量の戻しすぎを避ける"],
     "2026-10-14": ["E", "E", "Eジョグ<strong>30分</strong>（計画は7km）", "同上"],
     "2026-10-16": ["E", "E", "Eジョグ<strong>30分。流しは入れない</strong>", "流しは引き金の半分だった"],
-    "2026-10-18": ["E", "key", "<strong>ロング走 60分</strong>（計画は100分）。<strong>40分より先は未検証</strong>", "本当の試験"]
+    "2026-10-18": ["E", "key", "<strong>ロング走 60分</strong>（計画は100分）。<strong>40分より先は未検証</strong>", "本当の試験"],
+    "2026-10-20": ["T", "key", "<strong>T 8分×3</strong>（つなぎ90秒ジョグ）　<strong>1本目は5'20&quot;より速く入らない</strong>。狙いは5'20&quot;〜5'30&quot;、設定の5'10&quot;は上限。<strong>3本を同じ速さで揃える</strong>のが成功。腸腰筋に出たら途中でも終了<em>設定ペースは9/23のTT（50:22）基準＝故障前の値。3週間ジョグのみの直後なので、初回は下げて入る</em>", "復帰後はじめてのポイント練習"],
+    "2026-10-21": ["E", "E", "Eジョグ 8km ＋ <strong>流し100m×1</strong>（計画は×4）", "流しは1本ずつ戻す"],
+    "2026-10-24": ["E", "E", "Eジョグ 6km ＋ <strong>流し100m×2</strong>（計画は×4）", "同上"]
   };
   function dkey(dt){
     return dt.getFullYear() + "-" + ("0" + (dt.getMonth() + 1)).slice(-2)
@@ -2127,7 +2130,7 @@ var GRPINFO = [
 function exHTML(e){
   return '<details class="ex"><summary>'
     + '<span class="nm">'
-    + (e.day === "月木" ? '<i class="day">木</i>' : "")
+    + (e.day === "月木" ? '<i class="day">月</i>' : "")
     + e.nm + '<em class="goal">' + e.goal + '</em>'
     + (e.grp && e.grp !== e.goal ? '<em class="gt" style="--gc:' + e.gc + '">' + e.grp + '</em>' : "")
     + '</span>'
@@ -2151,7 +2154,7 @@ function exHTML(e){
   function listHTML(dayKey){
     var html = "", pos = "";
     EXS.forEach(function(e){
-      if(dayKey === "thu" && e.day !== "月木") return;
+      if(dayKey === "mon" && e.day !== "月木") return;
       if(e.pos !== pos){ pos = e.pos; html += '<h4 class="posh">' + pos + '</h4>'; }
       html += exHTML(e);
     });
@@ -2160,7 +2163,7 @@ function exHTML(e){
   var exList = document.getElementById("exlist");
   var dayBtns = document.querySelectorAll("#daytabs .dtab");
   function showDay(k){
-    exList.className = "exlist" + (k === "thu" ? " is-thu" : "");
+    exList.className = "exlist" + (k === "mon" ? " is-mon" : "");
     exList.innerHTML = listHTML(k);
     Array.prototype.forEach.call(dayBtns, function(b){
       var on = b.getAttribute("data-day") === k;
